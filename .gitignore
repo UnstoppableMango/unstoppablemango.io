@@ -474,3 +474,11 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+
+# Additional Ignored files
+
+# Fable generated files
+.fable
+*.fs.js
+bundle.js
+temp/**

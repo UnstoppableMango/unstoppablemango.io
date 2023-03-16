@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "postinstall": "dotnet tool restore",
+    "start": "dotnet fable watch src/App --run webpack serve",
+    "build": "dotnet fable       src/App --run webpack --mode production",
+    "clean:fable": "dotnet fable clean --yes",
+    "clean:dotnet": "dotnet clean src/App",
+    "clean": "npm run clean:fable && npm run clean:dotnet"
+  },
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
