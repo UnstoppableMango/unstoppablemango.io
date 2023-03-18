@@ -12,8 +12,9 @@ module.exports = {
         filename: "bundle.js",
     },
     devServer: {
-        publicPath: "/",
-        contentBase: "./public",
+        static: {
+          directory: path.join(__dirname, "public")  
+        },
         port: 8080,
     },
 }
