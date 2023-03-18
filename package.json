@@ -3,11 +3,15 @@
     "postinstall": "dotnet tool restore",
     "start": "dotnet fable watch src/App --run webpack serve",
     "build": "dotnet fable       src/App --run webpack --mode production",
+    "pretest": "dotnet fable test/App.Tests -o dist/tests",
+    "test": "mocha dist/tests",
+    "clean:dist": "rm -r dist",
     "clean:fable": "dotnet fable clean --yes",
     "clean:dotnet": "dotnet clean src/App",
-    "clean": "npm run clean:fable && npm run clean:dotnet"
+    "clean": "npm run clean:fable && npm run clean:dotnet && npm run clean:dist"
   },
   "devDependencies": {
+    "mocha": "^8.3.2",
     "webpack": "^5.76.2",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.0"

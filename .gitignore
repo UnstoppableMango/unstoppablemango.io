@@ -482,3 +482,4 @@ fabric.properties
 *.fs.js
 bundle.js
 temp/**
+dist/
