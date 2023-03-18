@@ -8,7 +8,23 @@ let app () =
         Attr.style [
             Css.margin (rem 1)
         ]
-        text "Hello World"
+        Html.h1 [
+            Attr.style [
+                Css.width (percent 50)
+                Css.margin (zero, auto)
+                Css.textAlignCenter
+                Css.fontSize 69
+            ]
+            text "UnstoppableMango IO"
+        ]
+        Html.h1 [
+            Attr.style [
+                Css.width (percent 50)
+                Css.margin (zero, auto)
+                Css.textAlignCenter
+            ]
+            text "yeet"
+        ]
     ]
 
 app () |> Program.mount
