@@ -1,0 +1,5 @@
+config:
+  azure-native:location: CentralUS
+  unstoppablemango.io:errorDocument: error.html
+  unstoppablemango.io:indexDocument: index.html
+  unstoppablemango.io:path: ./public
