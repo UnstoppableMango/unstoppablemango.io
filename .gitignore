@@ -486,3 +486,6 @@ dist/
 
 # Extensions
 discord.xml
+
+# Generated
+tailwind.css
