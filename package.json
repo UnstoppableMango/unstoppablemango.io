@@ -1,14 +1,19 @@
 {
   "scripts": {
     "postinstall": "dotnet tool restore",
-    "start": "dotnet fable watch src/App --run webpack serve",
-    "build": "dotnet fable       src/App --run webpack --mode production",
+    "start": "dotnet fable watch src/App --run npm run pack:serve",
+    "build": "dotnet fable src/App --run npm run pack:prod",
     "pretest": "dotnet fable test/App.Tests -o dist/tests",
     "test": "mocha dist/tests",
     "clean:dist": "rm -r dist",
     "clean:fable": "dotnet fable clean --yes",
     "clean:dotnet": "dotnet clean src/App",
-    "clean": "npm run clean:fable && npm run clean:dotnet && npm run clean:dist"
+    "clean:tailwind": "rm public/tailwind.css",
+    "clean": "npm run clean:fable && npm run clean:dotnet && npm run clean:dist && npm run clean:tailwind",
+    "pack:serve": "conc -k -n \"tailwind,webpack\" \"npm:tailwind:watch\" \"webpack serve\"",
+    "pack:prod": "npm run tailwind:prod && webpack --mode production",
+    "tailwind:watch": "tailwindcss -o public/tailwind.css --watch",
+    "tailwind:prod": "cross-env NODE_ENV=production tailwindcss -o public/tailwind.css --minify"
   },
   "devDependencies": {
     "mocha": "^8.3.2",
