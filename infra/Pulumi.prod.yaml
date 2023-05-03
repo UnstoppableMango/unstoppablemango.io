@@ -1,0 +1,4 @@
+config:
+  azure-native:location: CentralUS
+  unstoppablemango.io:repositoryToken:
+    secure: AAABANK8AXQMKUbRZKA1t/QjTLhlvmKw7W0bn2sgjw0kdVX2QNogkVCwfRrXWg4kk8CXbfRwJv2togvmSnXl1g15MOckfPjw
