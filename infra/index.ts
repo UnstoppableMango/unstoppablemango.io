@@ -10,6 +10,7 @@ const resourceGroup = new azure.resources.ResourceGroup(resourceGroupName, {
 });
 
 const site = new azure.web.StaticSite('app', {
+  name: 'app',
   resourceGroupName: resourceGroup.name,
   sku: {
     tier: 'Free',
