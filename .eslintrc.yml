@@ -13,3 +13,7 @@ parserOptions:
 plugins:
   - '@typescript-eslint'
 rules: {}
+ignorePatterns:
+  - src/App/**
+  - test/App.Tests/**
+  - public/**
