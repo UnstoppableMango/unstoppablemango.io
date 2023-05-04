@@ -10,7 +10,6 @@ const resourceGroup = new azure.resources.ResourceGroup(resourceGroupName, {
 });
 
 const site = new azure.web.StaticSite('app', {
-  name: 'app',
   resourceGroupName: resourceGroup.name,
   sku: {
     tier: 'Free',
@@ -20,9 +19,9 @@ const site = new azure.web.StaticSite('app', {
   repositoryToken,
   branch: 'main',
   buildProperties: {
-    appBuildCommand: 'npm run build',
     appLocation: '/public',
-    outputLocation: '/public',
+    skipGithubActionWorkflowGeneration: true,
+    githubActionSecretNameOverride: 'AZURE_STATIC_WEB_APPS_API_TOKEN',
   },
 });
 
