@@ -40,7 +40,6 @@ jobs:
           command: preview
           stack-name: prod
           work-dir: infra
-          comment-on-pr: true
         env:
           ARM_USE_OIDC: true
           ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
@@ -53,7 +52,6 @@ jobs:
           command: up
           stack-name: prod
           work-dir: infra
-          comment-on-pr: true
         env:
           ARM_USE_OIDC: true
           ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
