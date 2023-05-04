@@ -20,33 +20,39 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           global-json-file: global.json
-          
+
       - uses: actions/setup-node@v3
         with:
-            node-version-file: .nvmrc
-    
+          node-version-file: .nvmrc
+
       - run: npm ci
         working-directory: infra
 
       - uses: pulumi/actions@v4
         if: github.event_name == 'pull_request'
         with:
-            command: preview
-            stack-name: prod
-            work-dir: infra
-            comment-on-pr: true
+          command: preview
+          stack-name: prod
+          work-dir: infra
+          comment-on-pr: true
         env:
-            PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          ARM_USE_OIDC: true
+          ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
+          ARM_TENANT_ID: cc1862e8-3663-4b04-afb6-da85f96a6111
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
 
       - uses: pulumi/actions@v4
         if: github.event_name == 'push'
         with:
-            command: up
-            stack-name: prod
-            work-dir: infra
-            comment-on-pr: true
+          command: up
+          stack-name: prod
+          work-dir: infra
+          comment-on-pr: true
         env:
-            PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          ARM_USE_OIDC: true
+          ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
+          ARM_TENANT_ID: cc1862e8-3663-4b04-afb6-da85f96a6111
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
 
       - name: Build And Deploy
         id: builddeploy
