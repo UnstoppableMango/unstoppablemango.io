@@ -22,14 +22,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-dotnet@v3
-        with:
-          global-json-file: global.json
-
       - uses: actions/setup-node@v3
         with:
           node-version-file: .nvmrc
-          cache: 'npm'
+          cache: npm
           cache-dependency-path: infra/package-lock.json
 
       - run: npm ci
@@ -41,6 +37,7 @@ jobs:
           command: preview
           stack-name: prod
           work-dir: infra
+          comment-on-pr: true
         env:
           ARM_USE_OIDC: true
           ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
@@ -53,11 +50,24 @@ jobs:
           command: up
           stack-name: prod
           work-dir: infra
+          comment-on-pr: true
         env:
           ARM_USE_OIDC: true
           ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
           ARM_TENANT_ID: cc1862e8-3663-4b04-afb6-da85f96a6111
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+
+      - uses: actions/setup-dotnet@v3
+        with:
+          global-json-file: global.json
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - run: npm ci
 
       - name: Build And Deploy
         id: builddeploy
@@ -66,15 +76,8 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
-          app_build_command: npm run build
-          app_location: /
-          output_location: public
-        env:
-          DOTNET_VERSION: '7.0.201'
-          DISABLE_DOTNETCORE_BUILD: true
-          NODE_VERSION: '19.8.1'
-          ORYX_DISABLE_TELEMETRY: true
-          ENABLE_MULTIPLATFORM_BUILD: true
+          skip_app_build: true
+          app_location: /public
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
