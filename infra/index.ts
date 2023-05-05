@@ -32,6 +32,7 @@ const customDomain = new azure.web.StaticSiteCustomDomain(
     name: site.name,
     resourceGroupName: resourceGroup.name,
     domainName: 'unstoppablemango.io',
+    validationMethod: 'dns-txt-token'
   }
 );
 
