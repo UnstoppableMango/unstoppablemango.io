@@ -37,7 +37,6 @@ jobs:
           command: preview
           stack-name: prod
           work-dir: infra
-          comment-on-pr: true
           pulumi-version: '3.66.0'
         env:
           ARM_USE_OIDC: true
@@ -51,7 +50,6 @@ jobs:
           command: up
           stack-name: prod
           work-dir: infra
-          comment-on-pr: true
           pulumi-version: '3.66.0'
         env:
           ARM_USE_OIDC: true
