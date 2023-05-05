@@ -3,7 +3,6 @@ name: Azure Static Web Apps CI/CD
 permissions:
   id-token: write
   contents: read
-  pull-requests: write
 
 on:
   push:
@@ -37,7 +36,6 @@ jobs:
           command: preview
           stack-name: prod
           work-dir: infra
-          pulumi-version: '3.66.0'
         env:
           ARM_USE_OIDC: true
           ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
@@ -51,7 +49,6 @@ jobs:
           command: up
           stack-name: prod
           work-dir: infra
-          pulumi-version: '3.66.0'
         env:
           ARM_USE_OIDC: true
           ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
