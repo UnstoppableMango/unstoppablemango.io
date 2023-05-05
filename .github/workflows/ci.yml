@@ -43,6 +43,7 @@ jobs:
           ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
           ARM_TENANT_ID: cc1862e8-3663-4b04-afb6-da85f96a6111
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: pulumi/actions@v4
         if: github.event_name == 'push'
@@ -56,6 +57,7 @@ jobs:
           ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
           ARM_TENANT_ID: cc1862e8-3663-4b04-afb6-da85f96a6111
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-dotnet@v3
         with:
