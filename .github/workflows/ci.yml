@@ -67,6 +67,7 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - run: npm ci
+      - run: npm run build
 
       - name: Build And Deploy
         id: builddeploy
@@ -76,6 +77,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
           skip_app_build: true
+          skip_api_build: true
           app_location: /public
 
   close_pull_request:
