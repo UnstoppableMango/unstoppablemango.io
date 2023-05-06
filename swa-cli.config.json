@@ -3,8 +3,10 @@
   "configurations": {
     "unstoppablemango.io": {
       "appBuildCommand": "npm run build",
-      "appLocation": "public",
-      "outputLocation": "."
+      "appLocation": ".",
+      "outputLocation": "public",
+      "appName": "app91238258",
+      "resourceGroup": "unstoppablemango.io"
     }
   }
 }
