@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "ionide.ionide-fsharp",
+        "bradlc.vscode-tailwindcss",
+        "editorconfig.editorconfig"
+    ]
+}

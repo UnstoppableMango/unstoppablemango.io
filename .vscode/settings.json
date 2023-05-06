@@ -1,0 +1,27 @@
+{
+    "[fsharp]": {
+        "editor.defaultFormatter": "Ionide.Ionide-fsharp"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "tailwindCSS.includeLanguages": {
+        "fsharp": "html"
+    },
+    "tailwindCSS.files.exclude": [
+        "**/.git/**",
+        "**/node_modules/**",
+        "**/.hg/**",
+        "**/.svn/**",
+        "**/fable_modules/**"
+    ],
+    "tailwindCSS.experimental.classRegex": [
+        "Attr\\.(?:className|addClass|setClass)\\s+\"([^\"]*)\"",
+        "Attr\\.classes\\s+\\[\\s*\"([^\"]*)\"\\s*\\]",
+        "Html\\.\\w+c\\s+\"([^\"]*)\"",
+        "class'\\s+\"([^\"]*)\""
+    ]
+}
