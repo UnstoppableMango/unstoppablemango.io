@@ -86,7 +86,7 @@ const test = new cloudflare.Ruleset('mangio-redirect', {
 const test2 = new cloudflare.List('mangio-redirect', {
   name: 'mangio_redirect',
   accountId: '265a046434c952eeecb9710cfd76617c',
-  kind: 'redirct',
+  kind: 'redirect',
   items: [
     {
     value: {
