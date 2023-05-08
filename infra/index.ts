@@ -63,27 +63,14 @@ const unstoppablemangoSettings = new cloudflare.ZoneSettingsOverride(
 );
 
 const mangioCnameRecord = new cloudflare.Record('unstoppablemang.io-cname', {
-  name: domainName,
+  name: mangioDomainName,
   zoneId: unstoppableMangZoneId,
   value: site.defaultHostname,
   type: 'CNAME',
   proxied: true,
 });
 
-const test = new cloudflare.Ruleset('mangio-redirect', {
-  zoneId: unstoppableMangZoneId,
-  name: 'Redirect mangio to mangoio',
-  kind: 'zone',
-  phase: 'http_request_dynamic_redirect',
-  rules: [
-    {
-      expression: '',
-      action: 'redirect',
-    },
-  ],
-});
-
-const test2 = new cloudflare.List('mangio-redirect', {
+const mangioRedirect = new cloudflare.List('mangio-redirect', {
   name: 'mangio_redirect',
   accountId: '265a046434c952eeecb9710cfd76617c',
   kind: 'redirect',
