@@ -62,31 +62,31 @@ const unstoppablemangoSettings = new cloudflare.ZoneSettingsOverride(
   }
 );
 
-const mangioCnameRecord = new cloudflare.Record('unstoppablemang.io-cname', {
-  name: mangioDomainName,
-  zoneId: unstoppableMangZoneId,
-  value: site.defaultHostname,
-  type: 'CNAME',
-  proxied: true,
-});
+// const mangioCnameRecord = new cloudflare.Record('unstoppablemang.io-cname', {
+//   name: mangioDomainName,
+//   zoneId: unstoppableMangZoneId,
+//   value: site.defaultHostname,
+//   type: 'CNAME',
+//   proxied: true,
+// });
 
-const mangioRedirect = new cloudflare.List('mangio-redirect', {
-  name: 'mangio_redirect',
-  accountId: '265a046434c952eeecb9710cfd76617c',
-  kind: 'redirect',
-  items: [
-    {
-    value: {
-      redirects: [
-        {
-          sourceUrl: mangioDomainName,
-          targetUrl: `https://${domainName}`,
-        }
-      ]
-    }
-    }
-  ]
-});
+// const mangioRedirect = new cloudflare.List('mangio-redirect', {
+//   name: 'mangio_redirect',
+//   accountId: '265a046434c952eeecb9710cfd76617c',
+//   kind: 'redirect',
+//   items: [
+//     {
+//     value: {
+//       redirects: [
+//         {
+//           sourceUrl: mangioDomainName,
+//           targetUrl: `https://${domainName}`,
+//         }
+//       ]
+//     }
+//     }
+//   ]
+// });
 
 export const validationToken = customDomain.validationToken;
 export const url = pulumi.interpolate`https://${site.defaultHostname}`;
