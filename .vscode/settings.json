@@ -1,4 +1,7 @@
 {
+    "editor.quickSuggestions": {
+        "strings": "on"
+    },
     "[fsharp]": {
         "editor.defaultFormatter": "Ionide.Ionide-fsharp"
     },
@@ -14,8 +17,6 @@
     "tailwindCSS.files.exclude": [
         "**/.git/**",
         "**/node_modules/**",
-        "**/.hg/**",
-        "**/.svn/**",
         "**/fable_modules/**"
     ],
     "tailwindCSS.experimental.classRegex": [
