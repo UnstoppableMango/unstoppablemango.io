@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       height: {
-        screen: '100svh'
+        screen: '100svh',
       },
       colors: {
         'eerie-black': '#1b1d1e',

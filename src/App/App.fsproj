@@ -4,17 +4,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Navigable.fs" />
+    <Compile Include="pages/Wishlist.fs" />
+    <Compile Include="pages/Artists.fs" />
+    <Compile Include="pages/Music.fs" />
+    <Compile Include="pages/Hero.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Sutil" Version="2.0.9" />
   </ItemGroup>
-
-  <Target Name="RemoveBuildDirectories" AfterTargets="Clean">
-    <!-- Remove obj folder -->
-    <RemoveDir Directories="$(BaseIntermediateOutputPath)" />
-    <!-- Remove bin folder -->
-    <RemoveDir Directories="$(BaseOutputPath)" />
-  </Target>
 </Project>

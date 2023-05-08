@@ -1,0 +1,44 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"label": "npm: build",
+			"detail": "dotnet fable src/App --run npm run pack"
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"isBackground": true,
+			"group": "none",
+			"problemMatcher": "$fable-webpack",
+			"label": "npm: start",
+			"detail": "dotnet fable watch src/App --run webpack serve"
+		},
+		{
+			"type": "npm",
+			"script": "tailwind:watch",
+			"isBackground": true,
+			"group": "none",
+			"label": "npm: tailwind:watch",
+			"detail": "tailwindcss -o public/tailwind.css --watch",
+		},
+		{
+			"label": "Watch all",
+			"dependsOn": [
+				"npm: start",
+				"npm: tailwind:watch"
+			],
+			"dependsOrder": "parallel",
+			"group": "none",
+			"problemMatcher": "$fable-webpack",
+			"isBackground": true,
+			"detail": "npm run start && npm run tailwind:watch"
+		}
+	]
+}
