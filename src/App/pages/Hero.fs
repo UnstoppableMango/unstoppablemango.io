@@ -1,7 +1,6 @@
 module Hero
 
 open Sutil
-open Sutil.CoreElements
 
 type NavItem = { Name: string; Href: string }
 
@@ -14,6 +13,10 @@ let items = [
     {
         Name = "Wishlist"
         Href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    }
+    {
+        Name = "When in Cannes"
+        Href = "#/cannes"
     }
 ]
 

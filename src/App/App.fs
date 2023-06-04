@@ -20,6 +20,7 @@ let pages =
     | "#/music" -> Music.view ()
     | "#/music/artists" -> Artists.view ()
     | "#/wishlist" -> Wishlist.view ()
+    | "#/cannes" -> Cannes.view ()
     | _ -> Hero.view ()
 
 let app () =
