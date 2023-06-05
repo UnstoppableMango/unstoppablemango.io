@@ -48,20 +48,20 @@ export default {
         },
       },
       animation: {
-        'slide-down': 'slide-down 500ms'
+        'slide-down': 'slide-down 500ms',
       },
       keyframes: {
         'slide-down': {
           '0%': {
             transform: 'translateY(-50px)',
-            opacity: '0'
+            opacity: '0',
           },
           '100%': {
             transform: 'translateY(0)',
-            opacity: '100'
-          }
-        }
-      }
+            opacity: '100',
+          },
+        },
+      },
     },
   },
   plugins: [],
