@@ -5,10 +5,12 @@
 
   <ItemGroup>
     <Compile Include="Navigable.fs" />
+    <Compile Include="Components.fs" />
     <Compile Include="pages/Wishlist.fs" />
     <Compile Include="pages/Artists.fs" />
     <Compile Include="pages/Music.fs" />
     <Compile Include="pages/Cannes.fs" />
+    <Compile Include="pages/Login.fs" />
     <Compile Include="pages/Hero.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>

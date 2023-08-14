@@ -22,6 +22,13 @@ let items = [
 
 let view () =
     Html.divc "h-screen overflow-y-scroll" [
+        Html.divc "w-1/2 xl:w-1/6 h-16 absolute top-0 right-0 bg-gradient-to-r from-transparent to-black/75 px-5 py-3 flex flex-row-reverse" [
+            Html.a [
+                Attr.addClass "lg:w-1/2 xl:w-1/3 my-auto text-white/75 font-bold text-center z-10"
+                Attr.href "#/login"
+                text "Login"
+            ]
+        ]
         Html.divc "h-screen grid content-center" [
             Html.divc "w-full py-5 backdrop-blur bg-gradient-to-r from-transparent via-black/75 to-transparent" [
                 Html.divc "h-full flex flex-wrap items-center justify-center gap-6" [

@@ -17,6 +17,7 @@ DomHelpers.setHeadTitle Dom.document "UnstoppableMango"
 
 let pages =
     function
+    | "#/login" -> Login.view ()
     | "#/music" -> Music.view ()
     | "#/music/artists" -> Artists.view ()
     | "#/wishlist" -> Wishlist.view ()
