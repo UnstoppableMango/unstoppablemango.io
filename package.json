@@ -13,9 +13,11 @@
     "clean": "npm run clean:fable && npm run clean:dotnet && npm run clean:tailwind && npm run clean:dist",
     "pack": "npm run tailwind:prod && webpack --mode production",
     "tailwind:watch": "tailwindcss -o public/tailwind.css --watch",
-    "tailwind:prod": "cross-env NODE_ENV=production tailwindcss -o public/tailwind.css --minify"
+    "tailwind:prod": "cross-env NODE_ENV=production tailwindcss -o public/tailwind.css --minify",
+    "swa:local": "swa start http://localhost:8080"
   },
   "devDependencies": {
+    "@azure/static-web-apps-cli": "^1.1.4",
     "concurrently": "^8.0.1",
     "cross-env": "^7.0.3",
     "mocha": "^10.2.0",
