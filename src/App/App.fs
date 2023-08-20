@@ -1,5 +1,6 @@
 module App
 
+open App
 open Browser
 open Sutil
 
@@ -25,7 +26,19 @@ let pages =
     | _ -> Hero.view ()
 
 let app () =
+    Auth.dispatch Auth.Login
+
     Html.divc "h-screen bg-cover bg-center lg:bg-right bg-[url(images/hbg-sm.webp)] bg-byzantium-200" [
+        Bind.el (
+            Auth.model,
+            fun m ->
+                Html.divc "" [
+                    match m.Loading, m.Me with
+                    | true, _ -> text "loading auth"
+                    | false, None -> text "somethings fucked"
+                    | false, Some me -> text me.clientPrincipal.userDetails
+                ]
+        )
         Navigable.bindHash pages
     ]
 
