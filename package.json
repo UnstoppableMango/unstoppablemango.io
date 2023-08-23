@@ -2,7 +2,7 @@
   "scripts": {
     "postinstall": "dotnet tool restore",
     "start": "dotnet fable watch src/App --run webpack serve",
-    "start:all": "conc -k -n \"fable,tailwind\" \"npm:start\" \"npm:tailwind:watch\"",
+    "start:all": "conc -k -n \"fable,tailwind,swa\" \"npm:start\" \"npm:tailwind:watch\" \"npm:swa:local\"",
     "build": "dotnet fable src/App --run npm run pack",
     "pretest": "dotnet fable test/App.Tests -o dist/tests",
     "test": "mocha dist/tests",
@@ -13,9 +13,11 @@
     "clean": "npm run clean:fable && npm run clean:dotnet && npm run clean:tailwind && npm run clean:dist",
     "pack": "npm run tailwind:prod && webpack --mode production",
     "tailwind:watch": "tailwindcss -o public/tailwind.css --watch",
-    "tailwind:prod": "cross-env NODE_ENV=production tailwindcss -o public/tailwind.css --minify"
+    "tailwind:prod": "cross-env NODE_ENV=production tailwindcss -o public/tailwind.css --minify",
+    "swa:local": "swa start http://localhost:8080"
   },
   "devDependencies": {
+    "@azure/static-web-apps-cli": "^1.1.4",
     "concurrently": "^8.0.1",
     "cross-env": "^7.0.3",
     "mocha": "^10.2.0",
