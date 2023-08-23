@@ -16,7 +16,7 @@ type IClientPrincipal =
     abstract claims: IClaim list
 
 type IMe =
-    abstract clientPrincipal: IClientPrincipal
+    abstract clientPrincipal: IClientPrincipal option
 
 let me () =
     fetch "/.auth/me" [] |> Promise.bind (fun x -> x.json<IMe> ())
@@ -26,21 +26,35 @@ type Message =
     | Success of IMe
     | Login
 
-type Model = { Me: IMe option; Loading: bool }
+type State = { Me: IMe option; Loading: bool }
 
-let private update msg model =
+let private update msg state =
     match msg with
-    | Error x -> { model with Loading = false }, Cmd.none
+    | Error x -> { state with Loading = false }, Cmd.none
     | Success x ->
         {
-            model with
+            state with
                 Loading = false
                 Me = Some x
         },
         Cmd.none
-    | Login -> { model with Loading = true }, Cmd.OfPromise.either me () Success Error
+    | Login -> { state with Loading = true }, Cmd.OfPromise.either me () Success Error
 
 let private init current =
     { Me = current; Loading = false }, Cmd.none
 
 let model, dispatch = None |> Store.makeElmish init update ignore
+
+let principal state =
+    state.Me |> Option.bind (fun (me: IMe) -> me.clientPrincipal)
+
+let (|Loading|LoggedOut|Principal|) =
+    function
+    | { Loading = true } -> Loading
+    | { Me = Some me } ->
+        match me.clientPrincipal with
+        | Some p -> Principal p
+        | _ -> LoggedOut
+    | _ -> LoggedOut
+
+let bind binder = Bind.el (model, binder)
