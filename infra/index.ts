@@ -5,14 +5,49 @@ import * as cloudflare from '@pulumi/cloudflare';
 const config = new pulumi.Config();
 const repositoryToken = config.requireSecret('repositoryToken');
 
-const resourceGroupName = 'UnstoppableMango.io';
+const resourceGroupName: string = 'UnstoppableMango.io';
 const resourceGroup = new azure.resources.ResourceGroup(resourceGroupName, {
   resourceGroupName,
 });
-const domainName = 'unstoppablemango.io';
-// const mangioDomainName = 'unstoppablemang.io';
-const unstoppableMangoZoneId = 'de10a9e5057761cf8b2151d80dd684fa';
-// const unstoppableMangZoneId = '24f3d181ad1b22a5e290175096171516';
+
+const domainName: string = 'unstoppablemango.io';
+const mangioDomainName: string = 'unstoppablemang.io';
+const unstoppableMangoZoneId: string = 'de10a9e5057761cf8b2151d80dd684fa';
+const unstoppableMangZoneId: string = '24f3d181ad1b22a5e290175096171516';
+
+const dbAccount = new azure.documentdb.DatabaseAccount('cosmos', {
+    resourceGroupName: resourceGroup.name,
+    enableFreeTier: true,
+    databaseAccountOfferType: 'Standard',
+    consistencyPolicy: {
+        defaultConsistencyLevel: 'Session',
+    },
+    locations: [{
+        locationName: resourceGroup.location,
+    }],
+});
+
+const dbName: string = domainName;
+const db = new azure.documentdb.SqlResourceSqlDatabase(dbName, {
+  resourceGroupName: resourceGroup.name,
+  accountName: dbAccount.name,
+  resource: {
+    id: dbName
+  },
+  options: {
+    throughput: 1000, // Free tier max
+  },
+});
+
+const dbContainerName: string = domainName;
+const dbContainer = new azure.documentdb.SqlResourceSqlContainer(dbContainerName, {
+  resourceGroupName: resourceGroup.name,
+  accountName: dbAccount.name,
+  databaseName: db.name,
+  resource: {
+    id: dbContainerName,
+  },
+});
 
 const site = new azure.web.StaticSite('app', {
   resourceGroupName: resourceGroup.name,
