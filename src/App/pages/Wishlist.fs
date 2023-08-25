@@ -21,54 +21,60 @@ let items = [
         Name = "Desk lamp"
         Link = None
         Image = None
-        Description = None
+        Description =
+            Some
+                "I wrote this down a long time ago and can't remember what I meant... but I could use a living room lamp, a bedside lamp for reading, or an actual desk lamp"
     }
     {
         Name = "Mug rack"
         Link = None
         Image = None
-        Description = None
+        Description = Some "Something to display + store my mugs so they're not hidden away in a cupboard"
     }
     {
         Name = "Geometric wall light thing"
-        Link = None
+        Link = Some "https://www.amazon.com/led-wall-panels/s?k=led+wall+panels"
         Image = None
-        Description = None
+        Description = Some "Something like the stuff in the link"
     }
     {
         Name = "Under desk RGB lights"
         Link = None
         Image = None
-        Description = None
+        Description = Some "Would be nice to have management software and bluetooth or USB. Standalone is fine though"
     }
     // { Name = "Behind TV lights"; Link = None; Image = None; Description = None }
     {
         Name = "Surround sound system"
         Link = None
         Image = None
-        Description = None
+        Description = Some "Probably ignore this one... it's something I want though :)"
     }
     {
         Name = "Steel case desk chair"
-        Link = None
+        Link = Some "https://www.steelcase.com/products/office-chairs/leap/"
         Image = None
-        Description = None
+        Description = Some "Probably ignore this one too"
     }
     {
         Name = "Candles"
         Link = None
         Image = None
-        Description = None
+        Description = Some "Need more smelly stuff for the house. Not very picky, just no sandalwood please"
     }
     {
         Name = "Settle Your Scores, Better Luck Tomorrow Vinyl"
-        Link = None
+        Link =
+            Some
+                "https://www.merchbar.com/rock-alternative/settle-your-scores/settle-your-scores-better-luck-tomorrow-cd"
         Image = None
-        Description = None
+        Description =
+            Some
+                "I don't think this exists at the moment, but if you somehow manage to find it that would make my day. Link is for the CD. Would also like The Wilderness vinyl by the same artist"
     }
     {
         Name = "Rosewill 15 bay server chassis"
-        Link = None
+        Link = Some "https://www.newegg.com/rosewill-rsv-l4500u-black/p/N82E16811147328"
         Image = None
         Description = None
     }
@@ -76,42 +82,42 @@ let items = [
         Name = "Vest"
         Link = None
         Image = None
-        Description = None
+        Description = Some "I don't own a vest, but I feel like I should own a vest"
     }
     {
         Name = "Chainsaw man manga"
-        Link = None
+        Link = Some "https://www.booksamillion.com/search?filter=&id=8929272676791&query=chainsaw+man"
         Image = None
         Description = None
     }
     {
         Name = "Isaac Asimov Books"
-        Link = None
+        Link = Some "https://www.goodreads.com/search?utf8=%E2%9C%93&query=isaac+asimov"
         Image = None
-        Description = None
+        Description = Some "Looking to start a collection. I, Robot would be a good first book"
     }
     // { Name = "Welcome mat"; Link = None; Image = None; Description = None }
     {
-        Name = "Chop sticks"
+        Name = "Chopsticks"
         Link = None
         Image = None
-        Description = None
+        Description = Some "Non-disposable"
     }
     {
         Name = "Gaming headset"
         Link = None
         Image = None
-        Description = None
+        Description = Some "Still picking out one I like. Jens could probably give a good recommendation"
     }
     {
         Name = "Nice headphones"
-        Link = None
+        Link = Some "https://www.sennheiser-hearing.com/en-US/headphones/"
         Image = None
-        Description = None
+        Description = Some "Sennheiser or something like that. Wired or wireless, leaning towards wired"
     }
     {
         Name = "Ember travel mug"
-        Link = None
+        Link = Some "https://ember.com/products/ember-travel-mug-2"
         Image = None
         Description = None
     }
@@ -119,19 +125,21 @@ let items = [
         Name = "Paper towel holder"
         Link = None
         Image = None
-        Description = None
+        Description = Some "For my counter so they're not just sitting there"
     }
     {
         Name = "More bed sheets"
         Link = None
         Image = None
-        Description = None
+        Description =
+            Some
+                "I currently have gray, but I could get an entirely new color. Just needs to go with my bed frame. I believe I like the higher thread counts."
     }
     {
         Name = "Athletic pants"
         Link = None
         Image = None
-        Description = None
+        Description = Some "Tapered with a zipper at the bottom are nice. Black or grey"
     }
     {
         Name = "Tongue scraper"
@@ -143,41 +151,42 @@ let items = [
         Name = "UWP sweatpants"
         Link = None
         Image = None
-        Description = None
+        Description = Some "My current ones are getting a a little worn out and have a hole in the pocket"
     }
     {
         Name = "PS5"
         Link = None
         Image = None
-        Description = None
+        Description = Some "lmao"
     }
     {
         Name = "Dualshock 4 controllers"
         Link = None
         Image = None
-        Description = None
+        Description = Some "For the PS4, I have two and one has a broken joystick. Currently have white and gold"
     }
     {
         Name = "Top Gear UK"
         Link = None
         Image = None
-        Description = None
+        Description =
+            Some "Doesn't need to start with Season 1, any season with Clarkson, Hammond, and May. Or Grand Tour"
     }
     {
         Name = "Slippers"
         Link = None
         Image = None
-        Description = None
+        Description = Some "Current ones are smelly. This might be an annual gift"
     }
     {
         Name = "Spirit Island board game"
-        Link = None
+        Link = Some "https://greaterthangames.com/product/spirit-island/"
         Image = None
         Description = None
     }
     {
         Name = "Domain Modeling Made Functional by Scott Wlaschin"
-        Link = None
+        Link = Some "https://pragprog.com/titles/swdddf/domain-modeling-made-functional/"
         Image = None
         Description = None
     }
@@ -185,11 +194,13 @@ let items = [
         Name = "The Road Not Taken - Harry Turtledove"
         Link = None
         Image = None
-        Description = None
+        Description =
+            Some
+                "Looking at this again I think it was just a short story published in a SciFi magazine. Would be cool if there was a book with a compilation of Harry's short stories"
     }
     {
         Name = "Kill it with fire book"
-        Link = None
+        Link = Some "https://www.goodreads.com/book/show/54716655-kill-it-with-fire"
         Image = None
         Description = None
     }
@@ -200,14 +211,16 @@ let items = [
         Description = None
     }
     {
-        Name = "Deathstalker by Simor R. Green"
-        Link = None
+        Name = "Deathstalker by Simon R. Green"
+        Link =
+            Some
+                "https://www.goodreads.com/book/show/629068.Deathstalker?from_search=true&from_srp=true&qid=6prwSU3M7o&rank=1"
         Image = None
         Description = None
     }
     {
         Name = "Joking Hazard game"
-        Link = None
+        Link = Some "https://www.jokinghazardgame.com/"
         Image = None
         Description = None
     }
@@ -218,10 +231,10 @@ let items = [
         Description = None
     }
     {
-        Name = "Oversized Master Transmuter card/poster/wall art"
-        Link = None
+        Name = "Master Transmuter card/poster/wall art"
+        Link = Some "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=179252"
         Image = None
-        Description = None
+        Description = Some "I'd like any kind of decoration that depicts this card or the picture on the card"
     }
     {
         Name = "Standing mat for desk"
@@ -233,7 +246,7 @@ let items = [
         Name = "Ice packs"
         Link = None
         Image = None
-        Description = None
+        Description = Some "For lunch boxes"
     }
 ]
 
@@ -259,12 +272,29 @@ let wishlist () =
         Html.pc "text-thistle-50" [
             text "Currently a flat list, descriptions and links to follow. At least there's something 🤷"
         ]
-        Html.ulc "px-1" [
+        Html.ulc "" [
             for item in items do
-                Html.lic "text-thistle-50" [
-                    Html.a [
-                        text item.Name
+                Html.lic "bg-thistle-50/90 mb-3 px-2 py-1 rounded-lg drop-shadow-lg" [
+                    Html.divc "flex flex-row justify-between" [
+                        Html.h4c "text-lg font-bold" [
+                            text item.Name
+                        ]
+                        match item.Link with
+                        | Some link ->
+                            Html.ac "flex flex-row items-center gap-1 text-sm" [
+                                Attr.href link
+                                Attr.targetBlank
+                                Html.p "This thing"
+                                Html.ic "fa-solid fa-arrow-up-right-from-square" []
+                            ]
+                        | _ -> Html.none
                     ]
+                    match item.Description with
+                    | Some d ->
+                        Html.pc "" [
+                            text d
+                        ]
+                    | _ -> Html.none
                 ]
         ]
     ]
