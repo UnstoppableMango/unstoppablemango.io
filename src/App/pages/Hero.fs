@@ -2,22 +2,28 @@ module Hero
 
 open Sutil
 open App
+open Sutil.Core
 
-type NavItem = { Name: string; Href: string }
+type NavItem = { Name: string; Href: SutilElement }
+
+let wishlistHref =
+    function
+    | Auth.Principal p -> "#/wishlist"
+    | _ -> "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    >> Attr.href
 
 let items = [
     {
         Name = "GitHub"
-        Href = "https://github.com/UnstoppableMango"
+        Href = Attr.href "https://github.com/UnstoppableMango"
     }
-    { Name = "Music"; Href = "#/music" }
+    {
+        Name = "Music"
+        Href = Attr.href "#/music"
+    }
     {
         Name = "Wishlist"
-        Href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    }
-    {
-        Name = "When in Cannes"
-        Href = "#/cannes"
+        Href = Auth.bind wishlistHref
     }
 ]
 
@@ -66,7 +72,7 @@ let view () =
                 Html.a [
                     Attr.addClass
                         "py-3 w-full lg:w-1/2 xl:w-1/3 rounded-full shadow backdrop-blur-2xl bg-white/50 font-bold text-eerie-black text-center uppercase"
-                    Attr.href item.Href
+                    item.Href
                     text item.Name
                 ]
         ]
