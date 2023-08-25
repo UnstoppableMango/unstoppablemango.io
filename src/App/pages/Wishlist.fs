@@ -265,14 +265,14 @@ let loggedOut () =
     ]
 
 let wishlist () =
-    Html.divc "h-screen overflow-y-scroll p-2 flex flex-col gap-3 bg-eerie-black/50" [
+    Html.divc "h-screen p-2 xl:w-1/2 xl:mx-auto flex flex-col gap-3 bg-eerie-black/50" [
         Html.h1c "text-thistle-50 font-extrabold text-5xl" [
             text "Some things..."
         ]
         Html.pc "text-thistle-50" [
-            text "Currently a flat list, descriptions and links to follow. At least there's something 🤷"
+            text "NOT ordered by priority"
         ]
-        Html.ulc "" [
+        Html.ulc "xl:w-[90%] xl:mx-auto overflow-y-scroll" [
             for item in items do
                 Html.lic "bg-thistle-50/90 mb-3 px-2 py-1 rounded-lg drop-shadow-lg" [
                     Html.divc "flex flex-row justify-between" [
