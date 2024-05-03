@@ -30,7 +30,7 @@ jobs:
       - run: npm ci
         working-directory: infra
 
-      - uses: pulumi/actions@v4
+      - uses: pulumi/actions@v5
         if: github.event_name == 'pull_request'
         with:
           command: preview
@@ -43,7 +43,7 @@ jobs:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: pulumi/actions@v4
+      - uses: pulumi/actions@v5
         if: github.event_name == 'push'
         with:
           command: up
