@@ -11,6 +11,7 @@
     "clean:dotnet": "dotnet clean src/App",
     "clean:tailwind": "rm public/tailwind.css",
     "clean": "npm run clean:fable && npm run clean:dotnet && npm run clean:tailwind && npm run clean:dist",
+    "lint": "eslint .",
     "pack": "npm run tailwind:prod && webpack --mode production",
     "tailwind:watch": "tailwindcss -o public/tailwind.css --watch",
     "tailwind:prod": "cross-env NODE_ENV=production tailwindcss -o public/tailwind.css --minify",
@@ -18,10 +19,15 @@
   },
   "devDependencies": {
     "@azure/static-web-apps-cli": "^1.1.4",
+    "@eslint/js": "^9.4.0",
+    "@types/eslint__js": "^8.42.3",
     "concurrently": "^8.0.1",
     "cross-env": "^7.0.3",
+    "eslint": "^9.4.0",
     "mocha": "^10.2.0",
     "tailwindcss": "^3.3.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^8.0.0-alpha.24",
     "webpack": "^5.76.2",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^5.0.0"

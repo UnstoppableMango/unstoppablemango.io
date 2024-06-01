@@ -10,9 +10,9 @@ const resourceGroup = new azure.resources.ResourceGroup(resourceGroupName, {
   resourceGroupName,
 });
 const domainName = 'unstoppablemango.io';
-const mangioDomainName = 'unstoppablemang.io';
+// const mangioDomainName = 'unstoppablemang.io';
 const unstoppableMangoZoneId = 'de10a9e5057761cf8b2151d80dd684fa';
-const unstoppableMangZoneId = '24f3d181ad1b22a5e290175096171516';
+// const unstoppableMangZoneId = '24f3d181ad1b22a5e290175096171516';
 
 const site = new azure.web.StaticSite('app', {
   resourceGroupName: resourceGroup.name,
@@ -43,7 +43,7 @@ const customDomain = new azure.web.StaticSiteCustomDomain(
   }
 );
 
-const primaryCnameRecord = new cloudflare.Record('unstoppablemango.io-cname', {
+new cloudflare.Record('unstoppablemango.io-cname', {
   name: domainName,
   zoneId: unstoppableMangoZoneId,
   value: site.defaultHostname,
@@ -51,7 +51,7 @@ const primaryCnameRecord = new cloudflare.Record('unstoppablemango.io-cname', {
   proxied: true,
 });
 
-const unstoppablemangoSettings = new cloudflare.ZoneSettingsOverride(
+new cloudflare.ZoneSettingsOverride(
   'unstoppablemango.io',
   {
     zoneId: unstoppableMangoZoneId,
