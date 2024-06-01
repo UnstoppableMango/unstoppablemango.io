@@ -11,6 +11,7 @@
     "clean:dotnet": "dotnet clean src/App",
     "clean:tailwind": "rm public/tailwind.css",
     "clean": "npm run clean:fable && npm run clean:dotnet && npm run clean:tailwind && npm run clean:dist",
+    "lint": "eslint .",
     "pack": "npm run tailwind:prod && webpack --mode production",
     "tailwind:watch": "tailwindcss -o public/tailwind.css --watch",
     "tailwind:prod": "cross-env NODE_ENV=production tailwindcss -o public/tailwind.css --minify",
