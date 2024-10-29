@@ -1,7 +1,7 @@
 {
     "name": "unstoppablemango.io",
     "devDependencies": {
-        "@types/node": "^20.13.0",
+        "@types/node": "^22.0.0",
         "eslint-config-prettier": "^9.0.0",
         "prettier": "^3.0.0"
     },
