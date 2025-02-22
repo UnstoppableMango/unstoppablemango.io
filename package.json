@@ -20,7 +20,7 @@
   "devDependencies": {
     "@azure/static-web-apps-cli": "^2.0.0",
     "@eslint/js": "^9.4.0",
-    "@types/eslint__js": "^8.42.3",
+    "@types/eslint__js": "^9.0.0",
     "concurrently": "^9.0.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.4.0",
