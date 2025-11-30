@@ -26,21 +26,29 @@
         { pkgs, ... }:
         {
           devShells.default = pkgs.mkShellNoCC {
-            packages = with pkgs; [
-              azure-cli
-              concurrently
-              dotnetCorePackages.sdk_9_0
-              eslint
-              fable
-              fantomas
-              git
-              gnumake
-              mocha
-              nodejs_22
-              tailwindcss_4
-              typescript-go
-              webpack-cli
-            ];
+            packages =
+              with pkgs;
+              [
+                azure-cli
+                concurrently
+                dotnetCorePackages.sdk_9_0
+                eslint
+                fable # TODO: Not on darwin
+                fantomas
+                git
+                gnumake
+                mocha
+                nil
+                nodejs_22
+                pulumi
+                shellcheck
+                tailwindcss_4
+                typescript-go
+                webpack-cli
+              ]
+              ++ (with pkgs.pulumiPackages; [
+                pulumi-nodejs
+              ]);
           };
 
           treefmt = {

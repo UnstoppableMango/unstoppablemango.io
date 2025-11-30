@@ -43,24 +43,26 @@ const customDomain = new azure.web.StaticSiteCustomDomain(
   }
 );
 
-new cloudflare.Record('unstoppablemango.io-cname', {
+new cloudflare.DnsRecord('unstoppablemango.io-cname', {
   name: domainName,
   zoneId: unstoppableMangoZoneId,
-  value: site.defaultHostname,
+  content: site.defaultHostname,
   type: 'CNAME',
   proxied: true,
+  ttl: 1, // Automatic
 });
 
-new cloudflare.ZoneSettingsOverride(
-  'unstoppablemango.io',
-  {
-    zoneId: unstoppableMangoZoneId,
-    settings: {
-      ssl: 'strict',
-      alwaysUseHttps: 'on',
-    },
-  }
-);
+new cloudflare.ZoneSetting('unstoppablemango.io-ssl', {
+  zoneId: unstoppableMangoZoneId,
+  settingId: 'ssl',
+  value: 'strict',
+});
+
+new cloudflare.ZoneSetting('unstoppablemango.io-https', {
+  zoneId: unstoppableMangoZoneId,
+  settingId: 'automatic_https_rewrites',
+  value: 'on',
+});
 
 // const mangioCnameRecord = new cloudflare.Record('unstoppablemang.io-cname', {
 //   name: mangioDomainName,
