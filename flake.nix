@@ -31,7 +31,7 @@
               [
                 azure-cli
                 concurrently
-                dotnetCorePackages.sdk_9_0
+                dotnetCorePackages.sdk_10_0
                 eslint
                 fable # TODO: Not on darwin
                 fantomas
