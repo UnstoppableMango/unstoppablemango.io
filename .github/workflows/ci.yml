@@ -74,6 +74,7 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
+      - run: npx tailwindcss -o public/tailwind.css --minify
       - run: npm ci
       - run: npm run build
       - run: npm run lint
