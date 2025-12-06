@@ -492,3 +492,4 @@ tailwind.css
 
 .direnv/
 .envrc
+.wrangler/
