@@ -6,3 +6,6 @@ config:
     secure: AAABANK8AXQMKUbRZKA1t/QjTLhlvmKw7W0bn2sgjw0kdVX2QNogkVCwfRrXWg4kk8CXbfRwJv2togvmSnXl1g15MOckfPjw
   unstoppablemango.io:cloudflare:
     accountId: 265a046434c952eeecb9710cfd76617c
+    zones:
+      - domainName: unstoppablemango.io
+      - domainName: unstoppablemang.io

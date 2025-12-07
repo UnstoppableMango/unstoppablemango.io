@@ -8,15 +8,15 @@ import z from 'zod/v4';
 
 const Cloudflare = z.object({
   accountId: z.string().length(32),
+  zones: z.array(z.object({
+    domainName: z.string().min(1),
+  })),
 });
 
 type Cloudflare = z.infer<typeof Cloudflare>;
 
 const config = new pulumi.Config();
-const { accountId } = Cloudflare.parse(config.requireObject('cloudflare'));
-
-const domainName = 'unstoppablemango.io';
-// const mangioDomainName = 'unstoppablemang.io';
+const { accountId, zones } = Cloudflare.parse(config.requireObject('cloudflare'));
 
 const assets = fs.readdirSync('../public', {
   recursive: true,
@@ -24,53 +24,52 @@ const assets = fs.readdirSync('../public', {
   withFileTypes: true,
 });
 
-const zone = cloudflare.getZoneOutput({
-  filter: { name: domainName },
-});
-
-if (!zone.zoneId) {
-  throw new Error(`Zone ID not found for domain: ${domainName}`);
-}
-
-const zoneId = zone.zoneId.apply(z.string().min(1).parse);
-
 const worker = new cloudflare.Worker('unstoppablemango', {
   accountId,
   name: 'unstoppablemango-io',
 });
 
-const domain = new cloudflare.WorkersCustomDomain('unstoppablemango', {
-  accountId,
-  zoneId,
-  environment: 'production',
-  hostname: domainName,
-  service: worker.name,
-});
+const domains: cloudflare.WorkersCustomDomain[] = [];
 
-// new cloudflare.DnsRecord('unstoppablemango.io-cname', {
-//   name: domainName,
-//   zoneId: zone.id,
-//   content: originHostname,
-//   type: 'CNAME',
-//   proxied: true,
-//   ttl: 1, // Automatic
-// });
+zones.forEach(({ domainName }) => {
+  const zone = cloudflare.getZoneOutput({
+    filter: { name: domainName },
+  });
 
-new cloudflare.ZoneSetting('unstoppablemango.io-ssl', {
-  zoneId,
-  settingId: 'ssl',
-  value: 'strict',
-});
+  if (!zone.zoneId) {
+    throw new Error(`Zone ID not found for domain: ${domainName}`);
+  }
 
-new cloudflare.ZoneSetting('unstoppablemango.io-https', {
-  zoneId,
-  settingId: 'automatic_https_rewrites',
-  value: 'on',
+  const zoneId = zone.zoneId.apply(z.string().min(1).parse);
+
+  domains.push(new cloudflare.WorkersCustomDomain(domainName, {
+    accountId,
+    zoneId,
+    environment: 'production',
+    hostname: domainName,
+    service: worker.name,
+  }));
+
+  new cloudflare.ZoneSetting(`${domainName}-ssl`, {
+    zoneId,
+    settingId: 'ssl',
+    value: 'strict',
+  });
+
+  new cloudflare.ZoneSetting(`${domainName}-https`, {
+    zoneId,
+    settingId: 'automatic_https_rewrites',
+    value: 'on',
+  });
 });
 
 new command.local.Command('publish-worker', {
   create: pulumi.interpolate`npx wrangler deploy --name ${worker.name}`,
   dir: path.resolve(__dirname, '..'),
+  environment: {
+    CLOUDFLARE_ACCOUNT_ID: accountId,
+    CLOUDFLARE_API_TOKEN: new pulumi.Config('cloudflare').requireSecret('apiToken'),
+  },
   triggers: assets.filter(x => !x.isDirectory())
     .map(({ name, parentPath }) => path.resolve(parentPath, name))
     .map(hashFile),

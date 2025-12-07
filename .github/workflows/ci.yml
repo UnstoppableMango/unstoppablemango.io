@@ -1,66 +1,20 @@
-name: Azure Static Web Apps CI/CD
-
-permissions:
-  id-token: write
-  contents: read
+name: CI
 
 on:
   push:
     branches:
       - main
   pull_request:
-    types: [opened, synchronize, reopened, closed]
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  infra:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-    runs-on: ubuntu-latest
-    name: Build and Deploy
-    defaults:
-      run:
-        working-directory: infra
-    env:
-      ARM_USE_OIDC: true
-      ARM_CLIENT_ID: 04de5f7e-0841-4484-a133-b99150c92b79
-      ARM_SUBSCRIPTION_ID: 331fb30f-0da7-4da5-8ec0-3b34c1747e42
-      ARM_TENANT_ID: cc1862e8-3663-4b04-afb6-da85f96a6111
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-          cache-dependency-path: infra/package-lock.json
-
-      - run: npm ci
-
-      - uses: pulumi/actions@v6
-        if: github.event_name == 'pull_request'
-        with:
-          command: preview
-          stack-name: prod
-          work-dir: infra
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: pulumi/actions@v6
-        if: github.event_name == 'push'
-        with:
-          command: up
-          stack-name: prod
-          work-dir: infra
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   build:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    needs: infra
     steps:
       - uses: actions/checkout@v6
 
@@ -78,32 +32,44 @@ jobs:
       - run: npm run build
       - run: npm run lint
 
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
+      - uses: actions/upload-artifact@v5
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: upload
-          skip_app_build: true
-          skip_api_build: true
-          app_location: /public
+          name: assets
+          path: ./public
 
-  close_pull_request:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+  infra:
     runs-on: ubuntu-latest
-    name: Close Pull Request
+    needs: build
+    defaults:
+      run:
+        working-directory: infra
     steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
         with:
-          app_location: /public
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          action: close
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: infra/package-lock.json
+
+      - run: npm ci
+
+      - uses: actions/download-artifact@v5
+        with:
+          name: assets
+          path: ./public
+
+      - uses: pulumi/actions@v6
+        if: github.event_name == 'pull_request'
+        with:
+          command: ${{ github.event_name == 'pull_request' && 'preview' || 'up' }}
+          stack-name: prod
+          work-dir: infra
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   nix:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
