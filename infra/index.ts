@@ -1,132 +1,88 @@
+import * as crypto from 'node:crypto';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as pulumi from '@pulumi/pulumi';
-import * as azure from '@pulumi/azure-native';
 import * as cloudflare from '@pulumi/cloudflare';
+import * as command from '@pulumi/command';
+import z from 'zod/v4';
+
+const Cloudflare = z.object({
+  accountId: z.string().length(32),
+});
+
+type Cloudflare = z.infer<typeof Cloudflare>;
+
+const config = new pulumi.Config();
+const { accountId } = Cloudflare.parse(config.requireObject('cloudflare'));
 
 const domainName = 'unstoppablemango.io';
 // const mangioDomainName = 'unstoppablemang.io';
 
-const resourceGroupName = 'UnstoppableMango.io';
-const resourceGroup = new azure.resources.ResourceGroup(resourceGroupName, {
-  resourceGroupName,
-});
-
-const storageAccount = new azure.storage.StorageAccount('website', {
-  resourceGroupName: resourceGroup.name,
-  kind: azure.storage.Kind.StorageV2,
-  enableHttpsTrafficOnly: true,
-  allowBlobPublicAccess: true,
-  publicNetworkAccess: azure.storage.PublicNetworkAccess.Enabled,
-  minimumTlsVersion: azure.storage.MinimumTlsVersion.TLS1_2,
-  // customDomain: {
-  //   name: domainName,
-  // },
-  sku: {
-    name: azure.storage.SkuName.Standard_LRS,
-  },
-});
-
-const staticWebsite = new azure.storage.StorageAccountStaticWebsite('website', {
-  resourceGroupName: resourceGroup.name,
-  accountName: storageAccount.name,
-  indexDocument: 'index.html',
-  error404Document: 'error.html',
-});
-
-fs.readdirSync('../public', {
+const assets = fs.readdirSync('../public', {
   recursive: true,
   encoding: 'utf8',
   withFileTypes: true,
-}).forEach((dirent) => {
-  if (!dirent.isFile()) return;
-
-  const assetPath = path.resolve(dirent.parentPath, dirent.name);
-  const relativePath = path.relative('../public', assetPath);
-  const ext = path.extname(dirent.name);
-
-  new azure.storage.Blob(dirent.name, {
-    resourceGroupName: resourceGroup.name,
-    accountName: storageAccount.name,
-    containerName: staticWebsite.containerName,
-    blobName: relativePath,
-    type: azure.storage.BlobType.Block,
-    accessTier: azure.storage.AccessTier.Cool,
-    source: new pulumi.asset.FileAsset(assetPath),
-    contentType: ((): string => {
-      switch (ext) {
-        case '.html':
-          return 'text/html';
-        case '.css':
-          return 'text/css';
-        case '.js':
-          return 'application/javascript';
-        default:
-          return 'application/octet-stream';
-      }
-    })(),
-  });
 });
 
-export const originURL = storageAccount.primaryEndpoints.web;
-const originHostname = originURL.apply(x => new URL(x).hostname);
+const zone = cloudflare.getZoneOutput({
+  filter: { name: domainName },
+});
 
-// const cdnEndpoint = new azure.cdn.Endpoint('cdn-endpoint', {
-//   resourceGroupName: resourceGroup.name,
-//   endpointName: 'unstoppablemango-io-endpoint',
-//   profileName: cdn.name,
-//   isHttpAllowed: false,
-//   isHttpsAllowed: true,
-//   isCompressionEnabled: true,
-//   originHostHeader: originHostname,
-//   origins: [{
-//     name: storageAccount.name.apply((name) => `${name}-origin`),
-//     hostName: originURL.apply(
-//       (url) => url.replace('https://', '').replace('/', ''),
-//     ),
-//   }],
-//   contentTypesToCompress: [
-//     'text/html',
-//     'text/css',
-//     'application/javascript',
-//     'image/png',
-//     'image/jpeg',
-//   ],
+if (!zone.zoneId) {
+  throw new Error(`Zone ID not found for domain: ${domainName}`);
+}
+
+const zoneId = zone.zoneId.apply(z.string().min(1).parse);
+
+const worker = new cloudflare.Worker('unstoppablemango', {
+  accountId,
+  name: 'unstoppablemango-io',
+});
+
+const domain = new cloudflare.WorkersCustomDomain('unstoppablemango', {
+  accountId,
+  zoneId,
+  environment: 'production',
+  hostname: domainName,
+  service: worker.name,
+});
+
+// new cloudflare.DnsRecord('unstoppablemango.io-cname', {
+//   name: domainName,
+//   zoneId: zone.id,
+//   content: originHostname,
+//   type: 'CNAME',
+//   proxied: true,
+//   ttl: 1, // Automatic
 // });
 
-const unstoppableMangoZoneId = 'de10a9e5057761cf8b2151d80dd684fa';
-// const unstoppableMangZoneId = '24f3d181ad1b22a5e290175096171516';
-
-new azure.dns.RecordSet('test', {
-  resourceGroupName: resourceGroup.name,
-  zoneName: domainName,
-  recordType: 'CNAME',
-  cnameRecord: {
-    cname: originHostname,
-  },
-});
-
-new cloudflare.DnsRecord('unstoppablemango.io-cname', {
-  name: domainName,
-  zoneId: unstoppableMangoZoneId,
-  content: originHostname,
-  type: 'CNAME',
-  proxied: true,
-  ttl: 1, // Automatic
-});
-
 new cloudflare.ZoneSetting('unstoppablemango.io-ssl', {
-  zoneId: unstoppableMangoZoneId,
+  zoneId,
   settingId: 'ssl',
   value: 'strict',
 });
 
 new cloudflare.ZoneSetting('unstoppablemango.io-https', {
-  zoneId: unstoppableMangoZoneId,
+  zoneId,
   settingId: 'automatic_https_rewrites',
   value: 'on',
 });
 
-export { originHostname };
+new command.local.Command('publish-worker', {
+  create: pulumi.interpolate`npx wrangler deploy --name ${worker.name}`,
+  dir: path.resolve(__dirname, '..'),
+  triggers: assets.filter(x => !x.isDirectory())
+    .map(({ name, parentPath }) => path.resolve(parentPath, name))
+    .map(hashFile),
+}, { dependsOn: [worker] });
+
+// export { originHostname };
 // export const cdnURL = pulumi.interpolate`https://${cdnEndpoint.hostName}`;
 // export const cdnHostname = cdnEndpoint.hostName;
+
+function hashFile(file: string): string {
+  const buf = fs.readFileSync(file);
+  const hash = crypto.createHash('sha256');
+  hash.update(buf);
+  return hash.digest('hex');
+};

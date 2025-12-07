@@ -4,3 +4,5 @@ config:
     secure: AAABABY2GSQ3iLgKBjYhaxiYoMFzFCm2X6uaH5HHTADMccZtiUXVw2jd4gZLeTh8vI3rEFGwXrz9k8T7i+orYE9vBsYfJx9f
   unstoppablemango.io:repositoryToken:
     secure: AAABANK8AXQMKUbRZKA1t/QjTLhlvmKw7W0bn2sgjw0kdVX2QNogkVCwfRrXWg4kk8CXbfRwJv2togvmSnXl1g15MOckfPjw
+  unstoppablemango.io:cloudflare:
+    accountId: 265a046434c952eeecb9710cfd76617c
