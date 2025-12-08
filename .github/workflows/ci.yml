@@ -60,11 +60,11 @@ jobs:
           path: ./public
 
       - uses: pulumi/actions@v6
-        if: github.event_name == 'pull_request'
         with:
           command: ${{ github.event_name == 'pull_request' && 'preview' || 'up' }}
           stack-name: prod
           work-dir: infra
+          diff: ${{ github.event_name == 'pull_request' }}
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
