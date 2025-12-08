@@ -63,9 +63,11 @@ zones.forEach(({ domainName }) => {
   });
 });
 
+const root = path.resolve(__dirname, '..');
+
 new command.local.Command('publish-worker', {
   create: pulumi.interpolate`npx wrangler deploy --name ${worker.name}`,
-  dir: path.resolve(__dirname, '..'),
+  dir: path.relative(__dirname, root),
   environment: {
     CLOUDFLARE_ACCOUNT_ID: accountId,
     CLOUDFLARE_API_TOKEN: new pulumi.Config('cloudflare').requireSecret('apiToken'),
@@ -73,7 +75,7 @@ new command.local.Command('publish-worker', {
   triggers: assets.filter(x => !x.isDirectory())
     .map(({ name, parentPath }) => path.resolve(parentPath, name))
     .map(hashFile),
-}, { dependsOn: [worker] });
+}, { dependsOn: [worker], additionalSecretOutputs: ['environment.CLOUDFLARE_API_TOKEN'] });
 
 // export { originHostname };
 // export const cdnURL = pulumi.interpolate`https://${cdnEndpoint.hostName}`;
@@ -84,4 +86,4 @@ function hashFile(file: string): string {
   const hash = crypto.createHash('sha256');
   hash.update(buf);
   return hash.digest('hex');
-};
+}
