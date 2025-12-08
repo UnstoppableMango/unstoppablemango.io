@@ -2,6 +2,7 @@
     "$schema": "./node_modules/wrangler/config-schema.json",
     "name": "unstoppablemango-io",
     "compatibility_date": "2025-12-06",
+    "send_metrics": false,
     "assets": {
         "directory": "./public",
         "not_found_handling": "404-page"

@@ -6,7 +6,7 @@ open Sutil.Core
 open Sutil.CoreElements
 
 let bindHash<'T> (view: string -> SutilElement) =
-    let store = Store.make (window.location.hash)
+    let store = Store.make window.location.hash
 
     fragment [
         disposeOnUnmount [
