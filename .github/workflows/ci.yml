@@ -35,7 +35,7 @@ jobs:
       - uses: actions/upload-artifact@v5
         with:
           name: assets
-          path: ./public
+          path: ${{ github.workspace }}/public
 
   infra:
     runs-on: ubuntu-latest
@@ -57,7 +57,7 @@ jobs:
       - uses: actions/download-artifact@v5
         with:
           name: assets
-          path: ./public
+          path: ${{ github.workspace }}/public
 
       - uses: pulumi/actions@v6
         with:
