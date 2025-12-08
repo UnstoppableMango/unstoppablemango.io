@@ -1,16 +1,9 @@
 module Hero
 
 open Sutil
-open App
 open Sutil.Core
 
 type NavItem = { Name: string; Href: SutilElement }
-
-let wishlistHref =
-    function
-    | Auth.Principal p -> "#/wishlist"
-    | _ -> "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    >> Attr.href
 
 let items = [
     {
@@ -23,7 +16,7 @@ let items = [
     }
     {
         Name = "Wishlist"
-        Href = Auth.bind wishlistHref
+        Href = Attr.href "#/wishlist"
     }
 ]
 
@@ -43,13 +36,6 @@ let logoutButton =
 
 let view () =
     Html.divc "h-screen overflow-y-scroll" [
-        Html.divc
-            "w-1/2 xl:w-1/6 h-16 absolute top-0 right-0 bg-gradient-to-r from-transparent to-black/75 px-5 py-3 flex flex-row-reverse"
-            [
-                Auth.bind (function
-                    | Auth.Principal _ -> logoutButton
-                    | _ -> loginButton)
-            ]
         Html.divc "h-screen grid content-center" [
             Html.divc "w-full py-5 backdrop-blur bg-gradient-to-r from-transparent via-black/75 to-transparent" [
                 Html.divc "h-full flex flex-wrap items-center justify-center gap-6" [

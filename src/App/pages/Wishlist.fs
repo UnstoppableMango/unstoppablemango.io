@@ -1,6 +1,5 @@
 module Wishlist
 
-open App
 open Sutil
 
 type Item = {
@@ -11,26 +10,6 @@ type Item = {
 }
 
 let items = [
-    {
-        Name = "Label maker"
-        Link = None
-        Image = None
-        Description = None
-    }
-    {
-        Name = "Desk lamp"
-        Link = None
-        Image = None
-        Description =
-            Some
-                "I wrote this down a long time ago and can't remember what I meant... but I could use a living room lamp, a bedside lamp for reading, or an actual desk lamp"
-    }
-    {
-        Name = "Mug rack"
-        Link = None
-        Image = None
-        Description = Some "Something to display + store my mugs so they're not hidden away in a cupboard"
-    }
     {
         Name = "Geometric wall light thing"
         Link = Some "https://www.amazon.com/led-wall-panels/s?k=led+wall+panels"
@@ -43,18 +22,11 @@ let items = [
         Image = None
         Description = Some "Would be nice to have management software and bluetooth or USB. Standalone is fine though"
     }
-    // { Name = "Behind TV lights"; Link = None; Image = None; Description = None }
     {
         Name = "Surround sound system"
         Link = None
         Image = None
         Description = Some "Probably ignore this one... it's something I want though :)"
-    }
-    {
-        Name = "Steel case desk chair"
-        Link = Some "https://www.steelcase.com/products/office-chairs/leap/"
-        Image = None
-        Description = Some "Probably ignore this one too"
     }
     {
         Name = "Candles"
@@ -72,60 +44,23 @@ let items = [
             Some
                 "I don't think this exists at the moment, but if you somehow manage to find it that would make my day. Link is for the CD. Would also like The Wilderness vinyl by the same artist"
     }
-    {
-        Name = "Rosewill 15 bay server chassis"
-        Link = Some "https://www.newegg.com/rosewill-rsv-l4500u-black/p/N82E16811147328"
-        Image = None
-        Description = None
-    }
-    {
-        Name = "Vest"
-        Link = None
-        Image = None
-        Description = Some "I don't own a vest, but I feel like I should own a vest"
-    }
-    {
-        Name = "Chainsaw man manga"
-        Link = Some "https://www.booksamillion.com/search?filter=&id=8929272676791&query=chainsaw+man"
-        Image = None
-        Description = None
-    }
+    // {
+    //     Name = "Chainsaw man manga"
+    //     Link = Some "https://www.booksamillion.com/search?filter=&id=8929272676791&query=chainsaw+man"
+    //     Image = None
+    //     Description = None
+    // }
     {
         Name = "Isaac Asimov Books"
         Link = Some "https://www.goodreads.com/search?utf8=%E2%9C%93&query=isaac+asimov"
         Image = None
         Description = Some "Looking to start a collection. I, Robot would be a good first book"
     }
-    // { Name = "Welcome mat"; Link = None; Image = None; Description = None }
-    {
-        Name = "Chopsticks"
-        Link = None
-        Image = None
-        Description = Some "Non-disposable"
-    }
-    {
-        Name = "Gaming headset"
-        Link = None
-        Image = None
-        Description = Some "Still picking out one I like. Jens could probably give a good recommendation"
-    }
-    {
-        Name = "Nice headphones"
-        Link = Some "https://www.sennheiser-hearing.com/en-US/headphones/"
-        Image = None
-        Description = Some "Sennheiser or something like that. Wired or wireless, leaning towards wired"
-    }
     {
         Name = "Ember travel mug"
         Link = Some "https://ember.com/products/ember-travel-mug-2"
         Image = None
         Description = None
-    }
-    {
-        Name = "Paper towel holder"
-        Link = None
-        Image = None
-        Description = Some "For my counter so they're not just sitting there"
     }
     {
         Name = "More bed sheets"
@@ -136,34 +71,10 @@ let items = [
                 "I currently have gray, but I could get an entirely new color. Just needs to go with my bed frame. I believe I like the higher thread counts."
     }
     {
-        Name = "Athletic pants"
-        Link = None
-        Image = None
-        Description = Some "Tapered with a zipper at the bottom are nice. Black or grey"
-    }
-    {
         Name = "Tongue scraper"
         Link = None
         Image = None
         Description = None
-    }
-    {
-        Name = "UWP sweatpants"
-        Link = None
-        Image = None
-        Description = Some "My current ones are getting a a little worn out and have a hole in the pocket"
-    }
-    {
-        Name = "PS5"
-        Link = None
-        Image = None
-        Description = Some "lmao"
-    }
-    {
-        Name = "Dualshock 4 controllers"
-        Link = None
-        Image = None
-        Description = Some "For the PS4, I have two and one has a broken joystick. Currently have white and gold"
     }
     {
         Name = "Top Gear UK"
@@ -211,6 +122,20 @@ let items = [
         Description = None
     }
     {
+        Name = "N64 and N64 accessories"
+        Link = None
+        Image = None
+        Description =
+            Some
+                "I got an Analogue 3D and need both N64 games and controllers, I don't own any at all. Mario, Banjo-Kazooie, Zelda, Kirby, etc."
+    }
+    {
+        Name = "8bitdo N64 controller"
+        Link = Some "https://www.8bitdo.com/64-controller/"
+        Image = None
+        Description = Some "To go with the Analogue 3D"
+    }
+    {
         Name = "Deathstalker by Simon R. Green"
         Link =
             Some
@@ -219,14 +144,8 @@ let items = [
         Description = None
     }
     {
-        Name = "Joking Hazard game"
-        Link = Some "https://www.jokinghazardgame.com/"
-        Image = None
-        Description = None
-    }
-    {
-        Name = "Laser Printer"
-        Link = None
+        Name = "Children of Time Series"
+        Link = Some "https://www.goodreads.com/series/247630-children-of-time"
         Image = None
         Description = None
     }
@@ -235,18 +154,6 @@ let items = [
         Link = Some "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=179252"
         Image = None
         Description = Some "I'd like any kind of decoration that depicts this card or the picture on the card"
-    }
-    {
-        Name = "Standing mat for desk"
-        Link = None
-        Image = None
-        Description = None
-    }
-    {
-        Name = "Ice packs"
-        Link = None
-        Image = None
-        Description = Some "For lunch boxes"
     }
 ]
 
@@ -299,7 +206,4 @@ let wishlist () =
         ]
     ]
 
-let view () =
-    Auth.bind (function
-        | Auth.Principal p -> wishlist ()
-        | _ -> loggedOut ())
+let view () = wishlist ()
