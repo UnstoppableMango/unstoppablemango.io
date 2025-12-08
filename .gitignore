@@ -490,4 +490,6 @@ discord.xml
 # Generated
 tailwind.css
 
-.env
+.direnv/
+.envrc
+.wrangler/

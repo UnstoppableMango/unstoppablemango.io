@@ -2,6 +2,7 @@ root = true
 
 [*]
 insert_final_newline = true
+trim_trailing_whitespace = true
 
 [*.fs]
 fsharp_array_or_list_multiline_formatter = number_of_items
@@ -10,3 +11,8 @@ fsharp_multiline_bracket_style = stroustrup
 
 [{src/App,test/App.Tests}/**.fs]
 fsharp_experimental_elmish = true
+
+[*.nix]
+indent_style = space
+indent_size = 2
+

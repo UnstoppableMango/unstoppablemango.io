@@ -1,92 +1,89 @@
+import * as crypto from 'node:crypto';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import * as pulumi from '@pulumi/pulumi';
-import * as azure from '@pulumi/azure-native';
 import * as cloudflare from '@pulumi/cloudflare';
+import * as command from '@pulumi/command';
+import z from 'zod/v4';
+
+const Cloudflare = z.object({
+  accountId: z.string().length(32),
+  zones: z.array(z.object({
+    domainName: z.string().min(1),
+  })),
+});
+
+type Cloudflare = z.infer<typeof Cloudflare>;
 
 const config = new pulumi.Config();
-const repositoryToken = config.requireSecret('repositoryToken');
+const { accountId, zones } = Cloudflare.parse(config.requireObject('cloudflare'));
 
-const resourceGroupName = 'UnstoppableMango.io';
-const resourceGroup = new azure.resources.ResourceGroup(resourceGroupName, {
-  resourceGroupName,
-});
-const domainName = 'unstoppablemango.io';
-// const mangioDomainName = 'unstoppablemang.io';
-const unstoppableMangoZoneId = 'de10a9e5057761cf8b2151d80dd684fa';
-// const unstoppableMangZoneId = '24f3d181ad1b22a5e290175096171516';
-
-const site = new azure.web.StaticSite('app', {
-  resourceGroupName: resourceGroup.name,
-  sku: {
-    tier: 'Free',
-    name: 'Free',
-  },
-  repositoryUrl: 'https://github.com/UnstoppableMango/unstoppablemango.io',
-  repositoryToken,
-  branch: 'main',
-  buildProperties: {
-    appLocation: '/public',
-    skipGithubActionWorkflowGeneration: true,
-    githubActionSecretNameOverride: 'AZURE_STATIC_WEB_APPS_API_TOKEN',
-  },
+const assets = fs.readdirSync('../public', {
+  recursive: true,
+  encoding: 'utf8',
+  withFileTypes: true,
 });
 
-const customDomain = new azure.web.StaticSiteCustomDomain(
-  'unstoppablemango.io',
-  {
-    name: site.name,
-    resourceGroupName: resourceGroup.name,
-    domainName: 'unstoppablemango.io',
-    validationMethod: 'dns-txt-token',
-  },
-  {
-    protect: true,
+const worker = new cloudflare.Worker('unstoppablemango', {
+  accountId,
+  name: 'unstoppablemango-io',
+});
+
+const domains: cloudflare.WorkersCustomDomain[] = [];
+
+zones.forEach(({ domainName }) => {
+  const zone = cloudflare.getZoneOutput({
+    filter: { name: domainName },
+  });
+
+  if (!zone.zoneId) {
+    throw new Error(`Zone ID not found for domain: ${domainName}`);
   }
-);
 
-new cloudflare.Record('unstoppablemango.io-cname', {
-  name: domainName,
-  zoneId: unstoppableMangoZoneId,
-  value: site.defaultHostname,
-  type: 'CNAME',
-  proxied: true,
+  const zoneId = zone.zoneId.apply(z.string().min(1).parse);
+
+  domains.push(new cloudflare.WorkersCustomDomain(domainName, {
+    accountId,
+    zoneId,
+    environment: 'production',
+    hostname: domainName,
+    service: worker.name,
+  }));
+
+  new cloudflare.ZoneSetting(`${domainName}-ssl`, {
+    zoneId,
+    settingId: 'ssl',
+    value: 'strict',
+  });
+
+  new cloudflare.ZoneSetting(`${domainName}-https`, {
+    zoneId,
+    settingId: 'automatic_https_rewrites',
+    value: 'on',
+  });
 });
 
-new cloudflare.ZoneSettingsOverride(
-  'unstoppablemango.io',
-  {
-    zoneId: unstoppableMangoZoneId,
-    settings: {
-      ssl: 'strict',
-      alwaysUseHttps: 'on',
-    },
-  }
-);
+const root = path.resolve(__dirname, '..');
 
-// const mangioCnameRecord = new cloudflare.Record('unstoppablemang.io-cname', {
-//   name: mangioDomainName,
-//   zoneId: unstoppableMangZoneId,
-//   value: site.defaultHostname,
-//   type: 'CNAME',
-//   proxied: true,
-// });
+new command.local.Command('publish-worker', {
+  create: pulumi.interpolate`npx wrangler deploy --name ${worker.name}`,
+  dir: path.relative(__dirname, root),
+  environment: {
+    CLOUDFLARE_ACCOUNT_ID: accountId,
+    CLOUDFLARE_API_TOKEN: new pulumi.Config('cloudflare').requireSecret('apiToken'),
+  },
+  triggers: assets.filter(x => !x.isDirectory())
+    .map(({ name, parentPath }) => path.resolve(parentPath, name))
+    .map(hashFile),
+}, { dependsOn: [worker], additionalSecretOutputs: ['environment.CLOUDFLARE_API_TOKEN'] });
 
-// const mangioRedirect = new cloudflare.List('mangio-redirect', {
-//   name: 'mangio_redirect',
-//   accountId: '265a046434c952eeecb9710cfd76617c',
-//   kind: 'redirect',
-//   items: [
-//     {
-//     value: {
-//       redirects: [
-//         {
-//           sourceUrl: mangioDomainName,
-//           targetUrl: `https://${domainName}`,
-//         }
-//       ]
-//     }
-//     }
-//   ]
-// });
+// export { originHostname };
+// export const cdnURL = pulumi.interpolate`https://${cdnEndpoint.hostName}`;
+// export const cdnHostname = cdnEndpoint.hostName;
 
-export const validationToken = customDomain.validationToken;
-export const url = pulumi.interpolate`https://${site.defaultHostname}`;
+function hashFile(file: string): string {
+  const buf = fs.readFileSync(file);
+  const hash = crypto.createHash('sha256');
+  hash.update(buf);
+  return hash.digest('hex');
+}
