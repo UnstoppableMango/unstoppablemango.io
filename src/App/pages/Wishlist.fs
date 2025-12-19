@@ -172,7 +172,7 @@ let loggedOut () =
     ]
 
 let wishlist () =
-    Html.divc "h-screen p-2 xl:w-1/2 xl:mx-auto flex flex-col gap-3 bg-eerie-black/50" [
+    Html.divc "h-screen p-2 xl:w-1/2 xl:mx-auto flex flex-col gap-3 bg-white/60" [
         Html.h1c "text-thistle-50 font-extrabold text-5xl" [
             text "Some things..."
         ]
