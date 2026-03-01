@@ -32,7 +32,7 @@ jobs:
       - run: npm run build
       - run: npm run lint
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: assets
           path: ${{ github.workspace }}/public
@@ -54,7 +54,7 @@ jobs:
 
       - run: npm ci
 
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: assets
           path: ${{ github.workspace }}/public
