@@ -59,7 +59,7 @@ jobs:
           name: assets
           path: ${{ github.workspace }}/public
 
-      - uses: pulumi/actions@v6
+      - uses: pulumi/actions@v7
         with:
           command: ${{ github.event_name == 'pull_request' && 'preview' || 'up' }}
           stack-name: prod
