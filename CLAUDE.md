@@ -21,7 +21,7 @@ npm run start:all
 # Full production build (Fable → JS → webpack + tailwind minify)
 npm run build
 
-# Lint (ESLint on JS output)
+# Lint (ESLint; app/public output is ignored by config)
 npm run lint
 
 # Tests (compile test/App.Tests with Fable, run with mocha)
