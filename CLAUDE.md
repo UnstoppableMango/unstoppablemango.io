@@ -42,9 +42,9 @@ make infra         # pulumi up --cwd infra
 
 ### Build pipeline
 
-`src/App/*.fs` → Fable (F#→JS) → `src/App/*.fs.js` → webpack → `public/bundle.js`
+`src/App/*.fs` → Fable (F#→JS) → `src/App/*.fs.js` (generated) → webpack → `public/bundle.js`
 
-Fable compiles each `.fs` file to a sibling `.fs.js`. Webpack entry is `src/App/App.fs.js`. The `.fs.js` files are committed (checked in) as Fable output artifacts.
+Fable compiles each `.fs` file to a sibling `.fs.js`. Webpack entry is `src/App/App.fs.js`. The `.fs.js` files are generated during `dotnet fable` and are gitignored (see `*.fs.js` in `.gitignore`).
 
 ### Runtime: Cloudflare Workers + Assets
 
