@@ -4,7 +4,12 @@
     "start": "conc -k -n \"fable-app,fable-landing,webpack\" \"dotnet fable watch src/App\" \"dotnet fable watch src/Landing\" \"webpack serve\"",
     "start:all": "conc -k -n \"fable,tailwind,dev\" \"npm:start\" \"npm:tailwind:watch\" \"npm:dev\"",
     "dev": "wrangler dev",
+    "prebuild": "mkdir -p public/compiler/metadata public/fable-library-js && npm run gen:sources && npm run gen:metadata && npm run gen:worker && npm run gen:fable-lib",
     "build": "dotnet fable src/App && dotnet fable src/Landing && npm run pack",
+    "gen:sources": "node scripts/gen-v1-source.js",
+    "gen:metadata": "cp node_modules/@fable-org/fable-metadata/lib/*.dll public/compiler/metadata/",
+    "gen:worker": "cp node_modules/@fable-org/fable-standalone/dist/worker.min.js public/compiler/worker.min.js",
+    "gen:fable-lib": "cp -r node_modules/@fable-org/fable-standalone/dist/fable-library-js/. public/fable-library-js/",
     "pretest": "dotnet fable test/App.Tests -o dist/tests",
     "test": "mocha dist/tests",
     "clean:dist": "rm -r dist",
@@ -31,5 +36,9 @@
     "webpack-cli": "^7.0.0",
     "webpack-dev-server": "^5.2.2",
     "wrangler": "^4.53.0"
+  },
+  "dependencies": {
+    "@fable-org/fable-metadata": "^2.0.0-beta.2",
+    "@fable-org/fable-standalone": "^2.2.0"
   }
 }
