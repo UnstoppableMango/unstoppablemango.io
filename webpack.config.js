@@ -6,15 +6,23 @@ var path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/App/App.fs.js',
+  entry: {
+    bundle: './src/Landing/Landing.fs.js',
+    'old.bundle': './src/App/App.fs.js',
+  },
   output: {
     path: path.join(__dirname, './public'),
-    filename: 'bundle.js',
+    filename: '[name].js',
   },
   devServer: {
     static: {
       directory: path.join(__dirname, 'public'),
     },
     port: 8080,
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/old/, to: '/old/index.html' },
+      ],
+    },
   },
 };

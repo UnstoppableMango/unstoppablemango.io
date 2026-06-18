@@ -1,10 +1,10 @@
 {
   "scripts": {
     "postinstall": "dotnet tool restore",
-    "start": "dotnet fable watch src/App --run webpack serve",
+    "start": "conc -k -n \"fable-app,fable-landing,webpack\" \"dotnet fable watch src/App\" \"dotnet fable watch src/Landing\" \"webpack serve\"",
     "start:all": "conc -k -n \"fable,tailwind,dev\" \"npm:start\" \"npm:tailwind:watch\" \"npm:dev\"",
     "dev": "wrangler dev",
-    "build": "dotnet fable src/App --run npm run pack",
+    "build": "dotnet fable src/App && dotnet fable src/Landing && npm run pack",
     "pretest": "dotnet fable test/App.Tests -o dist/tests",
     "test": "mocha dist/tests",
     "clean:dist": "rm -r dist",

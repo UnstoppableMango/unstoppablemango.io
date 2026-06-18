@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 export default {
-  content: ['./src/**/*.fs.js'],
+  content: ['./src/**/*.fs.js', './src/**/*.fs'],
   theme: {
     extend: {
       height: {
