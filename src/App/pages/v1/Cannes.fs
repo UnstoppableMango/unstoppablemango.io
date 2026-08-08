@@ -1,4 +1,4 @@
-module Cannes
+module V1.Cannes
 
 open Sutil
 open Sutil.CoreElements

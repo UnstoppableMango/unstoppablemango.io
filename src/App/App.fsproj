@@ -8,12 +8,12 @@
     <Compile Include="Components.fs" />
     <Compile Include="Auth.fs" />
     <Compile Include="pages/Home.fs" />
-    <Compile Include="pages/Wishlist.fs" />
-    <Compile Include="pages/Artists.fs" />
-    <Compile Include="pages/Music.fs" />
-    <Compile Include="pages/Cannes.fs" />
-    <Compile Include="pages/Login.fs" />
     <Compile Include="pages/v1/Home.fs" />
+    <Compile Include="pages/v1/Wishlist.fs" />
+    <Compile Include="pages/v1/Artists.fs" />
+    <Compile Include="pages/v1/Music.fs" />
+    <Compile Include="pages/v1/Cannes.fs" />
+    <Compile Include="pages/v1/Login.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
 

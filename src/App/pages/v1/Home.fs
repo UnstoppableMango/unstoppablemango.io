@@ -12,18 +12,18 @@ let items = [
     }
     {
         Name = "Music"
-        Href = Attr.href "#/music"
+        Href = Attr.href "#/v1/music"
     }
     {
         Name = "Wishlist"
-        Href = Attr.href "#/wishlist"
+        Href = Attr.href "#/v1/wishlist"
     }
 ]
 
 let loginButton =
     Html.a [
         Attr.addClass "lg:w-1/2 xl:w-1/3 my-auto text-white/75 font-bold text-center z-10"
-        Attr.href "#/login"
+        Attr.href "#/v1/login"
         text "Login"
     ]
 
