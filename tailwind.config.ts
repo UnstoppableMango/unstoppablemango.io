@@ -49,6 +49,13 @@ export default {
       },
       animation: {
         'slide-down': 'slide-down 500ms',
+        'glitch': 'glitch 600ms steps(2) infinite',
+        'glitch-clip': 'glitch-clip 800ms steps(2) infinite',
+        'scan-line': 'scan-line 3s linear infinite',
+        'flicker': 'flicker 4s steps(1) infinite',
+        'power-on': 'power-on 400ms ease-out forwards',
+        'hud-appear': 'hud-appear 300ms ease-out forwards',
+        'pulse-pink': 'pulse-pink 2s ease-in-out infinite',
       },
       keyframes: {
         'slide-down': {
@@ -60,6 +67,49 @@ export default {
             transform: 'translateY(0)',
             opacity: '100',
           },
+        },
+        'glitch': {
+          '0%, 100%': { transform: 'translate(0)', clipPath: 'inset(0 0 0 0)' },
+          '20%': { transform: 'translate(-2px, 1px)', clipPath: 'inset(10% 0 80% 0)' },
+          '40%': { transform: 'translate(2px, -1px)', clipPath: 'inset(60% 0 20% 0)' },
+          '60%': { transform: 'translate(-1px, 2px)', clipPath: 'inset(40% 0 40% 0)' },
+          '80%': { transform: 'translate(1px, -2px)', clipPath: 'inset(80% 0 5% 0)' },
+        },
+        'glitch-clip': {
+          '0%, 100%': { transform: 'translate(0)', opacity: '1' },
+          '33%': { transform: 'translate(3px, 0)', opacity: '0.8' },
+          '66%': { transform: 'translate(-3px, 0)', opacity: '0.9' },
+        },
+        'scan-line': {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100vh)' },
+        },
+        'flicker': {
+          '0%, 97%, 100%': { opacity: '1' },
+          '98%': { opacity: '0.6' },
+          '99%': { opacity: '1' },
+          '99.5%': { opacity: '0.4' },
+        },
+        'power-on': {
+          '0%': { opacity: '0', transform: 'scaleY(0.02)', filter: 'brightness(3)' },
+          '30%': { opacity: '1', transform: 'scaleY(1)', filter: 'brightness(2)' },
+          '100%': { opacity: '1', transform: 'scaleY(1)', filter: 'brightness(1)' },
+        },
+        'hud-appear': {
+          '0%': { opacity: '0', transform: 'translateX(-8px)', letterSpacing: '0.5em' },
+          '100%': { opacity: '1', transform: 'translateX(0)', letterSpacing: 'inherit' },
+        },
+        'pulse-pink': {
+          '0%, 100%': { boxShadow: '0 0 4px #ff2d78, 0 0 8px #ff2d78' },
+          '50%': { boxShadow: '0 0 12px #ff2d78, 0 0 24px #ff2d7844' },
+        },
+      },
+      colors: {
+        'cyber-pink': {
+          DEFAULT: '#ff2d78',
+          dim: '#cc1a55',
+          glow: '#ff2d7844',
+          subtle: '#ff2d7811',
         },
       },
     },

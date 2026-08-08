@@ -13,6 +13,7 @@
     <Compile Include="pages/Cannes.fs" />
     <Compile Include="pages/Login.fs" />
     <Compile Include="pages/Hero.fs" />
+    <Compile Include="pages/V2.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
 
