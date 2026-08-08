@@ -22,7 +22,7 @@ npm ci              # Install deps (also runs dotnet tool restore)
 npm start           # Fable watch + webpack dev server on :8080
 npm run start:all   # Full stack: Fable + Tailwind watch + wrangler dev
 npm run build       # Production build (Fable → JS → webpack + tailwind minify)
-npm run lint        # ESLint (ignores app/public output by config)
+npm run lint        # ESLint (ignores webpack.config.js, src/App/**, test/App.Tests/**, and public/**)
 npm test            # Compile tests with Fable, run with mocha
 fantomas <file>     # Format F# code (dotnet tool, installed via dotnet tool restore)
 make infra          # pulumi up --cwd infra (preview/deploy infrastructure)
