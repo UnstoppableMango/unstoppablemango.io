@@ -1,4 +1,4 @@
-module Wishlist
+module V1.Wishlist
 
 open Sutil
 

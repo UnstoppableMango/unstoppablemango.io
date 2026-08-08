@@ -18,12 +18,13 @@ DomHelpers.setHeadTitle Dom.document "UnstoppableMango"
 
 let pages =
     function
-    | "#/login" -> Login.view ()
-    | "#/music" -> Music.view ()
-    | "#/music/artists" -> Artists.view ()
-    | "#/wishlist" -> Wishlist.view ()
-    | "#/cannes" -> Cannes.view ()
-    | _ -> Hero.view ()
+    | "#/v1/login" -> V1.Login.view ()
+    | "#/v1/music" -> V1.Music.view ()
+    | "#/v1/music/artists" -> V1.Artists.view ()
+    | "#/v1/wishlist" -> V1.Wishlist.view ()
+    | "#/v1/cannes" -> V1.Cannes.view ()
+    | "#/v1" -> V1.Home.view ()
+    | _ -> Home.view ()
 
 let app () =
     Auth.dispatch Auth.Login

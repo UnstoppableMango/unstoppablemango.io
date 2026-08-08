@@ -1,4 +1,4 @@
-module Music
+module V1.Music
 
 open Sutil
 open Sutil.Core
@@ -61,7 +61,7 @@ let view () =
         Html.a [
             Attr.addClass
                 "py-3 w-full lg:w-1/2 xl:w-1/3 rounded-full shadow backdrop-blur-2xl bg-white/70 font-bold text-eerie-black text-center uppercase self-center"
-            Attr.href "#/music/artists"
+            Attr.href "#/v1/music/artists"
             text "More"
         ]
     ]
