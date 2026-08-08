@@ -1,4 +1,4 @@
-module Hero
+module V1.Home
 
 open Sutil
 open Sutil.Core

@@ -23,7 +23,8 @@ let pages =
     | "#/music/artists" -> Artists.view ()
     | "#/wishlist" -> Wishlist.view ()
     | "#/cannes" -> Cannes.view ()
-    | _ -> Hero.view ()
+    | "#/v1" -> V1.Home.view ()
+    | _ -> Home.view ()
 
 let app () =
     Auth.dispatch Auth.Login
