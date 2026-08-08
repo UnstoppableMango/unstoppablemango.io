@@ -1,4 +1,4 @@
-module Artists
+module V1.Artists
 
 open Sutil
 
