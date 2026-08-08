@@ -30,16 +30,13 @@ let app () =
     Auth.dispatch Auth.Login
 
     // Hidden shortcut: press ']' to toggle the v2 theme showcase.
-    document.addEventListener (
-        "keydown",
-        fun (e: Browser.Types.Event) ->
-            let ke = e :?> Browser.Types.KeyboardEvent
+    document.onkeydown <-
+        fun ke ->
             if ke.key = "]" then
                 let next =
                     if window.location.hash = "#/v2" then "#/"
                     else "#/v2"
                 window.location.hash <- next
-    )
 
     Html.divc "h-screen bg-cover bg-center lg:bg-right bg-[url(images/hbg-sm.webp)] bg-byzantium-200" [
         Navigable.bindHash pages
