@@ -46,6 +46,12 @@ export default {
           800: '#070709',
           900: '#010101',
         },
+        'cyber-pink': {
+          DEFAULT: '#ff2d78',
+          dim: '#cc1a55',
+          glow: '#ff2d7844',
+          subtle: '#ff2d7811',
+        },
       },
       animation: {
         'slide-down': 'slide-down 500ms',
@@ -102,14 +108,6 @@ export default {
         'pulse-pink': {
           '0%, 100%': { boxShadow: '0 0 4px #ff2d78, 0 0 8px #ff2d78' },
           '50%': { boxShadow: '0 0 12px #ff2d78, 0 0 24px #ff2d7844' },
-        },
-      },
-      colors: {
-        'cyber-pink': {
-          DEFAULT: '#ff2d78',
-          dim: '#cc1a55',
-          glow: '#ff2d7844',
-          subtle: '#ff2d7811',
         },
       },
     },
