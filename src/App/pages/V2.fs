@@ -79,7 +79,7 @@ let cyberInput (placeholder: string) =
     Html.inputc
         "w-full bg-black/50 border border-white/10 text-white font-mono text-sm px-3 py-2 \
          placeholder-white/25 \
-         focus:outline-none focus:border-cyber-pink focus:shadow-[inset_0_0_4px_#ff2d7840] \
+         focus:outline-none focus:border-cyber-pink focus:shadow-[inset_0_0_4px_#ff2d7844] \
          transition-all duration-150"
         [ Attr.placeholder placeholder ]
 
