@@ -164,6 +164,12 @@ let private animTile (name: string) (animClass: string) =
 let view () =
     Html.divc "min-h-screen bg-black text-white font-mono overflow-y-auto animate-power-on" [
         scanLineOverlay ()
+        Html.a [
+            Attr.addClass
+                "fixed top-4 right-4 z-[60] inline-flex items-center justify-center border border-cyber-pink bg-black/70 px-4 py-2 text-xs font-bold uppercase tracking-widest text-cyber-pink shadow-[0_0_12px_#ff2d7833] backdrop-blur-sm transition hover:bg-cyber-pink/10 lg:hidden"
+            Attr.href "#/"
+            text "Exit preview"
+        ]
 
         Html.divc "max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12" [
 
