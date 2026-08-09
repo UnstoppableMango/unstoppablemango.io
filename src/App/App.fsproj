@@ -14,6 +14,7 @@
     <Compile Include="pages/v1/Music.fs" />
     <Compile Include="pages/v1/Cannes.fs" />
     <Compile Include="pages/v1/Login.fs" />
+    <Compile Include="pages/V2.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
 

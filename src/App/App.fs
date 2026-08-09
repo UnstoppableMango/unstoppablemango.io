@@ -24,10 +24,20 @@ let pages =
     | "#/v1/wishlist" -> V1.Wishlist.view ()
     | "#/v1/cannes" -> V1.Cannes.view ()
     | "#/v1" -> V1.Home.view ()
+    | "#/v2" -> V2.view ()
     | _ -> Home.view ()
 
 let app () =
     Auth.dispatch Auth.Login
+
+    // Hidden shortcut: press ']' to toggle the v2 theme showcase.
+    document.onkeydown <-
+        fun ke ->
+            if ke.key = "]" then
+                let next =
+                    if window.location.hash = "#/v2" then "#/"
+                    else "#/v2"
+                window.location.hash <- next
 
     Html.divc "h-screen bg-cover bg-center lg:bg-right bg-[url(images/hbg-sm.webp)] bg-byzantium-200" [
         Navigable.bindHash pages
