@@ -18,18 +18,18 @@ let view () =
                         text "A new homepage is on the way. In the meantime, you can still visit the previous version."
                     ]
                     Html.divc "mt-8 flex flex-col items-center gap-3" [
-                        Html.a [
-                            Attr.addClass
-                                "inline-flex items-center justify-center rounded-full bg-byzantium-200 px-8 py-3 font-bold uppercase tracking-[0.2em] text-eerie-black transition hover:bg-thistle-50"
-                            Attr.href "#/v1"
-                            text "Open v1"
-                        ]
-                        Html.a [
-                            Attr.addClass
-                                "inline-flex items-center justify-center rounded-full border border-thistle-200/40 px-6 py-2 text-sm font-bold uppercase tracking-[0.2em] text-thistle-100 transition hover:border-thistle-50 hover:text-thistle-50 lg:hidden"
-                            Attr.href "#/v2"
-                            text "Preview v2 on mobile"
-                        ]
+                        Html.ac
+                            "inline-flex items-center justify-center rounded-full bg-byzantium-200 px-8 py-3 font-bold uppercase tracking-[0.2em] text-eerie-black transition hover:bg-thistle-50"
+                            [
+                                Attr.href "#/v1"
+                                text "Open v1"
+                            ]
+                        Html.ac
+                            "inline-flex items-center justify-center rounded-full border border-thistle-200/40 px-6 py-2 text-sm font-bold uppercase tracking-[0.2em] text-thistle-100 transition hover:border-thistle-50 hover:text-thistle-50 lg:hidden"
+                            [
+                                Attr.href "#/v2"
+                                text "Open v2 preview"
+                            ]
                     ]
                 ]
         ]
