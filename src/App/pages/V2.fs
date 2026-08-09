@@ -8,44 +8,42 @@ open Sutil.CoreElements
 
 /// Corner-bracket HUD frame rendered with CSS border accent divs.
 let private hudFrame (extraClasses: string) children =
-    Html.divc
-        $"relative border border-white/10 bg-black/60 backdrop-blur-md {extraClasses}"
-        [
-            Html.divc "absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-cyber-pink" []
-            Html.divc "absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-cyber-pink" []
-            Html.divc "absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-cyber-pink" []
-            Html.divc "absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-cyber-pink" []
-            yield! children
-        ]
+    Html.divc $"relative border border-white/10 bg-black/60 backdrop-blur-md {extraClasses}" [
+        Html.divc "absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-cyber-pink" []
+        Html.divc "absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-cyber-pink" []
+        Html.divc "absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-cyber-pink" []
+        Html.divc "absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-cyber-pink" []
+        yield! children
+    ]
 
 // ── Components ────────────────────────────────────────────────────────────────
 
 /// Primary CTA button — solid hot-pink, uppercase, monospaced.
 let cyberButton (label: string) =
-    Html.buttonc
-        "relative px-6 py-2 bg-cyber-pink text-black font-mono font-bold uppercase tracking-widest text-sm \
+    Html.buttonc "relative px-6 py-2 bg-cyber-pink text-black font-mono font-bold uppercase tracking-widest text-sm \
          border border-cyber-pink \
          hover:bg-transparent hover:text-cyber-pink hover:shadow-[0_0_12px_#ff2d78] \
-         active:scale-95 transition-all duration-150 animate-pulse-pink"
-        [ text label ]
+         active:scale-95 transition-all duration-150 animate-pulse-pink" [
+        text label
+    ]
 
 /// Ghost / outline button variant.
 let cyberButtonGhost (label: string) =
-    Html.buttonc
-        "px-6 py-2 bg-transparent text-cyber-pink font-mono font-bold uppercase tracking-widest text-sm \
+    Html.buttonc "px-6 py-2 bg-transparent text-cyber-pink font-mono font-bold uppercase tracking-widest text-sm \
          border border-cyber-pink \
          hover:bg-cyber-pink/10 hover:shadow-[0_0_8px_#ff2d78] \
-         active:scale-95 transition-all duration-150"
-        [ text label ]
+         active:scale-95 transition-all duration-150" [
+        text label
+    ]
 
 /// Danger / destructive button.
 let cyberButtonDanger (label: string) =
-    Html.buttonc
-        "px-6 py-2 bg-transparent text-white font-mono font-bold uppercase tracking-widest text-sm \
+    Html.buttonc "px-6 py-2 bg-transparent text-white font-mono font-bold uppercase tracking-widest text-sm \
          border border-white/30 \
          hover:border-cyber-pink hover:text-cyber-pink \
-         active:scale-95 transition-all duration-150"
-        [ text label ]
+         active:scale-95 transition-all duration-150" [
+        text label
+    ]
 
 /// Monospaced heading with neon glow.
 let cyberHeading (level: int) (label: string) =
@@ -55,19 +53,24 @@ let cyberHeading (level: int) (label: string) =
         | 2 -> "text-2xl"
         | 3 -> "text-xl"
         | _ -> "text-base"
-    Html.divc
-        $"font-mono font-bold uppercase tracking-widest text-white {sizeClass} \
-          drop-shadow-[0_0_6px_#ff2d78] animate-hud-appear"
-        [
-            Html.spanc "text-cyber-pink" [ text "// " ]
-            text label
+
+    Html.divc $"font-mono font-bold uppercase tracking-widest text-white {sizeClass} \
+          drop-shadow-[0_0_6px_#ff2d78] animate-hud-appear" [
+        Html.spanc "text-cyber-pink" [
+            text "// "
         ]
+        text label
+    ]
 
 /// Status badge — mimics ammo / health counter readouts.
 let hudBadge (label: string) (value: string) =
     Html.divc "flex flex-col items-center gap-0.5" [
-        Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [ text label ]
-        Html.spanc "font-mono text-2xl font-bold text-white tabular-nums leading-none" [ text value ]
+        Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [
+            text label
+        ]
+        Html.spanc "font-mono text-2xl font-bold text-white tabular-nums leading-none" [
+            text value
+        ]
     ]
 
 /// Thin neon horizontal divider.
@@ -76,29 +79,36 @@ let neonDivider () =
 
 /// Input field: dark fill, thin pink border on focus.
 let cyberInput (placeholder: string) =
-    Html.inputc
-        "w-full bg-black/50 border border-white/10 text-white font-mono text-sm px-3 py-2 \
+    Html.inputc "w-full bg-black/50 border border-white/10 text-white font-mono text-sm px-3 py-2 \
          placeholder-white/25 \
          focus:outline-none focus:border-cyber-pink focus:shadow-[inset_0_0_4px_#ff2d7844] \
-         transition-all duration-150"
-        [ Attr.placeholder placeholder ]
+         transition-all duration-150" [
+        Attr.placeholder placeholder
+    ]
 
 /// Tag / chip component.
 let cyberTag (label: string) =
     Html.spanc
         "inline-block px-2 py-0.5 border border-cyber-pink/50 text-cyber-pink font-mono text-xs uppercase tracking-wider"
-        [ text label ]
+        [
+            text label
+        ]
 
 /// Notification / alert card.
 let hudAlert (kind: string) (msg: string) =
     let kindClass =
         match kind with
         | "warn" -> "text-yellow-400 border-yellow-400/30"
-        | "ok"   -> "text-green-400 border-green-400/30"
-        | _      -> "text-cyber-pink border-cyber-pink/30"
+        | "ok" -> "text-green-400 border-green-400/30"
+        | _ -> "text-cyber-pink border-cyber-pink/30"
+
     Html.divc $"flex items-start gap-3 p-3 border bg-white/5 {kindClass}" [
-        Html.spanc "font-mono text-xs font-bold uppercase tracking-widest mt-0.5 shrink-0" [ text $"[{kind}]" ]
-        Html.spanc "font-mono text-xs text-white/80" [ text msg ]
+        Html.spanc "font-mono text-xs font-bold uppercase tracking-widest mt-0.5 shrink-0" [
+            text $"[{kind}]"
+        ]
+        Html.spanc "font-mono text-xs text-white/80" [
+            text msg
+        ]
     ]
 
 /// Thin neon progress bar.
@@ -122,11 +132,9 @@ let private section (title: string) children =
 
 let private scanLineOverlay () =
     Html.divc "pointer-events-none fixed inset-0 z-50 overflow-hidden" [
-        Html.divc
-            "absolute left-0 right-0 h-16 \
+        Html.divc "absolute left-0 right-0 h-16 \
              bg-gradient-to-b from-transparent via-white/[0.02] to-transparent \
-             animate-scan-line"
-            []
+             animate-scan-line" []
         Html.divc "absolute inset-0" [
             Attr.style
                 "background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px)"
@@ -137,18 +145,20 @@ let private scanLineOverlay () =
 
 let private glitchTitle () =
     Html.divc "relative inline-block select-none" [
-        Html.spanc
-            "font-mono font-black uppercase text-5xl text-white tracking-[0.2em] \
-             drop-shadow-[0_0_12px_#ff2d78] animate-flicker block"
-            [ text "V2 THEME" ]
-        Html.spanc
-            "absolute inset-0 font-mono font-black uppercase text-5xl text-cyber-pink \
-             tracking-[0.2em] opacity-70 animate-glitch block pointer-events-none"
-            [ Attr.style "clip-path: inset(15% 0 75% 0)"; text "V2 THEME" ]
-        Html.spanc
-            "absolute inset-0 font-mono font-black uppercase text-5xl text-cyan-400 \
-             tracking-[0.2em] opacity-40 animate-glitch-clip block pointer-events-none"
-            [ Attr.style "clip-path: inset(65% 0 10% 0); transform: translate(3px)"; text "V2 THEME" ]
+        Html.spanc "font-mono font-black uppercase text-5xl text-white tracking-[0.2em] \
+             drop-shadow-[0_0_12px_#ff2d78] animate-flicker block" [
+            text "V2 THEME"
+        ]
+        Html.spanc "absolute inset-0 font-mono font-black uppercase text-5xl text-cyber-pink \
+             tracking-[0.2em] opacity-70 animate-glitch block pointer-events-none" [
+            Attr.style "clip-path: inset(15% 0 75% 0)"
+            text "V2 THEME"
+        ]
+        Html.spanc "absolute inset-0 font-mono font-black uppercase text-5xl text-cyan-400 \
+             tracking-[0.2em] opacity-40 animate-glitch-clip block pointer-events-none" [
+            Attr.style "clip-path: inset(65% 0 10% 0); transform: translate(3px)"
+            text "V2 THEME"
+        ]
     ]
 
 // ── Animation demo tile ───────────────────────────────────────────────────────
@@ -156,7 +166,9 @@ let private glitchTitle () =
 let private animTile (name: string) (animClass: string) =
     hudFrame "p-4 flex flex-col items-center gap-2 overflow-hidden" [
         Html.divc $"w-8 h-8 border-2 border-cyber-pink {animClass}" []
-        Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [ text name ]
+        Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [
+            text name
+        ]
     ]
 
 // ── Main view ─────────────────────────────────────────────────────────────────
@@ -212,7 +224,14 @@ let view () =
             // ── Tags ──────────────────────────────────────────────────────────
             section "TAGS" [
                 Html.divc "flex flex-wrap gap-2" [
-                    for t in [ "STEALTH"; "HOSTILE"; "TRACKED"; "ANOMALY"; "LINKED" ] do
+                    for t in
+                        [
+                            "STEALTH"
+                            "HOSTILE"
+                            "TRACKED"
+                            "ANOMALY"
+                            "LINKED"
+                        ] do
                         cyberTag t
                 ]
             ]
@@ -232,18 +251,30 @@ let view () =
                         ]
                         Html.divc "flex flex-col gap-2" [
                             Html.divc "flex justify-between" [
-                                Html.spanc "text-white/40 text-xs" [ text "HEALTH" ]
-                                Html.spanc "text-white text-xs" [ text "87%" ]
+                                Html.spanc "text-white/40 text-xs" [
+                                    text "HEALTH"
+                                ]
+                                Html.spanc "text-white text-xs" [
+                                    text "87%"
+                                ]
                             ]
                             hudProgress 87
                             Html.divc "flex justify-between mt-1" [
-                                Html.spanc "text-white/40 text-xs" [ text "ARMOR" ]
-                                Html.spanc "text-white text-xs" [ text "52%" ]
+                                Html.spanc "text-white/40 text-xs" [
+                                    text "ARMOR"
+                                ]
+                                Html.spanc "text-white text-xs" [
+                                    text "52%"
+                                ]
                             ]
                             hudProgress 52
                             Html.divc "flex justify-between mt-1" [
-                                Html.spanc "text-white/40 text-xs" [ text "SIGNAL" ]
-                                Html.spanc "text-white text-xs" [ text "100%" ]
+                                Html.spanc "text-white/40 text-xs" [
+                                    text "SIGNAL"
+                                ]
+                                Html.spanc "text-white text-xs" [
+                                    text "100%"
+                                ]
                             ]
                             hudProgress 100
                         ]
@@ -273,17 +304,15 @@ let view () =
             // a sweeping line element rather than putting it on the preview box.
             section "ANIMATIONS" [
                 Html.divc "grid grid-cols-2 md:grid-cols-4 gap-4 text-center" [
-                    animTile "GLITCH"    "animate-glitch"
-                    animTile "FLICKER"   "animate-flicker"
-                    animTile "HUD IN"    "animate-hud-appear"
-                    animTile "POWER ON"  "animate-power-on"
-                    animTile "PULSE"     "animate-pulse-pink"
-                    animTile "SLIDE DN"  "animate-slide-down"
-                    animTile "GLITCH 2"  "animate-glitch-clip"
+                    animTile "GLITCH" "animate-glitch"
+                    animTile "FLICKER" "animate-flicker"
+                    animTile "HUD IN" "animate-hud-appear"
+                    animTile "POWER ON" "animate-power-on"
+                    animTile "PULSE" "animate-pulse-pink"
+                    animTile "SLIDE DN" "animate-slide-down"
+                    animTile "GLITCH 2" "animate-glitch-clip"
                     hudFrame "p-4 flex flex-col items-center gap-2 overflow-hidden" [
-                        Html.divc
-                            "w-full h-0.5 bg-cyber-pink opacity-70 animate-scan-line"
-                            []
+                        Html.divc "w-full h-0.5 bg-cyber-pink opacity-70 animate-scan-line" []
                         Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [
                             text "SCAN LINE"
                         ]
