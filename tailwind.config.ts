@@ -86,9 +86,11 @@ export default {
           '33%': { transform: 'translate(3px, 0)', opacity: '0.8' },
           '66%': { transform: 'translate(-3px, 0)', opacity: '0.9' },
         },
+        // Positioned against the nearest positioned ancestor rather than the
+        // viewport, so the same sweep works fullscreen and inside a small tile.
         'scan-line': {
-          '0%': { transform: 'translateY(-100%)' },
-          '100%': { transform: 'translateY(100vh)' },
+          '0%': { top: '-20%' },
+          '100%': { top: '120%' },
         },
         'flicker': {
           '0%, 97%, 100%': { opacity: '1' },

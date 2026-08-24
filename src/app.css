@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Tailwind v4 does not pick up tailwind.config.ts on its own, and the compiled
+   .fs.js sources it scans are gitignored (so auto content detection skips them).
+   Both are handled by loading the legacy config explicitly. */
+@config "../tailwind.config.ts";
