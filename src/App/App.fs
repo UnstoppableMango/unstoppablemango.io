@@ -1,6 +1,5 @@
 module App
 
-open App
 open Browser
 open Sutil
 
@@ -18,7 +17,6 @@ DomHelpers.setHeadTitle Dom.document "UnstoppableMango"
 
 let pages =
     function
-    | "#/v1/login" -> V1.Login.view ()
     | "#/v1/music" -> V1.Music.view ()
     | "#/v1/music/artists" -> V1.Artists.view ()
     | "#/v1/wishlist" -> V1.Wishlist.view ()
@@ -28,8 +26,6 @@ let pages =
     | _ -> Home.view ()
 
 let app () =
-    Auth.dispatch Auth.Login
-
     // Hidden shortcut: press ']' to toggle the v2 theme showcase.
     document.onkeydown <-
         fun ke ->
