@@ -1,5 +1,6 @@
 module V2
 
+open Browser
 open Sutil
 open Sutil.Core
 open Sutil.CoreElements
@@ -161,13 +162,52 @@ let private glitchTitle () =
         ]
     ]
 
-// ── Animation demo tile ───────────────────────────────────────────────────────
+// ── Animation demo tiles ──────────────────────────────────────────────────────
 
-let private animTile (name: string) (animClass: string) =
-    hudFrame "p-4 flex flex-col items-center gap-2 overflow-hidden" [
-        Html.divc $"w-8 h-8 border-2 border-cyber-pink {animClass}" []
+/// Restarts the tile's animation. The class has to come off, the browser has to
+/// recalculate styles, and only then can it go back on — hence the two frames.
+let private replayAnimation (animClass: string) (ev: Browser.Types.Event) =
+    let tile = ev.currentTarget :?> Browser.Types.HTMLElement
+    let target = tile.querySelector ".anim-target" :?> Browser.Types.HTMLElement
+
+    if not (isNull (box target)) then
+        let original = target.className
+        target.className <- original.Replace(animClass, "")
+
+        window.requestAnimationFrame (fun _ ->
+            window.requestAnimationFrame (fun _ -> target.className <- original)
+            |> ignore)
+        |> ignore
+
+/// Box preview — for animations that transform, scale or glow.
+let private animBox (animClass: string) =
+    Html.divc $"anim-target w-9 h-9 border-2 border-cyber-pink bg-cyber-pink/10 {animClass}" []
+
+/// Type preview — for animations that move letter-spacing, clip-path or opacity,
+/// which a bare box barely registers.
+let private animType (animClass: string) =
+    Html.spanc $"anim-target font-mono font-black uppercase text-xl tracking-[0.2em] text-white \
+         drop-shadow-[0_0_6px_#ff2d78] {animClass}" [
+        text "V2"
+    ]
+
+/// Sweep preview — the scan line, scoped to the tile instead of the viewport.
+let private animSweep (animClass: string) =
+    Html.divc $"anim-target absolute left-0 right-0 h-0.5 bg-cyber-pink shadow-[0_0_6px_#ff2d78] {animClass}" []
+
+let private animTile (name: string) (animClass: string) (loops: bool) preview =
+    hudFrame "group cursor-pointer select-none p-3 flex flex-col items-center gap-2 \
+         hover:border-cyber-pink/40 transition-colors" [
+        onClick (replayAnimation animClass) []
+        Html.divc "relative w-full h-14 flex items-center justify-center overflow-hidden" [
+            preview
+        ]
         Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [
             text name
+        ]
+        Html.spanc "font-mono text-[10px] uppercase tracking-widest text-white/0 \
+             group-hover:text-cyber-pink transition-colors" [
+            text (if loops then "replay // loops" else "replay // once")
         ]
     ]
 
@@ -300,23 +340,19 @@ let view () =
             ]
 
             // ── Animation showcase ────────────────────────────────────────────
-            // The scan-line animation translates from -100% to 100vh, so we show
-            // a sweeping line element rather than putting it on the preview box.
+            // Every tile runs its animation live; click one to replay it. The
+            // one-shot animations need that, since they otherwise only ever play
+            // on mount.
             section "ANIMATIONS" [
                 Html.divc "grid grid-cols-2 md:grid-cols-4 gap-4 text-center" [
-                    animTile "GLITCH" "animate-glitch"
-                    animTile "FLICKER" "animate-flicker"
-                    animTile "HUD IN" "animate-hud-appear"
-                    animTile "POWER ON" "animate-power-on"
-                    animTile "PULSE" "animate-pulse-pink"
-                    animTile "SLIDE DN" "animate-slide-down"
-                    animTile "GLITCH 2" "animate-glitch-clip"
-                    hudFrame "p-4 flex flex-col items-center gap-2 overflow-hidden" [
-                        Html.divc "w-full h-0.5 bg-cyber-pink opacity-70 animate-scan-line" []
-                        Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [
-                            text "SCAN LINE"
-                        ]
-                    ]
+                    animTile "GLITCH" "animate-glitch" true (animType "animate-glitch")
+                    animTile "GLITCH 2" "animate-glitch-clip" true (animType "animate-glitch-clip")
+                    animTile "FLICKER" "animate-flicker" true (animType "animate-flicker")
+                    animTile "PULSE" "animate-pulse-pink" true (animBox "animate-pulse-pink")
+                    animTile "SCAN LINE" "animate-scan-line" true (animSweep "animate-scan-line")
+                    animTile "HUD IN" "animate-hud-appear" false (animType "animate-hud-appear")
+                    animTile "POWER ON" "animate-power-on" false (animBox "animate-power-on")
+                    animTile "SLIDE DN" "animate-slide-down" false (animBox "animate-slide-down")
                 ]
             ]
 

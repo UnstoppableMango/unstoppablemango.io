@@ -14,8 +14,8 @@
     "clean": "npm run clean:fable && npm run clean:dotnet && npm run clean:tailwind && npm run clean:dist",
     "lint": "eslint .",
     "pack": "npm run tailwind:prod && webpack --mode production",
-    "tailwind:watch": "tailwindcss -o public/tailwind.css --watch",
-    "tailwind:prod": "cross-env NODE_ENV=production tailwindcss -o public/tailwind.css --minify"
+    "tailwind:watch": "tailwindcss -i src/app.css -o public/tailwind.css --watch",
+    "tailwind:prod": "cross-env NODE_ENV=production tailwindcss -i src/app.css -o public/tailwind.css --minify"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
