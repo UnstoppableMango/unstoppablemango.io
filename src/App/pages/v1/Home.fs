@@ -20,20 +20,6 @@ let items = [
     }
 ]
 
-let loginButton =
-    Html.a [
-        Attr.addClass "lg:w-1/2 xl:w-1/3 my-auto text-white/75 font-bold text-center z-10"
-        Attr.href "#/v1/login"
-        text "Login"
-    ]
-
-let logoutButton =
-    Html.a [
-        Attr.addClass "lg:w-1/2 xl:w-1/3 my-auto text-white/75 font-bold text-center z-10"
-        Attr.href "/.auth/logout"
-        text "Logout"
-    ]
-
 let view () =
     Html.divc "h-screen overflow-y-scroll" [
         Html.divc "h-screen grid content-center" [

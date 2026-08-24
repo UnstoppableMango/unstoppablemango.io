@@ -11,7 +11,6 @@ Personal website (unstoppablemango.io). F# compiled to JavaScript via Fable, sty
 - **Bundler:** webpack
 - **Styling:** Tailwind v4 utility classes
 - **Runtime:** Cloudflare Workers + Assets
-- **Auth:** Cloudflare Access (`/.auth/me`, `/.auth/login/:provider`, `/.auth/logout`)
 - **Infra:** Pulumi TypeScript (`infra/`)
 - **Dev environment:** Nix flake (`flake.nix`) or plain Node + .NET
 
@@ -40,9 +39,8 @@ Webpack entry point is `src/App/App.fs.js`.
 |------|---------|
 | `App.fs` | Entry point: stylesheet loading, title, hash-based router, Sutil mount |
 | `Navigable.fs` | Hash routing — `bindHash` maps hash → view; `nav` sets hash |
-| `Auth.fs` | Elmish store for `/.auth/me`; exposes `model`, `dispatch`, `principal`, and active patterns `Loading\|LoggedOut\|Principal` |
 | `Components.fs` | Shared UI primitives (`page` wrapper) |
-| `pages/` | One module per route: `Hero`, `Login`, `Music`, `Artists`, `Cannes`, `Wishlist` |
+| `pages/` | One module per route: `Hero`, `Music`, `Artists`, `Cannes`, `Wishlist` |
 
 ## Coding conventions
 

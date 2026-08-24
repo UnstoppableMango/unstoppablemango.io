@@ -48,15 +48,14 @@ Fable compiles each `.fs` file to a sibling `.fs.js`. Webpack entry is `src/App/
 
 ### Runtime: Cloudflare Workers + Assets
 
-`wrangler.jsonc` configures a Worker that serves `./public` as static assets. Auth is Cloudflare Access (`/.auth/me`, `/.auth/login/:provider`, `/.auth/logout`).
+`wrangler.jsonc` configures a Worker that serves `./public` as static assets.
 
 ### F# app structure (`src/App/`)
 
 - **`App.fs`** — entry point: loads stylesheets, sets title, hash-based router, mounts Sutil app
 - **`Navigable.fs`** — hash-based routing via `window.location.hash`; `bindHash` maps hash → view; `nav` sets hash
-- **`Auth.fs`** — Elmish store wrapping `/.auth/me`; exposes `model`, `dispatch`, `principal`, and active patterns `Loading|LoggedOut|Principal`
 - **`Components.fs`** — shared UI primitives (`page` wrapper)
-- **`pages/`** — one module per route: `Hero`, `Login`, `Music`, `Artists`, `Cannes`, `Wishlist`
+- **`pages/`** — one module per route: `Hero`, `Music`, `Artists`, `Cannes`, `Wishlist`
 
 UI is built with **Sutil** (reactive Elmish-style for browser, no React). Styling is **Tailwind v4** utility classes inline on `Html.*c` helpers (the `c` suffix takes a class string).
 
