@@ -9,8 +9,7 @@ open Sutil.CoreElements
 
 /// Corner-bracket HUD frame rendered with CSS border accent divs.
 let private hudFrame (extraClasses: string) children =
-    Html.divc $"relative rounded-lg border border-white/30 bg-white/[0.13] \
-         shadow-[0_16px_48px_#070b1080,inset_0_2px_0_#ffffff4d,inset_0_-2px_0_#ffffff1f] {extraClasses}" [
+    Html.divc $"relative rounded-lg border border-glass-edge bg-glass-fill shadow-v2-panel {extraClasses}" [
         Html.divc "absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-cyber-pink" []
         Html.divc "absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-cyber-pink" []
         Html.divc "absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-cyber-pink" []
@@ -31,7 +30,7 @@ let cyberButton (label: string) =
 
 /// Ghost / outline button variant.
 let cyberButtonGhost (label: string) =
-    Html.buttonc "px-6 py-2 rounded-lg bg-white/[0.12] text-cyber-pink font-mono font-normal uppercase tracking-widest text-sm \
+    Html.buttonc "px-6 py-2 rounded-lg bg-glass-fill-soft text-cyber-pink font-mono font-normal uppercase tracking-widest text-sm \
          border border-cyber-pink \
          hover:bg-cyber-pink/10 hover:shadow-[0_0_8px_#ff2d78] \
          active:scale-95 transition-all duration-150" [
@@ -40,8 +39,8 @@ let cyberButtonGhost (label: string) =
 
 /// Danger / destructive button.
 let cyberButtonDanger (label: string) =
-    Html.buttonc "px-6 py-2 rounded-lg bg-white/[0.12] text-white font-mono font-normal uppercase tracking-widest text-sm \
-         border border-white/30 \
+    Html.buttonc "px-6 py-2 rounded-lg bg-glass-fill-soft text-white font-mono font-normal uppercase tracking-widest text-sm \
+         border border-glass-edge \
          hover:border-cyber-pink hover:text-cyber-pink \
          active:scale-95 transition-all duration-150" [
         text label
@@ -81,8 +80,8 @@ let neonDivider () =
 
 /// Input field: dark fill, thin pink border on focus.
 let cyberInput (placeholder: string) =
-    Html.inputc "w-full rounded-lg bg-white/[0.12] border border-white/30 text-white font-mono text-sm px-3 py-2 \
-         shadow-[inset_0_2px_0_#ffffff40] \
+    Html.inputc "w-full rounded-lg bg-glass-fill-soft border border-glass-edge text-white font-mono text-sm px-3 py-2 \
+         shadow-v2-inset \
          placeholder-white/25 \
          focus:outline-none focus:border-cyber-pink focus:shadow-[inset_0_0_4px_#ff2d7844] \
          transition-all duration-150" [
@@ -91,7 +90,7 @@ let cyberInput (placeholder: string) =
 
 /// Tag / chip component.
 let cyberTag (label: string) =
-    Html.spanc "inline-block px-2 py-0.5 rounded-full border border-cyber-pink/50 bg-white/[0.12] \
+    Html.spanc "inline-block px-2 py-0.5 rounded-full border border-cyber-pink/50 bg-glass-fill-soft \
          text-cyber-pink font-mono text-xs uppercase tracking-wider" [
         text label
     ]
@@ -104,8 +103,7 @@ let hudAlert (kind: string) (msg: string) =
         | "ok" -> "text-green-400 border-green-400/30"
         | _ -> "text-cyber-pink border-cyber-pink/30"
 
-    Html.divc $"flex items-start gap-3 p-3 rounded-lg border bg-white/[0.13] \
-         shadow-[inset_0_2px_0_#ffffff40] {kindClass}" [
+    Html.divc $"flex items-start gap-3 p-3 rounded-lg border bg-glass-fill shadow-v2-inset {kindClass}" [
         Html.spanc "font-mono text-xs font-normal uppercase tracking-widest mt-0.5 shrink-0" [
             text $"[{kind}]"
         ]
@@ -116,7 +114,7 @@ let hudAlert (kind: string) (msg: string) =
 
 /// Thin neon progress bar.
 let hudProgress (pct: int) =
-    Html.divc "w-full h-1.5 rounded-full bg-white/15 relative overflow-hidden" [
+    Html.divc "w-full h-1.5 rounded-full bg-glass-track relative overflow-hidden" [
         Html.divc "h-full rounded-full bg-cyber-pink shadow-[0_0_4px_#ff2d78]" [
             Attr.style $"width: {pct}%%"
         ]
@@ -212,9 +210,9 @@ let view () =
         Html.divc "pointer-events-none fixed inset-0 z-0 overflow-hidden" [
             // Pre-blurred at build time: a 960px blurred frame is a fraction of
             // the sharp original's bytes and saves a live backdrop-filter.
-            Html.divc "absolute inset-0 bg-cover bg-center bg-[url(images/roadside-blur.webp)]" []
+            Html.divc "absolute inset-0 bg-cover bg-center bg-[url(images/reflection-blur.webp)]" []
             Html.divc "absolute inset-0 \
-                 bg-[radial-gradient(120%_80%_at_50%_0%,#6b604714_0%,#4a423426_45%,#2b271f40_100%)]" []
+                 bg-v2-wash" []
             Html.divc "absolute -top-32 -left-24 w-[38rem] h-[38rem] rounded-full bg-desert-sand/25 blur-3xl" []
             Html.divc "absolute top-1/3 -right-32 w-[34rem] h-[34rem] rounded-full bg-cyber-pink/15 blur-3xl" []
             Html.divc "absolute -bottom-40 left-1/4 w-[42rem] h-[30rem] rounded-full bg-desert-dust/50 blur-3xl" []
@@ -228,8 +226,7 @@ let view () =
 
         // Thick glass pane between the desert ground and the HUD content.
         Html.divc "pointer-events-none fixed inset-0 z-0 \
-             bg-[linear-gradient(155deg,#e8f2f85c_0%,#9dbccc42_38%,#0d141a1a_100%)] \
-             shadow-[inset_0_2px_0_#ffffff66,inset_0_-70px_120px_#0a0f1426]" []
+             bg-v2-glass shadow-v2-pane" []
         Html.ac
             "fixed top-4 right-4 z-[60] inline-flex items-center justify-center border border-cyber-pink bg-black/70 px-4 py-2 text-xs font-normal uppercase tracking-widest text-cyber-pink shadow-[0_0_12px_#ff2d7833] transition hover:bg-cyber-pink/10 lg:hidden"
             [

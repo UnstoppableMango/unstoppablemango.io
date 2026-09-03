@@ -58,6 +58,28 @@ export default {
           glow: '#ff2d7844',
           subtle: '#ff2d7811',
         },
+        // Frosted surfaces over a photo backdrop. Every value is translucent:
+        // these tint whatever sits behind them rather than covering it.
+        glass: {
+          fill: '#ffffff21', // panels, alerts
+          'fill-soft': '#ffffff1f', // buttons, inputs, tags
+          track: '#ffffff26', // progress rail
+          edge: '#ffffff4d', // borders
+          highlight: '#ffffff66', // inset top edge
+          'highlight-dim': '#ffffff1f', // inset bottom edge
+          shade: '#070b1080', // drop shadow under panels
+        },
+      },
+      backgroundImage: {
+        // Warm wash over the photo, then the pane itself: a cool diagonal
+        // tint with the light falling from the top left.
+        'v2-wash': 'radial-gradient(120% 80% at 50% 0%, #6b604714 0%, #4a423426 45%, #2b271f40 100%)',
+        'v2-glass': 'linear-gradient(155deg, #e8f2f85c 0%, #9dbccc42 38%, #0d141a1a 100%)',
+      },
+      boxShadow: {
+        'v2-panel': '0 16px 48px #070b1080, inset 0 2px 0 #ffffff4d, inset 0 -2px 0 #ffffff1f',
+        'v2-inset': 'inset 0 2px 0 #ffffff40',
+        'v2-pane': 'inset 0 2px 0 #ffffff66, inset 0 -70px 120px #0a0f1426',
       },
       animation: {
         'slide-down': 'slide-down 500ms',
