@@ -52,6 +52,24 @@ export default {
           dust: '#6b6047',
           shadow: '#2b271f',
         },
+        // Muted sapphire: the v2 primary. Desaturated enough to sit under the
+        // glass without glowing like neon.
+        sapphire: {
+          DEFAULT: '#4a6fa5',
+          dim: '#3a577f',
+          bright: '#6d92c8',
+          glow: '#4a6fa544',
+          subtle: '#4a6fa511',
+        },
+        // Destructive actions.
+        ember: {
+          DEFAULT: '#b8493f',
+          bright: '#e0705f',
+        },
+        // Secondary accents, one live at a time.
+        brass: '#c9a227',
+        copper: '#c4693f',
+        seafoam: '#3fa39b',
         'cyber-pink': {
           DEFAULT: '#ff2d78',
           dim: '#cc1a55',
@@ -90,6 +108,7 @@ export default {
         'power-on': 'power-on 400ms ease-out forwards',
         'hud-appear': 'hud-appear 300ms ease-out forwards',
         'pulse-pink': 'pulse-pink 2s ease-in-out infinite',
+        'pulse-accent': 'pulse-accent 2s ease-in-out infinite',
       },
       keyframes: {
         'slide-down': {
@@ -134,6 +153,10 @@ export default {
         'hud-appear': {
           '0%': { opacity: '0', transform: 'translateX(-8px)', letterSpacing: '0.5em' },
           '100%': { opacity: '1', transform: 'translateX(0)', letterSpacing: 'inherit' },
+        },
+        'pulse-accent': {
+          '0%, 100%': { boxShadow: '0 0 4px #4a6fa5, 0 0 8px #4a6fa5' },
+          '50%': { boxShadow: '0 0 12px #4a6fa5, 0 0 24px #4a6fa544' },
         },
         'pulse-pink': {
           '0%, 100%': { boxShadow: '0 0 4px #ff2d78, 0 0 8px #ff2d78' },
