@@ -212,9 +212,9 @@ let view () =
         Html.divc "pointer-events-none fixed inset-0 z-0 overflow-hidden" [
             // Pre-blurred at build time: a 960px blurred frame is a fraction of
             // the sharp original's bytes and saves a live backdrop-filter.
-            Html.divc "absolute inset-0 bg-cover bg-center bg-[url(images/graffiti-blur.webp)]" []
+            Html.divc "absolute inset-0 bg-cover bg-center bg-[url(images/roadside-blur.webp)]" []
             Html.divc "absolute inset-0 \
-                 bg-[radial-gradient(120%_80%_at_50%_0%,#6b604726_0%,#4a423440_45%,#2b271f73_100%)]" []
+                 bg-[radial-gradient(120%_80%_at_50%_0%,#6b604714_0%,#4a423426_45%,#2b271f40_100%)]" []
             Html.divc "absolute -top-32 -left-24 w-[38rem] h-[38rem] rounded-full bg-desert-sand/25 blur-3xl" []
             Html.divc "absolute top-1/3 -right-32 w-[34rem] h-[34rem] rounded-full bg-cyber-pink/15 blur-3xl" []
             Html.divc "absolute -bottom-40 left-1/4 w-[42rem] h-[30rem] rounded-full bg-desert-dust/50 blur-3xl" []
@@ -228,8 +228,8 @@ let view () =
 
         // Thick glass pane between the desert ground and the HUD content.
         Html.divc "pointer-events-none fixed inset-0 z-0 \
-             bg-[linear-gradient(155deg,#e8f2f83d_0%,#9dbccc38_38%,#0d141a33_100%)] \
-             shadow-[inset_0_2px_0_#ffffff4d,inset_0_-70px_120px_#0a0f1459]" []
+             bg-[linear-gradient(155deg,#e8f2f85c_0%,#9dbccc42_38%,#0d141a1a_100%)] \
+             shadow-[inset_0_2px_0_#ffffff66,inset_0_-70px_120px_#0a0f1426]" []
         Html.ac
             "fixed top-4 right-4 z-[60] inline-flex items-center justify-center border border-cyber-pink bg-black/70 px-4 py-2 text-xs font-normal uppercase tracking-widest text-cyber-pink shadow-[0_0_12px_#ff2d7833] transition hover:bg-cyber-pink/10 lg:hidden"
             [
