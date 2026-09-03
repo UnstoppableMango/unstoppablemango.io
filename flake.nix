@@ -33,6 +33,7 @@
                 fantomas
                 git
                 gnumake
+                imagemagick
                 mocha
                 nil
                 nodejs_22
