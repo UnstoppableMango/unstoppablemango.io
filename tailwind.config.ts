@@ -46,6 +46,12 @@ export default {
           800: '#070709',
           900: '#010101',
         },
+        desert: {
+          sand: '#c9b48d',
+          dune: '#4a4234',
+          dust: '#6b6047',
+          shadow: '#2b271f',
+        },
         'cyber-pink': {
           DEFAULT: '#ff2d78',
           dim: '#cc1a55',

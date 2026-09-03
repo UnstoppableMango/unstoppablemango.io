@@ -9,7 +9,8 @@ open Sutil.CoreElements
 
 /// Corner-bracket HUD frame rendered with CSS border accent divs.
 let private hudFrame (extraClasses: string) children =
-    Html.divc $"relative border border-white/10 bg-black/60 backdrop-blur-md {extraClasses}" [
+    Html.divc $"relative rounded-lg border border-white/30 bg-white/[0.13] \
+         shadow-[0_16px_48px_#070b1080,inset_0_2px_0_#ffffff4d,inset_0_-2px_0_#ffffff1f] {extraClasses}" [
         Html.divc "absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-cyber-pink" []
         Html.divc "absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-cyber-pink" []
         Html.divc "absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-cyber-pink" []
@@ -21,7 +22,7 @@ let private hudFrame (extraClasses: string) children =
 
 /// Primary CTA button — solid hot-pink, uppercase, monospaced.
 let cyberButton (label: string) =
-    Html.buttonc "relative px-6 py-2 bg-cyber-pink text-black font-mono font-bold uppercase tracking-widest text-sm \
+    Html.buttonc "relative rounded-lg px-6 py-2 bg-cyber-pink text-black font-mono font-normal uppercase tracking-widest text-sm \
          border border-cyber-pink \
          hover:bg-transparent hover:text-cyber-pink hover:shadow-[0_0_12px_#ff2d78] \
          active:scale-95 transition-all duration-150 animate-pulse-pink" [
@@ -30,7 +31,7 @@ let cyberButton (label: string) =
 
 /// Ghost / outline button variant.
 let cyberButtonGhost (label: string) =
-    Html.buttonc "px-6 py-2 bg-transparent text-cyber-pink font-mono font-bold uppercase tracking-widest text-sm \
+    Html.buttonc "px-6 py-2 rounded-lg bg-white/[0.12] text-cyber-pink font-mono font-normal uppercase tracking-widest text-sm \
          border border-cyber-pink \
          hover:bg-cyber-pink/10 hover:shadow-[0_0_8px_#ff2d78] \
          active:scale-95 transition-all duration-150" [
@@ -39,7 +40,7 @@ let cyberButtonGhost (label: string) =
 
 /// Danger / destructive button.
 let cyberButtonDanger (label: string) =
-    Html.buttonc "px-6 py-2 bg-transparent text-white font-mono font-bold uppercase tracking-widest text-sm \
+    Html.buttonc "px-6 py-2 rounded-lg bg-white/[0.12] text-white font-mono font-normal uppercase tracking-widest text-sm \
          border border-white/30 \
          hover:border-cyber-pink hover:text-cyber-pink \
          active:scale-95 transition-all duration-150" [
@@ -55,7 +56,7 @@ let cyberHeading (level: int) (label: string) =
         | 3 -> "text-xl"
         | _ -> "text-base"
 
-    Html.divc $"font-mono font-bold uppercase tracking-widest text-white {sizeClass} \
+    Html.divc $"font-mono font-normal uppercase tracking-widest text-white {sizeClass} \
           drop-shadow-[0_0_6px_#ff2d78] animate-hud-appear" [
         Html.spanc "text-cyber-pink" [
             text "// "
@@ -69,7 +70,7 @@ let hudBadge (label: string) (value: string) =
         Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [
             text label
         ]
-        Html.spanc "font-mono text-2xl font-bold text-white tabular-nums leading-none" [
+        Html.spanc "font-mono text-2xl font-normal text-white tabular-nums leading-none" [
             text value
         ]
     ]
@@ -80,7 +81,8 @@ let neonDivider () =
 
 /// Input field: dark fill, thin pink border on focus.
 let cyberInput (placeholder: string) =
-    Html.inputc "w-full bg-black/50 border border-white/10 text-white font-mono text-sm px-3 py-2 \
+    Html.inputc "w-full rounded-lg bg-white/[0.12] border border-white/30 text-white font-mono text-sm px-3 py-2 \
+         shadow-[inset_0_2px_0_#ffffff40] \
          placeholder-white/25 \
          focus:outline-none focus:border-cyber-pink focus:shadow-[inset_0_0_4px_#ff2d7844] \
          transition-all duration-150" [
@@ -89,11 +91,10 @@ let cyberInput (placeholder: string) =
 
 /// Tag / chip component.
 let cyberTag (label: string) =
-    Html.spanc
-        "inline-block px-2 py-0.5 border border-cyber-pink/50 text-cyber-pink font-mono text-xs uppercase tracking-wider"
-        [
-            text label
-        ]
+    Html.spanc "inline-block px-2 py-0.5 rounded-full border border-cyber-pink/50 bg-white/[0.12] \
+         text-cyber-pink font-mono text-xs uppercase tracking-wider" [
+        text label
+    ]
 
 /// Notification / alert card.
 let hudAlert (kind: string) (msg: string) =
@@ -103,8 +104,9 @@ let hudAlert (kind: string) (msg: string) =
         | "ok" -> "text-green-400 border-green-400/30"
         | _ -> "text-cyber-pink border-cyber-pink/30"
 
-    Html.divc $"flex items-start gap-3 p-3 border bg-white/5 {kindClass}" [
-        Html.spanc "font-mono text-xs font-bold uppercase tracking-widest mt-0.5 shrink-0" [
+    Html.divc $"flex items-start gap-3 p-3 rounded-lg border bg-white/[0.13] \
+         shadow-[inset_0_2px_0_#ffffff40] {kindClass}" [
+        Html.spanc "font-mono text-xs font-normal uppercase tracking-widest mt-0.5 shrink-0" [
             text $"[{kind}]"
         ]
         Html.spanc "font-mono text-xs text-white/80" [
@@ -114,8 +116,8 @@ let hudAlert (kind: string) (msg: string) =
 
 /// Thin neon progress bar.
 let hudProgress (pct: int) =
-    Html.divc "w-full h-1.5 bg-white/10 relative" [
-        Html.divc "h-full bg-cyber-pink shadow-[0_0_4px_#ff2d78]" [
+    Html.divc "w-full h-1.5 rounded-full bg-white/15 relative overflow-hidden" [
+        Html.divc "h-full rounded-full bg-cyber-pink shadow-[0_0_4px_#ff2d78]" [
             Attr.style $"width: {pct}%%"
         ]
     ]
@@ -129,33 +131,20 @@ let private section (title: string) children =
         yield! children
     ]
 
-// ── Scan-line CRT overlay ─────────────────────────────────────────────────────
-
-let private scanLineOverlay () =
-    Html.divc "pointer-events-none fixed inset-0 z-50 overflow-hidden" [
-        Html.divc "absolute left-0 right-0 h-16 \
-             bg-gradient-to-b from-transparent via-white/[0.02] to-transparent \
-             animate-scan-line" []
-        Html.divc "absolute inset-0" [
-            Attr.style
-                "background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px)"
-        ]
-    ]
-
 // ── Glitch title ──────────────────────────────────────────────────────────────
 
 let private glitchTitle () =
     Html.divc "relative inline-block select-none" [
-        Html.spanc "font-mono font-black uppercase text-5xl text-white tracking-[0.2em] \
+        Html.spanc "font-mono font-light uppercase text-5xl text-white tracking-[0.2em] \
              drop-shadow-[0_0_12px_#ff2d78] animate-flicker block" [
             text "V2 THEME"
         ]
-        Html.spanc "absolute inset-0 font-mono font-black uppercase text-5xl text-cyber-pink \
+        Html.spanc "absolute inset-0 font-mono font-light uppercase text-5xl text-cyber-pink \
              tracking-[0.2em] opacity-70 animate-glitch block pointer-events-none" [
             Attr.style "clip-path: inset(15% 0 75% 0)"
             text "V2 THEME"
         ]
-        Html.spanc "absolute inset-0 font-mono font-black uppercase text-5xl text-cyan-400 \
+        Html.spanc "absolute inset-0 font-mono font-light uppercase text-5xl text-cyan-400 \
              tracking-[0.2em] opacity-40 animate-glitch-clip block pointer-events-none" [
             Attr.style "clip-path: inset(65% 0 10% 0); transform: translate(3px)"
             text "V2 THEME"
@@ -175,8 +164,7 @@ let private replayAnimation (animClass: string) (ev: Browser.Types.Event) =
         target.className <- original.Replace(animClass, "")
 
         window.requestAnimationFrame (fun _ ->
-            window.requestAnimationFrame (fun _ -> target.className <- original)
-            |> ignore)
+            window.requestAnimationFrame (fun _ -> target.className <- original) |> ignore)
         |> ignore
 
 /// Box preview — for animations that transform, scale or glow.
@@ -186,7 +174,7 @@ let private animBox (animClass: string) =
 /// Type preview — for animations that move letter-spacing, clip-path or opacity,
 /// which a bare box barely registers.
 let private animType (animClass: string) =
-    Html.spanc $"anim-target font-mono font-black uppercase text-xl tracking-[0.2em] text-white \
+    Html.spanc $"anim-target font-mono font-light uppercase text-xl tracking-[0.2em] text-white \
          drop-shadow-[0_0_6px_#ff2d78] {animClass}" [
         text "V2"
     ]
@@ -214,16 +202,42 @@ let private animTile (name: string) (animClass: string) (loops: bool) preview =
 // ── Main view ─────────────────────────────────────────────────────────────────
 
 let view () =
-    Html.divc "min-h-screen bg-black text-white font-mono overflow-y-auto animate-power-on" [
-        scanLineOverlay ()
+    // The backdrop layers live outside the animated wrapper on purpose:
+    // animate-power-on leaves a transform and filter on its element, which would
+    // turn that element into the containing block for `fixed` children and drag
+    // the backdrop along with the scroll.
+    Html.divc "relative min-h-screen text-white font-mono overflow-y-auto" [
+        // Backdrop, bottom to top: photo, warm wash, colour blobs, sand, grain.
+        // Pinned to the viewport so it holds still while the HUD scrolls over it.
+        Html.divc "pointer-events-none fixed inset-0 z-0 overflow-hidden" [
+            // Pre-blurred at build time: a 960px blurred frame is a fraction of
+            // the sharp original's bytes and saves a live backdrop-filter.
+            Html.divc "absolute inset-0 bg-cover bg-center bg-[url(images/matobo-blur.webp)]" []
+            Html.divc "absolute inset-0 \
+                 bg-[radial-gradient(120%_80%_at_50%_0%,#6b604726_0%,#4a423440_45%,#2b271f73_100%)]" []
+            Html.divc "absolute -top-32 -left-24 w-[38rem] h-[38rem] rounded-full bg-desert-sand/25 blur-3xl" []
+            Html.divc "absolute top-1/3 -right-32 w-[34rem] h-[34rem] rounded-full bg-cyber-pink/15 blur-3xl" []
+            Html.divc "absolute -bottom-40 left-1/4 w-[42rem] h-[30rem] rounded-full bg-desert-dust/50 blur-3xl" []
+
+            // Wind-blown sand, then film grain: texture for the glass to work on.
+            Html.divc
+                "absolute inset-0 bg-[url(images/sand-drift.svg)] bg-cover bg-center opacity-70 mix-blend-soft-light"
+                []
+            Html.divc "absolute inset-0 bg-[url(images/grain.svg)] bg-repeat opacity-[0.12] mix-blend-overlay" []
+        ]
+
+        // Thick glass pane between the desert ground and the HUD content.
+        Html.divc "pointer-events-none fixed inset-0 z-0 \
+             bg-[linear-gradient(155deg,#e8f2f83d_0%,#9dbccc38_38%,#0d141a33_100%)] \
+             shadow-[inset_0_2px_0_#ffffff4d,inset_0_-70px_120px_#0a0f1459]" []
         Html.ac
-            "fixed top-4 right-4 z-[60] inline-flex items-center justify-center border border-cyber-pink bg-black/70 px-4 py-2 text-xs font-bold uppercase tracking-widest text-cyber-pink shadow-[0_0_12px_#ff2d7833] backdrop-blur-sm transition hover:bg-cyber-pink/10 lg:hidden"
+            "fixed top-4 right-4 z-[60] inline-flex items-center justify-center border border-cyber-pink bg-black/70 px-4 py-2 text-xs font-normal uppercase tracking-widest text-cyber-pink shadow-[0_0_12px_#ff2d7833] transition hover:bg-cyber-pink/10 lg:hidden"
             [
                 Attr.href "#/"
                 text "EXIT PREVIEW"
             ]
 
-        Html.divc "max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12" [
+        Html.divc "relative z-10 max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12 animate-power-on" [
 
             // ── Hero ─────────────────────────────────────────────────────────
             Html.divc "flex flex-col items-center gap-4 py-8" [
