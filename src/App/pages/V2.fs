@@ -212,7 +212,7 @@ let view () =
         Html.divc "pointer-events-none fixed inset-0 z-0 overflow-hidden" [
             // Pre-blurred at build time: a 960px blurred frame is a fraction of
             // the sharp original's bytes and saves a live backdrop-filter.
-            Html.divc "absolute inset-0 bg-cover bg-center bg-[url(images/matobo-blur.webp)]" []
+            Html.divc "absolute inset-0 bg-cover bg-center bg-[url(images/graffiti-blur.webp)]" []
             Html.divc "absolute inset-0 \
                  bg-[radial-gradient(120%_80%_at_50%_0%,#6b604726_0%,#4a423440_45%,#2b271f73_100%)]" []
             Html.divc "absolute -top-32 -left-24 w-[38rem] h-[38rem] rounded-full bg-desert-sand/25 blur-3xl" []
