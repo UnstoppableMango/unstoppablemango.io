@@ -229,23 +229,12 @@ let view () =
     // turn that element into the containing block for `fixed` children and drag
     // the backdrop along with the scroll.
     Html.divc "relative min-h-screen text-white font-mono overflow-y-auto" [
-        // Backdrop, bottom to top: photo, warm wash, colour blobs, sand, grain.
-        // Pinned to the viewport so it holds still while the HUD scrolls over it.
+        // Backdrop: the blurred photo, pinned to the viewport so it holds still
+        // while the HUD scrolls over it.
         Html.divc "pointer-events-none fixed inset-0 z-0 overflow-hidden" [
             // Pre-blurred at build time: a 960px blurred frame is a fraction of
             // the sharp original's bytes and saves a live backdrop-filter.
-            Html.divc "absolute inset-0 bg-cover bg-center bg-[url(images/reflection-blur.webp)]" []
-            Html.divc "absolute inset-0 \
-                 bg-v2-wash" []
-            Html.divc "absolute -top-32 -left-24 w-[38rem] h-[38rem] rounded-full bg-desert-sand/25 blur-3xl" []
-            Html.divc "absolute top-1/3 -right-32 w-[34rem] h-[34rem] rounded-full bg-sapphire/15 blur-3xl" []
-            Html.divc "absolute -bottom-40 left-1/4 w-[42rem] h-[30rem] rounded-full bg-desert-dust/50 blur-3xl" []
-
-            // Wind-blown sand, then film grain: texture for the glass to work on.
-            Html.divc
-                "absolute inset-0 bg-[url(images/sand-drift.svg)] bg-cover bg-center opacity-70 mix-blend-soft-light"
-                []
-            Html.divc "absolute inset-0 bg-[url(images/grain.svg)] bg-repeat opacity-[0.12] mix-blend-overlay" []
+            Html.divc "absolute inset-0 bg-cover bg-center bg-[url(images/matobo-blur.webp)]" []
         ]
 
         // Thick glass pane between the desert ground and the HUD content.
@@ -258,7 +247,11 @@ let view () =
                 text "EXIT PREVIEW"
             ]
 
-        Html.divc "relative z-10 max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12 animate-power-on" [
+        // Content column: a darker translucent slab running the full height of
+        // the page, with the backdrop left visible in the margins either side.
+        Html.divc "relative z-10 max-w-4xl mx-auto px-6 sm:px-10 py-12 flex flex-col gap-12 \
+             bg-black/60 border-x border-glass-edge/40 shadow-[0_0_80px_#050810b3] \
+             animate-power-on" [
 
             // ── Hero ─────────────────────────────────────────────────────────
             Html.divc "flex flex-col items-center gap-4 py-8" [
