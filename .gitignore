@@ -493,3 +493,8 @@ tailwind.css
 .direnv/
 .envrc
 .wrangler/
+
+# Core dumps. kernel.core_pattern is bare `core` with no size limit, so a dotnet
+# process that dies on a signal drops a few hundred megabytes here.
+core
+core.*
