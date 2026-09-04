@@ -52,8 +52,26 @@ export default {
           dust: '#6b6047',
           shadow: '#2b271f',
         },
-        // Muted sapphire: the v2 primary. Desaturated enough to sit under the
-        // glass without glowing like neon.
+        // The v2 pairing. Both families read from CSS variables defined in
+        // app.css, so swapping the theme is one block there.
+        primary: {
+          DEFAULT: 'var(--primary)',
+          dim: 'var(--primary-dim)',
+          bright: 'var(--primary-bright)',
+          lift: 'var(--primary-lift)',
+        },
+        accent: {
+          DEFAULT: 'var(--accent)',
+          dim: 'var(--accent-dim)',
+        },
+        danger: {
+          DEFAULT: 'var(--danger)',
+          dim: 'var(--danger-dim)',
+          bright: 'var(--danger-bright)',
+        },
+        warn: 'var(--warn)',
+        ok: 'var(--ok)',
+        // Palette entries the pairings draw from.
         sapphire: {
           DEFAULT: '#4a6fa5',
           dim: '#3a577f',
@@ -66,10 +84,10 @@ export default {
           DEFAULT: '#b8493f',
           bright: '#e0705f',
         },
-        // Secondary accents, one live at a time.
         brass: '#c9a227',
         copper: '#c4693f',
         seafoam: '#3fa39b',
+        'hot-pink': '#ff5c9d',
         'cyber-pink': {
           DEFAULT: '#ff2d78',
           dim: '#cc1a55',
@@ -155,8 +173,8 @@ export default {
           '100%': { opacity: '1', transform: 'translateX(0)', letterSpacing: 'inherit' },
         },
         'pulse-accent': {
-          '0%, 100%': { boxShadow: '0 0 4px #4a6fa5, 0 0 8px #4a6fa5' },
-          '50%': { boxShadow: '0 0 12px #4a6fa5, 0 0 24px #4a6fa544' },
+          '0%, 100%': { boxShadow: '0 0 4px var(--primary), 0 0 8px var(--primary)' },
+          '50%': { boxShadow: '0 0 12px var(--primary), 0 0 24px var(--primary-glow-soft)' },
         },
         'pulse-pink': {
           '0%, 100%': { boxShadow: '0 0 4px #ff2d78, 0 0 8px #ff2d78' },
