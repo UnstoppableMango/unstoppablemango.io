@@ -12,7 +12,7 @@ reviews:
         This F# is compiled to JavaScript by Fable, and the Tailwind utility
         class strings in it are compiled to CSS by Tailwind v4. Source text is
         two codegen layers away from what ships. Verify any claim about the
-        generated JavaScript or CSS against the build output, `src/App/*.fs.js`
+        generated JavaScript or CSS against the build output, `src/App/**/*.fs.js`
         and `public/tailwind.css`, before reporting it.
 
         Two specific patterns are correct and must not be flagged:
@@ -24,5 +24,5 @@ reviews:
         - Tailwind normalizes math inside `calc()` in arbitrary values.
           `calc(100%-9px)` emits `calc(100% - 9px)`, already carrying the
           whitespace the CSS spec requires around the binary operator. Writing
-          `calc(100%_-_9px)` produces byte-identical CSS, so suggesting it is a
-          no-op.
+          `calc(100%_-_9px)` emits the same declaration, differing only in
+          the escaped class selector, so suggesting it is a no-op.

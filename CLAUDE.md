@@ -52,9 +52,9 @@ Two codegen layers sit between the source and what ships: Fable compiles `.fs` t
 Verify any claim about the generated JavaScript or CSS against the build output rather than the source text.
 
 - **F# interpolated strings are `PrintfFormat`.** A literal percent is written `%%`. `$"width: {pct}%%"` compiles to `` `width: ${pct}%` ``; a single `%` does not survive.
-- **Tailwind normalizes math in arbitrary values.** `calc(100%-9px)` emits `calc(100% - 9px)`, with the whitespace the CSS spec requires around the binary operator. Spelling it `calc(100%_-_9px)` produces identical CSS.
+- **Tailwind normalizes math in arbitrary values.** `calc(100%-9px)` emits `calc(100% - 9px)`, with the whitespace the CSS spec requires around the binary operator. Spelling it `calc(100%_-_9px)` emits the same declaration; only the escaped class selector differs.
 
-To check: `dotnet fable src/App` then read `src/App/*.fs.js`, or `npm run tailwind:prod` then read `public/tailwind.css`.
+To check: `dotnet fable src/App` then read `src/App/**/*.fs.js`, or `npm run tailwind:prod` then read `public/tailwind.css`.
 
 ### Runtime: Cloudflare Workers + Assets
 
