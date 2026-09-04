@@ -4,3 +4,29 @@
    .fs.js sources it scans are gitignored (so auto content detection skips them).
    Both are handled by loading the legacy config explicitly. */
 @config "../tailwind.config.ts";
+
+/* The v2 pairing. `primary` carries the interface, `accent` marks it. Swapping
+   the theme means changing these ten values and nothing else: the Tailwind
+   colour tokens and every arbitrary glow read from here. */
+:root {
+  --primary: #7d8a99;
+  --primary-dim: #5e6a77;
+  --primary-bright: #a3aebb;
+  --primary-lift: #c8d0da;
+  --primary-glow: #7d8a9980;
+  --primary-glow-soft: #7d8a9944;
+  --primary-bright-glow: #a3aebbcc;
+
+  --accent: #c4553f;
+  --accent-dim: #96402f;
+  --accent-bright: #dd7359;
+
+  /* Status colours. Independent of the pairing: these have to mean the same
+     thing whatever the interface colour is. */
+  --danger: #ff2b1a;
+  --danger-dim: #d61c0e;
+  --danger-bright: #ff6b5c;
+  --danger-glow: #ff2b1acc;
+  --warn: #ffc61a;
+  --ok: #2bff8c;
+}

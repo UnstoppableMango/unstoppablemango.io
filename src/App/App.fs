@@ -1,6 +1,7 @@
 module App
 
 open Browser
+open Fable.Core.JsInterop
 open Sutil
 
 let versions = {| fontAwesome = "6.3.0" |}
@@ -14,6 +15,9 @@ let versions = {| fontAwesome = "6.3.0" |}
 |> List.iter (DomHelpers.setHeadStylesheet document)
 
 DomHelpers.setHeadTitle Dom.document "UnstoppableMango"
+
+// Pages open at the top on reload rather than wherever the last visit left off.
+window.history?scrollRestoration <- "manual"
 
 let pages =
     function
@@ -30,12 +34,10 @@ let app () =
     document.onkeydown <-
         fun ke ->
             if ke.key = "]" then
-                let next =
-                    if window.location.hash = "#/v2" then "#/"
-                    else "#/v2"
+                let next = if window.location.hash = "#/v2" then "#/" else "#/v2"
                 window.location.hash <- next
 
-    Html.divc "h-screen bg-cover bg-center lg:bg-right bg-[url(images/hbg-sm.webp)] bg-byzantium-200" [
+    Html.divc "min-h-screen bg-cover bg-fixed bg-center lg:bg-right bg-[url(images/hbg-sm.webp)] bg-byzantium-200" [
         Navigable.bindHash pages
     ]
 

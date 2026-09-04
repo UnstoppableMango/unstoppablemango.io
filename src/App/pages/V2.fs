@@ -9,42 +9,68 @@ open Sutil.CoreElements
 
 /// Corner-bracket HUD frame rendered with CSS border accent divs.
 let private hudFrame (extraClasses: string) children =
-    Html.divc $"relative border border-white/10 bg-black/60 backdrop-blur-md {extraClasses}" [
-        Html.divc "absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-cyber-pink" []
-        Html.divc "absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-cyber-pink" []
-        Html.divc "absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-cyber-pink" []
-        Html.divc "absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-cyber-pink" []
+    Html.divc $"relative rounded-lg border border-glass-edge bg-glass-fill shadow-v2-panel {extraClasses}" [
+        Html.divc "absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary" []
+        Html.divc "absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary" []
+        Html.divc "absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary" []
+        Html.divc "absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary" []
         yield! children
     ]
 
 // ── Components ────────────────────────────────────────────────────────────────
 
-/// Primary CTA button — solid hot-pink, uppercase, monospaced.
+/// Shared chassis for the button family: clipped corners, thin wide type, and a
+/// lit edge marker that grows to full height on hover. Callers supply colour.
+let private angularButton (tone: string) (marker: string) (label: string) =
+    // Plain concatenation, not interpolation: the percent signs in the clip-path
+    // read as printf format specifiers inside an interpolated string.
+    let chassis =
+        "group relative rounded-none pl-7 pr-6 py-2.5 \
+         font-mono font-light uppercase text-[11px] tracking-[0.28em] \
+         [clip-path:polygon(9px_0,100%_0,100%_calc(100%-9px),calc(100%-9px)_100%,0_100%,0_9px)] \
+         transition-all duration-100 "
+
+    Html.buttonc (chassis + tone) [
+        Html.divc $"absolute left-0 top-[9px] bottom-0 w-[4px] transition-all duration-100 \
+             group-hover:top-0 {marker}" []
+        text label
+    ]
+
+/// Primary CTA — filled and lit, the one action the page wants you to take.
 let cyberButton (label: string) =
-    Html.buttonc "relative px-6 py-2 bg-cyber-pink text-black font-mono font-bold uppercase tracking-widest text-sm \
-         border border-cyber-pink \
-         hover:bg-transparent hover:text-cyber-pink hover:shadow-[0_0_12px_#ff2d78] \
-         active:scale-95 transition-all duration-150 animate-pulse-pink" [
-        text label
-    ]
+    angularButton
+        "text-white bg-primary-dim/70 border border-primary-bright \
+         shadow-[0_0_20px_var(--primary-glow),inset_0_1px_0_#ffffff2e] \
+         drop-shadow-[0_0_10px_var(--primary-glow)] \
+         hover:bg-black/10 hover:border-primary-lift \
+         hover:shadow-[0_0_32px_var(--primary-bright-glow),inset_0_1px_0_#ffffff4d] \
+         active:bg-black/25"
+        "bg-white shadow-[0_0_12px_var(--primary-lift),0_0_24px_var(--primary-bright)] \
+         group-hover:shadow-[0_0_18px_#ffffff,0_0_36px_var(--primary-bright)]"
+        label
 
-/// Ghost / outline button variant.
+/// Ghost / outline variant — same chassis, unfilled until you reach for it.
 let cyberButtonGhost (label: string) =
-    Html.buttonc "px-6 py-2 bg-transparent text-cyber-pink font-mono font-bold uppercase tracking-widest text-sm \
-         border border-cyber-pink \
-         hover:bg-cyber-pink/10 hover:shadow-[0_0_8px_#ff2d78] \
-         active:scale-95 transition-all duration-150" [
-        text label
-    ]
+    angularButton
+        "text-primary-bright bg-primary/10 border border-primary-bright/50 \
+         hover:bg-black/8 hover:text-primary-lift hover:border-primary-lift \
+         hover:shadow-[0_0_18px_var(--primary-glow)] \
+         active:bg-black/25"
+        "bg-primary-bright/70 group-hover:bg-white \
+         group-hover:shadow-[0_0_14px_var(--primary-lift)]"
+        label
 
-/// Danger / destructive button.
+/// Destructive variant — the danger colour rather than the primary, otherwise
+/// identical.
 let cyberButtonDanger (label: string) =
-    Html.buttonc "px-6 py-2 bg-transparent text-white font-mono font-bold uppercase tracking-widest text-sm \
-         border border-white/30 \
-         hover:border-cyber-pink hover:text-cyber-pink \
-         active:scale-95 transition-all duration-150" [
-        text label
-    ]
+    angularButton
+        "text-danger-bright bg-danger/15 border border-danger/60 \
+         hover:bg-black/8 hover:text-danger-bright hover:border-danger-bright \
+         hover:shadow-[0_0_20px_var(--danger-glow)] \
+         active:bg-black/25"
+        "bg-danger-bright/80 group-hover:bg-white \
+         group-hover:shadow-[0_0_14px_var(--danger-bright)]"
+        label
 
 /// Monospaced heading with neon glow.
 let cyberHeading (level: int) (label: string) =
@@ -55,9 +81,9 @@ let cyberHeading (level: int) (label: string) =
         | 3 -> "text-xl"
         | _ -> "text-base"
 
-    Html.divc $"font-mono font-bold uppercase tracking-widest text-white {sizeClass} \
-          drop-shadow-[0_0_6px_#ff2d78] animate-hud-appear" [
-        Html.spanc "text-cyber-pink" [
+    Html.divc $"font-mono font-normal uppercase tracking-widest text-white {sizeClass} \
+          drop-shadow-[0_0_5px_var(--primary-glow)] animate-hud-appear" [
+        Html.spanc "text-accent" [
             text "// "
         ]
         text label
@@ -69,42 +95,55 @@ let hudBadge (label: string) (value: string) =
         Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [
             text label
         ]
-        Html.spanc "font-mono text-2xl font-bold text-white tabular-nums leading-none" [
+        Html.spanc "font-mono text-2xl font-normal text-white tabular-nums leading-none" [
             text value
         ]
     ]
 
 /// Thin neon horizontal divider.
 let neonDivider () =
-    Html.divc "w-full h-px bg-gradient-to-r from-transparent via-cyber-pink to-transparent opacity-60" []
+    Html.divc "w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-60" []
 
-/// Input field: dark fill, thin pink border on focus.
+/// Input field: recessed fill, thin primary border on focus.
 let cyberInput (placeholder: string) =
-    Html.inputc "w-full bg-black/50 border border-white/10 text-white font-mono text-sm px-3 py-2 \
+    Html.inputc "w-full rounded-lg bg-glass-well border border-glass-edge text-white font-mono text-sm px-3 py-2 \
+         shadow-v2-inset \
          placeholder-white/25 \
-         focus:outline-none focus:border-cyber-pink focus:shadow-[inset_0_0_4px_#ff2d7844] \
+         focus:outline-none focus:border-primary focus:shadow-[inset_0_0_4px_var(--primary-glow-soft)] \
          transition-all duration-150" [
         Attr.placeholder placeholder
     ]
 
 /// Tag / chip component.
+///
+/// Two corrections keep the label centred rather than riding high and left.
+/// All-caps text has no descenders, so the top padding is a pixel heavier than
+/// the bottom to offset the descender space the line box reserves anyway.
+/// `text-box: trim-both cap alphabetic` is the mechanism aimed at that problem,
+/// but it lands a shade high with this font, so the padding carries it and
+/// behaves the same in every browser.
+///
+/// The end padding subtracts the letter-spacing `tracking-wider` adds after the
+/// final character, which would otherwise push the label left of centre.
 let cyberTag (label: string) =
-    Html.spanc
-        "inline-block px-2 py-0.5 border border-cyber-pink/50 text-cyber-pink font-mono text-xs uppercase tracking-wider"
-        [
-            text label
-        ]
+    Html.spanc "inline-flex items-center leading-none rounded-full \
+         pl-2 pt-[4px] pb-[2px] [padding-inline-end:calc(0.5rem_-_0.05em)] \
+         border border-accent/50 bg-glass-well \
+         text-accent-bright font-mono text-xs uppercase tracking-wider" [
+        text label
+    ]
 
 /// Notification / alert card.
 let hudAlert (kind: string) (msg: string) =
     let kindClass =
         match kind with
-        | "warn" -> "text-yellow-400 border-yellow-400/30"
-        | "ok" -> "text-green-400 border-green-400/30"
-        | _ -> "text-cyber-pink border-cyber-pink/30"
+        | "warn" -> "text-warn border-warn/30"
+        | "ok" -> "text-ok border-ok/30"
+        | "err" -> "text-danger border-danger/40"
+        | _ -> "text-primary border-primary/30"
 
-    Html.divc $"flex items-start gap-3 p-3 border bg-white/5 {kindClass}" [
-        Html.spanc "font-mono text-xs font-bold uppercase tracking-widest mt-0.5 shrink-0" [
+    Html.divc $"flex items-start gap-3 p-3 rounded-lg border bg-glass-fill shadow-v2-inset {kindClass}" [
+        Html.spanc "font-mono text-xs font-normal uppercase tracking-widest mt-0.5 shrink-0" [
             text $"[{kind}]"
         ]
         Html.spanc "font-mono text-xs text-white/80" [
@@ -114,8 +153,8 @@ let hudAlert (kind: string) (msg: string) =
 
 /// Thin neon progress bar.
 let hudProgress (pct: int) =
-    Html.divc "w-full h-1.5 bg-white/10 relative" [
-        Html.divc "h-full bg-cyber-pink shadow-[0_0_4px_#ff2d78]" [
+    Html.divc "w-full h-1.5 rounded-full bg-glass-track relative overflow-hidden" [
+        Html.divc "h-full rounded-full bg-accent shadow-[0_0_4px_var(--accent)]" [
             Attr.style $"width: {pct}%%"
         ]
     ]
@@ -129,33 +168,20 @@ let private section (title: string) children =
         yield! children
     ]
 
-// ── Scan-line CRT overlay ─────────────────────────────────────────────────────
-
-let private scanLineOverlay () =
-    Html.divc "pointer-events-none fixed inset-0 z-50 overflow-hidden" [
-        Html.divc "absolute left-0 right-0 h-16 \
-             bg-gradient-to-b from-transparent via-white/[0.02] to-transparent \
-             animate-scan-line" []
-        Html.divc "absolute inset-0" [
-            Attr.style
-                "background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px)"
-        ]
-    ]
-
 // ── Glitch title ──────────────────────────────────────────────────────────────
 
 let private glitchTitle () =
     Html.divc "relative inline-block select-none" [
-        Html.spanc "font-mono font-black uppercase text-5xl text-white tracking-[0.2em] \
-             drop-shadow-[0_0_12px_#ff2d78] animate-flicker block" [
+        Html.spanc "font-mono font-light uppercase text-5xl text-white tracking-[0.2em] \
+             drop-shadow-[0_0_12px_var(--primary)] animate-flicker block" [
             text "V2 THEME"
         ]
-        Html.spanc "absolute inset-0 font-mono font-black uppercase text-5xl text-cyber-pink \
+        Html.spanc "absolute inset-0 font-mono font-light uppercase text-5xl text-primary \
              tracking-[0.2em] opacity-70 animate-glitch block pointer-events-none" [
             Attr.style "clip-path: inset(15% 0 75% 0)"
             text "V2 THEME"
         ]
-        Html.spanc "absolute inset-0 font-mono font-black uppercase text-5xl text-cyan-400 \
+        Html.spanc "absolute inset-0 font-mono font-light uppercase text-5xl text-accent \
              tracking-[0.2em] opacity-40 animate-glitch-clip block pointer-events-none" [
             Attr.style "clip-path: inset(65% 0 10% 0); transform: translate(3px)"
             text "V2 THEME"
@@ -175,29 +201,28 @@ let private replayAnimation (animClass: string) (ev: Browser.Types.Event) =
         target.className <- original.Replace(animClass, "")
 
         window.requestAnimationFrame (fun _ ->
-            window.requestAnimationFrame (fun _ -> target.className <- original)
-            |> ignore)
+            window.requestAnimationFrame (fun _ -> target.className <- original) |> ignore)
         |> ignore
 
 /// Box preview — for animations that transform, scale or glow.
 let private animBox (animClass: string) =
-    Html.divc $"anim-target w-9 h-9 border-2 border-cyber-pink bg-cyber-pink/10 {animClass}" []
+    Html.divc $"anim-target w-9 h-9 border-2 border-primary bg-primary/10 {animClass}" []
 
 /// Type preview — for animations that move letter-spacing, clip-path or opacity,
 /// which a bare box barely registers.
 let private animType (animClass: string) =
-    Html.spanc $"anim-target font-mono font-black uppercase text-xl tracking-[0.2em] text-white \
-         drop-shadow-[0_0_6px_#ff2d78] {animClass}" [
+    Html.spanc $"anim-target font-mono font-light uppercase text-xl tracking-[0.2em] text-white \
+         drop-shadow-[0_0_6px_var(--primary)] {animClass}" [
         text "V2"
     ]
 
 /// Sweep preview — the scan line, scoped to the tile instead of the viewport.
 let private animSweep (animClass: string) =
-    Html.divc $"anim-target absolute left-0 right-0 h-0.5 bg-cyber-pink shadow-[0_0_6px_#ff2d78] {animClass}" []
+    Html.divc $"anim-target absolute left-0 right-0 h-0.5 bg-primary shadow-[0_0_6px_var(--primary)] {animClass}" []
 
 let private animTile (name: string) (animClass: string) (loops: bool) preview =
     hudFrame "group cursor-pointer select-none p-3 flex flex-col items-center gap-2 \
-         hover:border-cyber-pink/40 transition-colors" [
+         hover:border-primary/40 transition-colors" [
         onClick (replayAnimation animClass) []
         Html.divc "relative w-full h-14 flex items-center justify-center overflow-hidden" [
             preview
@@ -206,7 +231,7 @@ let private animTile (name: string) (animClass: string) (loops: bool) preview =
             text name
         ]
         Html.spanc "font-mono text-[10px] uppercase tracking-widest text-white/0 \
-             group-hover:text-cyber-pink transition-colors" [
+             group-hover:text-primary transition-colors" [
             text (if loops then "replay // loops" else "replay // once")
         ]
     ]
@@ -214,20 +239,38 @@ let private animTile (name: string) (animClass: string) (loops: bool) preview =
 // ── Main view ─────────────────────────────────────────────────────────────────
 
 let view () =
-    Html.divc "min-h-screen bg-black text-white font-mono overflow-y-auto animate-power-on" [
-        scanLineOverlay ()
+    // The backdrop layers live outside the animated wrapper on purpose:
+    // animate-power-on leaves a transform and filter on its element, which would
+    // turn that element into the containing block for `fixed` children and drag
+    // the backdrop along with the scroll.
+    Html.divc "relative min-h-screen text-white font-mono overflow-y-auto" [
+        // Backdrop: the blurred photo, pinned to the viewport so it holds still
+        // while the HUD scrolls over it.
+        Html.divc "pointer-events-none fixed inset-0 z-0 overflow-hidden" [
+            // Pre-blurred at build time: a 960px blurred frame is a fraction of
+            // the sharp original's bytes and saves a live backdrop-filter.
+            Html.divc "absolute inset-0 bg-cover bg-center bg-[url(images/matobo-blur.webp)]" []
+        ]
+
+        // Thick glass pane between the desert ground and the HUD content.
+        Html.divc "pointer-events-none fixed inset-0 z-0 \
+             bg-v2-glass shadow-v2-pane" []
         Html.ac
-            "fixed top-4 right-4 z-[60] inline-flex items-center justify-center border border-cyber-pink bg-black/70 px-4 py-2 text-xs font-bold uppercase tracking-widest text-cyber-pink shadow-[0_0_12px_#ff2d7833] backdrop-blur-sm transition hover:bg-cyber-pink/10 lg:hidden"
+            "fixed top-4 right-4 z-[60] inline-flex items-center justify-center border border-primary bg-black/70 px-4 py-2 text-xs font-normal uppercase tracking-widest text-primary shadow-[0_0_12px_var(--primary-glow-soft)] transition hover:bg-primary/10 lg:hidden"
             [
                 Attr.href "#/"
                 text "EXIT PREVIEW"
             ]
 
-        Html.divc "max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12" [
+        // Content column: a darker translucent slab running the full height of
+        // the page, with the backdrop left visible in the margins either side.
+        Html.divc "relative z-10 max-w-4xl mx-auto px-6 sm:px-10 py-12 flex flex-col gap-12 \
+             bg-black/60 border-x border-glass-edge/40 shadow-[0_0_80px_#050810b3] \
+             animate-power-on" [
 
             // ── Hero ─────────────────────────────────────────────────────────
             Html.divc "flex flex-col items-center gap-4 py-8" [
-                Html.divc $"text-xs text-cyber-pink uppercase tracking-[0.4em] mb-2 animate-hud-appear" [
+                Html.divc $"text-xs text-primary uppercase tracking-[0.4em] mb-2 animate-hud-appear" [
                     text "SYSTEM v2.0.0 // CYBERPUNK UI KIT"
                 ]
                 glitchTitle ()
@@ -286,7 +329,7 @@ let view () =
             section "HUD PANELS" [
                 Html.divc "grid grid-cols-1 md:grid-cols-2 gap-4" [
                     hudFrame "p-6" [
-                        Html.divc "font-mono text-xs text-cyber-pink uppercase tracking-widest mb-3" [
+                        Html.divc "font-mono text-xs text-primary uppercase tracking-widest mb-3" [
                             text "// OPERATOR STATUS"
                         ]
                         Html.divc "flex flex-col gap-2" [
@@ -320,7 +363,7 @@ let view () =
                         ]
                     ]
                     hudFrame "p-6" [
-                        Html.divc "font-mono text-xs text-cyber-pink uppercase tracking-widest mb-3" [
+                        Html.divc "font-mono text-xs text-primary uppercase tracking-widest mb-3" [
                             text "// AMMO COUNTER"
                         ]
                         Html.divc "flex gap-6 items-end" [
@@ -348,7 +391,7 @@ let view () =
                     animTile "GLITCH" "animate-glitch" true (animType "animate-glitch")
                     animTile "GLITCH 2" "animate-glitch-clip" true (animType "animate-glitch-clip")
                     animTile "FLICKER" "animate-flicker" true (animType "animate-flicker")
-                    animTile "PULSE" "animate-pulse-pink" true (animBox "animate-pulse-pink")
+                    animTile "PULSE" "animate-pulse-primary" true (animBox "animate-pulse-primary")
                     animTile "SCAN LINE" "animate-scan-line" true (animSweep "animate-scan-line")
                     animTile "HUD IN" "animate-hud-appear" false (animType "animate-hud-appear")
                     animTile "POWER ON" "animate-power-on" false (animBox "animate-power-on")

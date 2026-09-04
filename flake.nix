@@ -29,10 +29,12 @@
                 concurrently
                 dotnetCorePackages.sdk_10_0
                 eslint
+                exiftool
                 fable # TODO: Not on darwin
                 fantomas
                 git
                 gnumake
+                imagemagick
                 mocha
                 nil
                 nodejs_22
