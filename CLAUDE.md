@@ -77,6 +77,7 @@ Pulp is the design system behind the v2 site. There is no `tailwind.config.ts`; 
 - **`src/pulp/palettes.css`** — one class-scoped block per palette (`.pulp-theme-slate` and friends), plus a shared block deriving the glows with `color-mix`. Slate also sits on `:root` as the default. Adding a palette means editing both the block and the derived selector list; a derived value declared only on `:root` freezes against the default and inherits that way into every other palette.
 - **`src/pulp/surfaces.css`** — everything palette independent: status colours, and the `glass` material family where white tints lift a surface and black tints cut it in.
 - **`src/pulp/tokens.css`** — maps the `--pulp-*` variables onto Tailwind tokens. These blocks must be `@theme inline`: a plain `@theme` emits the token on `:root`, where it resolves once against the default palette and inherits frozen, which silently breaks palette switching. `h-screen`, `min-h-screen` and `bg-v2-glass` have no v4 theme namespace and are written as `@utility` rules.
+- **`src/App/Pulp/Theme.fs`** — owns the palette choice: a Sutil store, `localStorage` persistence, and the class swap on the root element, which removes only palette classes so a second axis can share the element. A synchronous script in `public/index.html` applies the stored palette before the bundle loads to prevent a flash; it duplicates the storage key and class prefix because it runs before any module exists.
 
 ### Infrastructure (`infra/`)
 
