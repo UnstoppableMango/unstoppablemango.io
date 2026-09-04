@@ -40,24 +40,24 @@ let private angularButton (tone: string) (marker: string) (label: string) =
 let cyberButton (label: string) =
     angularButton
         "text-white bg-primary-dim/70 border border-primary-bright \
-         shadow-[0_0_20px_var(--primary-glow),inset_0_1px_0_#ffffff2e] \
-         drop-shadow-[0_0_10px_var(--primary-glow)] \
-         hover:bg-black/10 hover:border-primary-lift \
-         hover:shadow-[0_0_32px_var(--primary-bright-glow),inset_0_1px_0_#ffffff4d] \
-         active:bg-black/25"
-        "bg-white shadow-[0_0_12px_var(--primary-lift),0_0_24px_var(--primary-bright)] \
-         group-hover:shadow-[0_0_18px_#ffffff,0_0_36px_var(--primary-bright)]"
+         shadow-[0_0_20px_var(--pulp-primary-glow),inset_0_1px_0_var(--pulp-glass-rim)] \
+         drop-shadow-[0_0_10px_var(--pulp-primary-glow)] \
+         hover:bg-glass-press hover:border-primary-lift \
+         hover:shadow-[0_0_32px_var(--pulp-primary-bright-glow),inset_0_1px_0_var(--pulp-glass-rim-bright)] \
+         active:bg-glass-press-deep"
+        "bg-lit shadow-[0_0_12px_var(--pulp-primary-lift),0_0_24px_var(--pulp-primary-bright)] \
+         group-hover:shadow-[0_0_18px_var(--pulp-lit),0_0_36px_var(--pulp-primary-bright)]"
         label
 
 /// Ghost / outline variant — same chassis, unfilled until you reach for it.
 let cyberButtonGhost (label: string) =
     angularButton
         "text-primary-bright bg-primary/10 border border-primary-bright/50 \
-         hover:bg-black/8 hover:text-primary-lift hover:border-primary-lift \
-         hover:shadow-[0_0_18px_var(--primary-glow)] \
-         active:bg-black/25"
-        "bg-primary-bright/70 group-hover:bg-white \
-         group-hover:shadow-[0_0_14px_var(--primary-lift)]"
+         hover:bg-glass-press hover:text-primary-lift hover:border-primary-lift \
+         hover:shadow-[0_0_18px_var(--pulp-primary-glow)] \
+         active:bg-glass-press-deep"
+        "bg-primary-bright/70 group-hover:bg-lit \
+         group-hover:shadow-[0_0_14px_var(--pulp-primary-lift)]"
         label
 
 /// Destructive variant — the danger colour rather than the primary, otherwise
@@ -65,11 +65,11 @@ let cyberButtonGhost (label: string) =
 let cyberButtonDanger (label: string) =
     angularButton
         "text-danger-bright bg-danger/15 border border-danger/60 \
-         hover:bg-black/8 hover:text-danger-bright hover:border-danger-bright \
-         hover:shadow-[0_0_20px_var(--danger-glow)] \
-         active:bg-black/25"
-        "bg-danger-bright/80 group-hover:bg-white \
-         group-hover:shadow-[0_0_14px_var(--danger-bright)]"
+         hover:bg-glass-press hover:text-danger-bright hover:border-danger-bright \
+         hover:shadow-[0_0_20px_var(--pulp-danger-glow)] \
+         active:bg-glass-press-deep"
+        "bg-danger-bright/80 group-hover:bg-lit \
+         group-hover:shadow-[0_0_14px_var(--pulp-danger-bright)]"
         label
 
 /// Monospaced heading with neon glow.
@@ -82,7 +82,7 @@ let cyberHeading (level: int) (label: string) =
         | _ -> "text-base"
 
     Html.divc $"font-mono font-normal uppercase tracking-widest text-white {sizeClass} \
-          drop-shadow-[0_0_5px_var(--primary-glow)] animate-hud-appear" [
+          drop-shadow-[0_0_5px_var(--pulp-primary-glow)] animate-hud-appear" [
         Html.spanc "text-accent" [
             text "// "
         ]
@@ -109,7 +109,7 @@ let cyberInput (placeholder: string) =
     Html.inputc "w-full rounded-lg bg-glass-well border border-glass-edge text-white font-mono text-sm px-3 py-2 \
          shadow-v2-inset \
          placeholder-white/25 \
-         focus:outline-none focus:border-primary focus:shadow-[inset_0_0_4px_var(--primary-glow-soft)] \
+         focus:outline-none focus:border-primary focus:shadow-[inset_0_0_4px_var(--pulp-primary-glow-soft)] \
          transition-all duration-150" [
         Attr.placeholder placeholder
     ]
@@ -154,7 +154,7 @@ let hudAlert (kind: string) (msg: string) =
 /// Thin neon progress bar.
 let hudProgress (pct: int) =
     Html.divc "w-full h-1.5 rounded-full bg-glass-track relative overflow-hidden" [
-        Html.divc "h-full rounded-full bg-accent shadow-[0_0_4px_var(--accent)]" [
+        Html.divc "h-full rounded-full bg-accent shadow-[0_0_4px_var(--pulp-accent)]" [
             Attr.style $"width: {pct}%%"
         ]
     ]
@@ -173,7 +173,7 @@ let private section (title: string) children =
 let private glitchTitle () =
     Html.divc "relative inline-block select-none" [
         Html.spanc "font-mono font-light uppercase text-5xl text-white tracking-[0.2em] \
-             drop-shadow-[0_0_12px_var(--primary)] animate-flicker block" [
+             drop-shadow-[0_0_12px_var(--pulp-primary)] animate-flicker block" [
             text "V2 THEME"
         ]
         Html.spanc "absolute inset-0 font-mono font-light uppercase text-5xl text-primary \
@@ -212,13 +212,13 @@ let private animBox (animClass: string) =
 /// which a bare box barely registers.
 let private animType (animClass: string) =
     Html.spanc $"anim-target font-mono font-light uppercase text-xl tracking-[0.2em] text-white \
-         drop-shadow-[0_0_6px_var(--primary)] {animClass}" [
+         drop-shadow-[0_0_6px_var(--pulp-primary)] {animClass}" [
         text "V2"
     ]
 
 /// Sweep preview — the scan line, scoped to the tile instead of the viewport.
 let private animSweep (animClass: string) =
-    Html.divc $"anim-target absolute left-0 right-0 h-0.5 bg-primary shadow-[0_0_6px_var(--primary)] {animClass}" []
+    Html.divc $"anim-target absolute left-0 right-0 h-0.5 bg-primary shadow-[0_0_6px_var(--pulp-primary)] {animClass}" []
 
 let private animTile (name: string) (animClass: string) (loops: bool) preview =
     hudFrame "group cursor-pointer select-none p-3 flex flex-col items-center gap-2 \
@@ -256,7 +256,7 @@ let view () =
         Html.divc "pointer-events-none fixed inset-0 z-0 \
              bg-v2-glass shadow-v2-pane" []
         Html.ac
-            "fixed top-4 right-4 z-[60] inline-flex items-center justify-center border border-primary bg-black/70 px-4 py-2 text-xs font-normal uppercase tracking-widest text-primary shadow-[0_0_12px_var(--primary-glow-soft)] transition hover:bg-primary/10 lg:hidden"
+            "fixed top-4 right-4 z-[60] inline-flex items-center justify-center border border-primary bg-glass-slab px-4 py-2 text-xs font-normal uppercase tracking-widest text-primary shadow-[0_0_12px_var(--pulp-primary-glow-soft)] transition hover:bg-primary/10 lg:hidden"
             [
                 Attr.href "#/"
                 text "EXIT PREVIEW"
@@ -265,7 +265,7 @@ let view () =
         // Content column: a darker translucent slab running the full height of
         // the page, with the backdrop left visible in the margins either side.
         Html.divc "relative z-10 max-w-4xl mx-auto px-6 sm:px-10 py-12 flex flex-col gap-12 \
-             bg-black/60 border-x border-glass-edge/40 shadow-[0_0_80px_#050810b3] \
+             bg-glass-slab border-x border-glass-edge/40 shadow-v2-column \
              animate-power-on" [
 
             // ── Hero ─────────────────────────────────────────────────────────
@@ -276,9 +276,9 @@ let view () =
                 glitchTitle ()
                 Html.divc "flex gap-6 mt-4" [
                     hudBadge "COMPONENTS" "12"
-                    Html.divc "w-px bg-white/10" []
+                    Html.divc "w-px bg-lit/10" []
                     hudBadge "ANIMATIONS" "7"
-                    Html.divc "w-px bg-white/10" []
+                    Html.divc "w-px bg-lit/10" []
                     hudBadge "STATUS" "OK"
                 ]
             ]

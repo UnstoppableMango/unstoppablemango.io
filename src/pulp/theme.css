@@ -1,0 +1,10 @@
+/* Pulp, the design system behind the v2 site.
+ *
+ * Colour is two axes. A palette says which colour the interface is; the
+ * surfaces say how the material behaves and what status means, the same way in
+ * every palette. Both resolve to `--pulp-*` variables that tailwind.config.ts
+ * maps onto Tailwind colour tokens.
+ */
+
+@import "./palettes.css";
+@import "./surfaces.css";
