@@ -46,6 +46,16 @@ make infra         # pulumi up --cwd infra
 
 Fable compiles each `.fs` file to a sibling `.fs.js`. Webpack entry is `src/App/App.fs.js`. The `.fs.js` files are generated during `dotnet fable` and are gitignored (see `*.fs.js` in `.gitignore`).
 
+### Reading generated output
+
+Two codegen layers sit between the source and what ships: Fable compiles `.fs` to `.fs.js`, and Tailwind compiles utility class strings to CSS.
+Verify any claim about the generated JavaScript or CSS against the build output rather than the source text.
+
+- **F# interpolated strings are `PrintfFormat`.** A literal percent is written `%%`. `$"width: {pct}%%"` compiles to `` `width: ${pct}%` ``; a single `%` does not survive.
+- **Tailwind normalizes math in arbitrary values.** `calc(100%-9px)` emits `calc(100% - 9px)`, with the whitespace the CSS spec requires around the binary operator. Spelling it `calc(100%_-_9px)` produces identical CSS.
+
+To check: `dotnet fable src/App` then read `src/App/*.fs.js`, or `npm run tailwind:prod` then read `public/tailwind.css`.
+
 ### Runtime: Cloudflare Workers + Assets
 
 `wrangler.jsonc` configures a Worker that serves `./public` as static assets.
