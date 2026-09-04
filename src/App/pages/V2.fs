@@ -39,7 +39,7 @@ let private angularButton (tone: string) (marker: string) (label: string) =
 /// Primary CTA — filled and lit, the one action the page wants you to take.
 let cyberButton (label: string) =
     angularButton
-        "text-white bg-primary/60 border border-primary-bright \
+        "text-white bg-primary-dim/70 border border-primary-bright \
          shadow-[0_0_20px_var(--primary-glow),inset_0_1px_0_#ffffff2e] \
          drop-shadow-[0_0_10px_var(--primary-glow)] \
          hover:bg-black/10 hover:border-primary-lift \
@@ -104,9 +104,9 @@ let hudBadge (label: string) (value: string) =
 let neonDivider () =
     Html.divc "w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-60" []
 
-/// Input field: dark fill, thin pink border on focus.
+/// Input field: recessed fill, thin primary border on focus.
 let cyberInput (placeholder: string) =
-    Html.inputc "w-full rounded-lg bg-glass-fill-soft border border-glass-edge text-white font-mono text-sm px-3 py-2 \
+    Html.inputc "w-full rounded-lg bg-glass-well border border-glass-edge text-white font-mono text-sm px-3 py-2 \
          shadow-v2-inset \
          placeholder-white/25 \
          focus:outline-none focus:border-primary focus:shadow-[inset_0_0_4px_var(--primary-glow-soft)] \
@@ -115,9 +115,21 @@ let cyberInput (placeholder: string) =
     ]
 
 /// Tag / chip component.
+///
+/// Two corrections keep the label centred rather than riding high and left.
+/// All-caps text has no descenders, so the top padding is a pixel heavier than
+/// the bottom to offset the descender space the line box reserves anyway.
+/// `text-box: trim-both cap alphabetic` is the mechanism aimed at that problem,
+/// but it lands a shade high with this font, so the padding carries it and
+/// behaves the same in every browser.
+///
+/// The end padding subtracts the letter-spacing `tracking-wider` adds after the
+/// final character, which would otherwise push the label left of centre.
 let cyberTag (label: string) =
-    Html.spanc "inline-block px-2 py-0.5 rounded-full border border-accent/50 bg-glass-fill-soft \
-         text-accent font-mono text-xs uppercase tracking-wider" [
+    Html.spanc "inline-flex items-center leading-none rounded-full \
+         pl-2 pt-[4px] pb-[2px] [padding-inline-end:calc(0.5rem_-_0.05em)] \
+         border border-accent/50 bg-glass-well \
+         text-accent-bright font-mono text-xs uppercase tracking-wider" [
         text label
     ]
 

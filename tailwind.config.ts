@@ -63,6 +63,7 @@ export default {
         accent: {
           DEFAULT: 'var(--accent)',
           dim: 'var(--accent-dim)',
+          bright: 'var(--accent-bright)',
         },
         danger: {
           DEFAULT: 'var(--danger)',
@@ -98,7 +99,10 @@ export default {
         // these tint whatever sits behind them rather than covering it.
         glass: {
           fill: '#ffffff21', // panels, alerts
-          'fill-soft': '#ffffff1f', // buttons, inputs, tags
+          'fill-soft': '#ffffff1f', // buttons
+          // Recessed surfaces: darkened rather than lifted, so inputs and tags
+          // read as cut into the glass instead of sitting on top of it.
+          well: '#00000026', // inputs, tags
           track: '#ffffff26', // progress rail
           edge: '#ffffff4d', // borders
           highlight: '#ffffff66', // inset top edge

@@ -19,6 +19,7 @@
 
   --accent: #c4553f;
   --accent-dim: #96402f;
+  --accent-bright: #dd7359;
 
   /* Status colours. Independent of the pairing: these have to mean the same
      thing whatever the interface colour is. */
