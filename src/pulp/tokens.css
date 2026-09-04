@@ -1,0 +1,242 @@
+/* Pulp tokens: the bridge from `--pulp-*` variables to Tailwind utilities.
+ *
+ * `@theme inline` is load bearing. A plain `@theme` emits the mapping as a
+ * custom property on `:root` and points utilities at that property, which
+ * freezes every colour against whatever palette `:root` happens to carry. The
+ * `inline` keyword substitutes the value into the utility instead, so
+ * `.bg-primary` reads `var(--pulp-primary)` directly and resolves against the
+ * element that carries the palette class, wherever that element sits.
+ */
+@theme inline {
+  /* Palette. Defined in palettes.css, switched by the `.pulp-theme-*` class. */
+  --color-primary: var(--pulp-primary);
+  --color-primary-dim: var(--pulp-primary-dim);
+  --color-primary-bright: var(--pulp-primary-bright);
+  --color-primary-lift: var(--pulp-primary-lift);
+
+  --color-accent: var(--pulp-accent);
+  --color-accent-dim: var(--pulp-accent-dim);
+  --color-accent-bright: var(--pulp-accent-bright);
+
+  /* Status. Defined in surfaces.css, the same in every palette. */
+  --color-danger: var(--pulp-danger);
+  --color-danger-dim: var(--pulp-danger-dim);
+  --color-danger-bright: var(--pulp-danger-bright);
+  --color-warn: var(--pulp-warn);
+  --color-ok: var(--pulp-ok);
+
+  /* The light itself rather than a material, so it sits outside `glass`. */
+  --color-lit: var(--pulp-lit);
+
+  /* Frosted surfaces over a photo backdrop. Every value is translucent: these
+   * tint whatever sits behind them rather than covering it. White tints lift a
+   * surface off the backdrop, black tints cut it in.
+   */
+  --color-glass-fill: var(--pulp-glass-fill); /* panels, alerts */
+  --color-glass-track: var(--pulp-glass-track); /* progress rail */
+  --color-glass-edge: var(--pulp-glass-edge); /* borders */
+  --color-glass-rim: var(--pulp-glass-rim); /* inset top light, at rest */
+  --color-glass-rim-bright: var(--pulp-glass-rim-bright); /* the same rim, lit */
+  --color-glass-well: var(--pulp-glass-well); /* inputs, tags */
+  --color-glass-press: var(--pulp-glass-press); /* hover */
+  --color-glass-press-deep: var(--pulp-glass-press-deep); /* active */
+  --color-glass-slab: var(--pulp-glass-slab); /* the page level scrim */
+  --color-glass-cast: var(--pulp-glass-cast); /* thrown onto the backdrop */
+
+  /* Shadows. The two that read a `--pulp-*` variable have to be inline for the
+   * same reason the colours do.
+   */
+  --shadow-v2-panel: 0 16px 48px #070b1080, inset 0 2px 0 var(--pulp-glass-rim-bright),
+    inset 0 -2px 0 #ffffff1f;
+  --shadow-v2-inset: inset 0 2px 0 #ffffff40;
+  --shadow-v2-pane: inset 0 2px 0 #ffffff66, inset 0 -70px 120px #0a0f1426;
+  /* The content column, cast onto the backdrop rather than onto glass. */
+  --shadow-v2-column: 0 0 80px var(--pulp-glass-cast);
+}
+
+/* Static values, so a plain `@theme` is fine. Keyframes have to live in a
+ * `@theme` block to be emitted only when the animation they drive is used.
+ */
+@theme {
+  --animate-slide-down: slide-down 500ms;
+  --animate-glitch: glitch 600ms steps(2) infinite;
+  --animate-glitch-clip: glitch-clip 800ms steps(2) infinite;
+  --animate-scan-line: scan-line 3s linear infinite;
+  --animate-flicker: flicker 4s steps(1) infinite;
+  --animate-power-on: power-on 400ms ease-out forwards;
+  --animate-hud-appear: hud-appear 300ms ease-out forwards;
+  --animate-pulse-primary: pulse-primary 2s ease-in-out infinite;
+
+  @keyframes slide-down {
+    0% {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 100;
+    }
+  }
+
+  @keyframes glitch {
+    0%,
+    100% {
+      transform: translate(0);
+      clip-path: inset(0 0 0 0);
+    }
+    20% {
+      transform: translate(-2px, 1px);
+      clip-path: inset(10% 0 80% 0);
+    }
+    40% {
+      transform: translate(2px, -1px);
+      clip-path: inset(60% 0 20% 0);
+    }
+    60% {
+      transform: translate(-1px, 2px);
+      clip-path: inset(40% 0 40% 0);
+    }
+    80% {
+      transform: translate(1px, -2px);
+      clip-path: inset(80% 0 5% 0);
+    }
+  }
+
+  @keyframes glitch-clip {
+    0%,
+    100% {
+      transform: translate(0);
+      opacity: 1;
+    }
+    33% {
+      transform: translate(3px, 0);
+      opacity: 0.8;
+    }
+    66% {
+      transform: translate(-3px, 0);
+      opacity: 0.9;
+    }
+  }
+
+  /* Positioned against the nearest positioned ancestor rather than the
+   * viewport, so the same sweep works fullscreen and inside a small tile.
+   */
+  @keyframes scan-line {
+    0% {
+      top: -20%;
+    }
+    100% {
+      top: 120%;
+    }
+  }
+
+  @keyframes flicker {
+    0%,
+    97%,
+    100% {
+      opacity: 1;
+    }
+    98% {
+      opacity: 0.6;
+    }
+    99% {
+      opacity: 1;
+    }
+    99.5% {
+      opacity: 0.4;
+    }
+  }
+
+  @keyframes power-on {
+    0% {
+      opacity: 0;
+      transform: scaleY(0.02);
+      filter: brightness(3);
+    }
+    30% {
+      opacity: 1;
+      transform: scaleY(1);
+      filter: brightness(2);
+    }
+    100% {
+      opacity: 1;
+      transform: scaleY(1);
+      filter: brightness(1);
+    }
+  }
+
+  @keyframes hud-appear {
+    0% {
+      opacity: 0;
+      transform: translateX(-8px);
+      letter-spacing: 0.5em;
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+      letter-spacing: inherit;
+    }
+  }
+
+  @keyframes pulse-primary {
+    0%,
+    100% {
+      box-shadow:
+        0 0 4px var(--pulp-primary),
+        0 0 8px var(--pulp-primary);
+    }
+    50% {
+      box-shadow:
+        0 0 12px var(--pulp-primary),
+        0 0 24px var(--pulp-primary-glow-soft);
+    }
+  }
+}
+
+/* v1 colours. Numbered scales are ordinary theme keys, one variable per step. */
+@theme {
+  --color-eerie-black: #1b1d1e;
+
+  --color-byzantium-50: #7b2e58;
+  --color-byzantium-100: #6a274b;
+  --color-byzantium-200: #5a1f3f;
+  --color-byzantium-300: #4a1833;
+  --color-byzantium-400: #3a1228;
+  --color-byzantium-500: #2c0b1d;
+  --color-byzantium-600: #1e0612;
+  --color-byzantium-700: #100209;
+  --color-byzantium-800: #050103;
+  --color-byzantium-900: #010000;
+
+  --color-thistle-50: #dbc5d1;
+  --color-thistle-100: #beabb5;
+  --color-thistle-200: #a2929b;
+  --color-thistle-300: #877981;
+  --color-thistle-400: #6d6168;
+  --color-thistle-500: #544b50;
+  --color-thistle-600: #3c3539;
+  --color-thistle-700: #262123;
+  --color-thistle-800: #110e10;
+  --color-thistle-900: #020202;
+}
+
+/* None of these has a theme namespace in v4, so they are written as utilities.
+ * The screen heights override the built-in `100vh` with the small viewport
+ * height, which is what mobile browsers actually leave visible. The built-in
+ * rule is still emitted; these win on source order, because a redefined
+ * built-in utility is appended rather than replaced.
+ */
+@utility h-screen {
+  height: 100svh;
+}
+
+@utility min-h-screen {
+  min-height: 100svh;
+}
+
+/* The glass pane itself: a cool diagonal tint with the light falling from the
+ * top left.
+ */
+@utility bg-v2-glass {
+  background-image: linear-gradient(155deg, #e8f2f85c 0%, #9dbccc42 38%, #0d141a1a 100%);
+}
