@@ -92,8 +92,14 @@ let private writeStored (palette: Palette) =
 let private applyClass (palette: Palette) =
     let root = document.documentElement
 
-    for p in palettes do
-        root.classList.remove (classPrefix + p.Name)
+    // Every class carrying the prefix goes, not only the ones in `palettes`. The
+    // no-flash script adds `pulp-theme-<name>` for any lowercase storage value,
+    // so a renamed or removed palette can leave a class behind that this module
+    // does not know about. Splitting the string first gives a snapshot, so the
+    // removals do not walk a list they are mutating.
+    for c in root.className.Split(' ') do
+        if c.StartsWith classPrefix then
+            root.classList.remove c
 
     root.classList.add (classPrefix + palette.Name)
 

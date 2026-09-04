@@ -207,8 +207,14 @@ let private paletteChip (palette: Pulp.Theme.Palette) =
 /// no frame at all. It names the current palette rather than drawing it, since
 /// the set is one hover away.
 let private paletteTrigger (active: Pulp.Theme.Palette) =
-    Html.divc "font-mono text-sm uppercase tracking-[0.25em] text-white/35 \
-         group-hover:text-white/70 transition-colors duration-150 select-none cursor-default" [
+    // A button rather than a div, so the keyboard has somewhere to land. The set
+    // opens on focus, which means clicking the trigger opens it too and no click
+    // handler is needed.
+    Html.buttonc "font-mono text-sm uppercase tracking-[0.25em] text-white/35 \
+         group-hover:text-white/70 focus-visible:text-white/70 transition-colors duration-150 \
+         select-none bg-transparent border-none p-0 text-left" [
+        Attr.custom ("type", "button")
+        Attr.custom ("aria-haspopup", "true")
         Attr.title $"Theme: {active.Label}"
         text $"[ {active.Label} ]"
     ]
@@ -218,8 +224,9 @@ let private paletteTrigger (active: Pulp.Theme.Palette) =
 /// control reads as instrument marks on the glass rather than a widget.
 ///
 /// The column and the trigger share one hover region, so the pointer can travel
-/// from one to the other without the set collapsing underneath it. `focus-within`
-/// opens the same way for the keyboard.
+/// from one to the other without the set collapsing underneath it.
+/// `group-focus-within` opens the same way for the keyboard, so focusing the
+/// trigger reveals the set before the tab order reaches it.
 ///
 /// It sits with the other page level controls for now; the nav component takes
 /// it over once there is real site chrome.
@@ -238,7 +245,7 @@ let private paletteSwitcher () =
                     Html.divc "flex flex-col-reverse items-stretch gap-2 \
                          opacity-0 translate-y-2 pointer-events-none \
                          group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto \
-                         focus-within:opacity-100 focus-within:translate-y-0 focus-within:pointer-events-auto \
+                         group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto \
                          transition-all duration-200" [
                         // The active palette is named by the trigger, so the
                         // column offers only the alternatives.
