@@ -6,7 +6,7 @@
 @config "../tailwind.config.ts";
 
 /* The v2 pairing. `primary` carries the interface, `accent` marks it. Swapping
-   the theme means changing these seven values and nothing else: the Tailwind
+   the theme means changing these ten values and nothing else: the Tailwind
    colour tokens and every arbitrary glow read from here. */
 :root {
   --primary: #7d8a99;

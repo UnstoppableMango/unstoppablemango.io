@@ -391,7 +391,7 @@ let view () =
                     animTile "GLITCH" "animate-glitch" true (animType "animate-glitch")
                     animTile "GLITCH 2" "animate-glitch-clip" true (animType "animate-glitch-clip")
                     animTile "FLICKER" "animate-flicker" true (animType "animate-flicker")
-                    animTile "PULSE" "animate-pulse-accent" true (animBox "animate-pulse-accent")
+                    animTile "PULSE" "animate-pulse-primary" true (animBox "animate-pulse-primary")
                     animTile "SCAN LINE" "animate-scan-line" true (animSweep "animate-scan-line")
                     animTile "HUD IN" "animate-hud-appear" false (animType "animate-hud-appear")
                     animTile "POWER ON" "animate-power-on" false (animBox "animate-power-on")

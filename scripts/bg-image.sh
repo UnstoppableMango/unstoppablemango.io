@@ -54,6 +54,15 @@ src=$1
 name=$2
 sigma=${3:-3}
 
+# The name is interpolated into every output path, so it has to stay a plain
+# filename. A value carrying a separator would write variants outside public/images.
+case "$name" in
+"" | . | .. | */* | *\\*)
+	echo "name must be a plain asset filename, with no path separators: $name" >&2
+	exit 2
+	;;
+esac
+
 [ -f "$src" ] || {
 	echo "no such file: $src" >&2
 	exit 1

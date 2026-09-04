@@ -130,7 +130,7 @@ export default {
         'power-on': 'power-on 400ms ease-out forwards',
         'hud-appear': 'hud-appear 300ms ease-out forwards',
         'pulse-pink': 'pulse-pink 2s ease-in-out infinite',
-        'pulse-accent': 'pulse-accent 2s ease-in-out infinite',
+        'pulse-primary': 'pulse-primary 2s ease-in-out infinite',
       },
       keyframes: {
         'slide-down': {
@@ -176,7 +176,7 @@ export default {
           '0%': { opacity: '0', transform: 'translateX(-8px)', letterSpacing: '0.5em' },
           '100%': { opacity: '1', transform: 'translateX(0)', letterSpacing: 'inherit' },
         },
-        'pulse-accent': {
+        'pulse-primary': {
           '0%, 100%': { boxShadow: '0 0 4px var(--primary), 0 0 8px var(--primary)' },
           '50%': { boxShadow: '0 0 12px var(--primary), 0 0 24px var(--primary-glow-soft)' },
         },
