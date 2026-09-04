@@ -159,6 +159,51 @@ let hudProgress (pct: int) =
         ]
     ]
 
+// ── Palette switcher ──────────────────────────────────────────────────────────
+
+/// One chip per palette, painted in that palette's own colours rather than
+/// labelled, so the row reads as a set of swatches. The active one is ringed.
+///
+/// The chip has to paint a palette it is not applying, so the colours come from
+/// the palette record as inline styles rather than from the theme variables,
+/// which always describe the palette currently in force.
+let private paletteChip (palette: Pulp.Theme.Palette) (active: Pulp.Theme.Palette) =
+    let isActive = palette.Name = active.Name
+
+    let ring =
+        if isActive then
+            "border-glass-edge scale-110"
+        else
+            "border-transparent hover:border-glass-edge/60"
+
+    Html.buttonc $"relative w-6 h-6 rounded-full border-2 overflow-hidden \
+         transition-all duration-100 {ring}" [
+        Attr.title palette.Label
+        Attr.custom ("aria-label", palette.Label)
+        Attr.custom ("aria-pressed", (if isActive then "true" else "false"))
+        onClick (fun _ -> Pulp.Theme.select palette) []
+
+        // Split disc: primary on the left, accent on the right.
+        Html.divc "absolute inset-0" [
+            Attr.style $"background: linear-gradient(90deg, {palette.Primary} 0 50%%, {palette.Accent} 50%% 100%%)"
+        ]
+    ]
+
+/// Floating palette switcher. It sits with the other page level controls for
+/// now; the nav component takes it over once there is real site chrome.
+let private paletteSwitcher () =
+    Html.divc "fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] \
+         flex items-center gap-2 px-3 py-2 rounded-full \
+         border border-glass-edge bg-glass-slab shadow-v2-panel" [
+        Html.spanc "font-mono text-[10px] uppercase tracking-widest text-white/40 mr-1" [
+            text "theme"
+        ]
+        Bind.el (
+            Pulp.Theme.current,
+            fun active -> Html.divc "flex items-center gap-2" [ for p in Pulp.Theme.palettes -> paletteChip p active ]
+        )
+    ]
+
 // ── Private section wrapper ───────────────────────────────────────────────────
 
 let private section (title: string) children =
@@ -261,6 +306,8 @@ let view () =
                 Attr.href "#/"
                 text "EXIT PREVIEW"
             ]
+
+        paletteSwitcher ()
 
         // Content column: a darker translucent slab running the full height of
         // the page, with the backdrop left visible in the margins either side.

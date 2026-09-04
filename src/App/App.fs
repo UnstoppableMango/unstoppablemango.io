@@ -19,6 +19,10 @@ DomHelpers.setHeadTitle Dom.document "UnstoppableMango"
 // Pages open at the top on reload rather than wherever the last visit left off.
 window.history?scrollRestoration <- "manual"
 
+// Reconciles the palette store with the class the no-flash script in index.html
+// already set.
+Pulp.Theme.init ()
+
 let pages =
     function
     | "#/v1/music" -> V1.Music.view ()
