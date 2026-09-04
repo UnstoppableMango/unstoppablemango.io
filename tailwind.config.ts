@@ -9,7 +9,6 @@ export default {
       },
       colors: {
         'eerie-black': '#1b1d1e',
-        jet: '#2e2d2e',
         byzantium: {
           50: '#7b2e58',
           100: '#6a274b',
@@ -34,92 +33,56 @@ export default {
           800: '#110e10',
           900: '#020202',
         },
-        'cool-gray': {
-          50: '#8d8d9f',
-          100: '#7a7a8a',
-          200: '#676775',
-          300: '#555561',
-          400: '#44444d',
-          500: '#33333b',
-          600: '#232329',
-          700: '#141418',
-          800: '#070709',
-          900: '#010101',
-        },
-        desert: {
-          sand: '#c9b48d',
-          dune: '#4a4234',
-          dust: '#6b6047',
-          shadow: '#2b271f',
-        },
-        // The v2 pairing. Both families read from CSS variables defined in
-        // app.css, so swapping the theme is one block there.
+        // Pulp. Every entry below reads a `--pulp-*` variable defined under
+        // src/pulp: the palette files decide which colour the interface is, and
+        // the surfaces file decides how the material behaves.
         primary: {
-          DEFAULT: 'var(--primary)',
-          dim: 'var(--primary-dim)',
-          bright: 'var(--primary-bright)',
-          lift: 'var(--primary-lift)',
+          DEFAULT: 'var(--pulp-primary)',
+          dim: 'var(--pulp-primary-dim)',
+          bright: 'var(--pulp-primary-bright)',
+          lift: 'var(--pulp-primary-lift)',
         },
         accent: {
-          DEFAULT: 'var(--accent)',
-          dim: 'var(--accent-dim)',
-          bright: 'var(--accent-bright)',
+          DEFAULT: 'var(--pulp-accent)',
+          dim: 'var(--pulp-accent-dim)',
+          bright: 'var(--pulp-accent-bright)',
         },
         danger: {
-          DEFAULT: 'var(--danger)',
-          dim: 'var(--danger-dim)',
-          bright: 'var(--danger-bright)',
+          DEFAULT: 'var(--pulp-danger)',
+          dim: 'var(--pulp-danger-dim)',
+          bright: 'var(--pulp-danger-bright)',
         },
-        warn: 'var(--warn)',
-        ok: 'var(--ok)',
-        // Palette entries the pairings draw from.
-        sapphire: {
-          DEFAULT: '#4a6fa5',
-          dim: '#3a577f',
-          bright: '#6d92c8',
-          glow: '#4a6fa544',
-          subtle: '#4a6fa511',
-        },
-        // Destructive actions.
-        ember: {
-          DEFAULT: '#b8493f',
-          bright: '#e0705f',
-        },
-        brass: '#c9a227',
-        copper: '#c4693f',
-        seafoam: '#3fa39b',
-        'hot-pink': '#ff5c9d',
-        'cyber-pink': {
-          DEFAULT: '#ff2d78',
-          dim: '#cc1a55',
-          glow: '#ff2d7844',
-          subtle: '#ff2d7811',
-        },
+        warn: 'var(--pulp-warn)',
+        ok: 'var(--pulp-ok)',
+        // The light itself rather than a material, so it sits outside `glass`.
+        lit: 'var(--pulp-lit)',
         // Frosted surfaces over a photo backdrop. Every value is translucent:
-        // these tint whatever sits behind them rather than covering it.
+        // these tint whatever sits behind them rather than covering it. White
+        // tints lift a surface off the backdrop, black tints cut it in.
         glass: {
-          fill: '#ffffff21', // panels, alerts
-          'fill-soft': '#ffffff1f', // buttons
-          // Recessed surfaces: darkened rather than lifted, so inputs and tags
-          // read as cut into the glass instead of sitting on top of it.
-          well: '#00000026', // inputs, tags
-          track: '#ffffff26', // progress rail
-          edge: '#ffffff4d', // borders
-          highlight: '#ffffff66', // inset top edge
-          'highlight-dim': '#ffffff1f', // inset bottom edge
-          shade: '#070b1080', // drop shadow under panels
+          fill: 'var(--pulp-glass-fill)', // panels, alerts
+          track: 'var(--pulp-glass-track)', // progress rail
+          edge: 'var(--pulp-glass-edge)', // borders
+          rim: 'var(--pulp-glass-rim)', // inset top light, at rest
+          'rim-bright': 'var(--pulp-glass-rim-bright)', // the same rim, lit
+          well: 'var(--pulp-glass-well)', // inputs, tags
+          press: 'var(--pulp-glass-press)', // hover
+          'press-deep': 'var(--pulp-glass-press-deep)', // active
+          slab: 'var(--pulp-glass-slab)', // the page level scrim
+          cast: 'var(--pulp-glass-cast)', // thrown onto the backdrop
         },
       },
       backgroundImage: {
-        // Warm wash over the photo, then the pane itself: a cool diagonal
-        // tint with the light falling from the top left.
-        'v2-wash': 'radial-gradient(120% 80% at 50% 0%, #6b604714 0%, #4a423426 45%, #2b271f40 100%)',
+        // The glass pane itself: a cool diagonal tint with the light falling
+        // from the top left.
         'v2-glass': 'linear-gradient(155deg, #e8f2f85c 0%, #9dbccc42 38%, #0d141a1a 100%)',
       },
       boxShadow: {
-        'v2-panel': '0 16px 48px #070b1080, inset 0 2px 0 #ffffff4d, inset 0 -2px 0 #ffffff1f',
+        'v2-panel': '0 16px 48px #070b1080, inset 0 2px 0 var(--pulp-glass-rim-bright), inset 0 -2px 0 #ffffff1f',
         'v2-inset': 'inset 0 2px 0 #ffffff40',
         'v2-pane': 'inset 0 2px 0 #ffffff66, inset 0 -70px 120px #0a0f1426',
+        // The content column, cast onto the backdrop rather than onto glass.
+        'v2-column': '0 0 80px var(--pulp-glass-cast)',
       },
       animation: {
         'slide-down': 'slide-down 500ms',
@@ -129,7 +92,6 @@ export default {
         'flicker': 'flicker 4s steps(1) infinite',
         'power-on': 'power-on 400ms ease-out forwards',
         'hud-appear': 'hud-appear 300ms ease-out forwards',
-        'pulse-pink': 'pulse-pink 2s ease-in-out infinite',
         'pulse-primary': 'pulse-primary 2s ease-in-out infinite',
       },
       keyframes: {
@@ -177,12 +139,8 @@ export default {
           '100%': { opacity: '1', transform: 'translateX(0)', letterSpacing: 'inherit' },
         },
         'pulse-primary': {
-          '0%, 100%': { boxShadow: '0 0 4px var(--primary), 0 0 8px var(--primary)' },
-          '50%': { boxShadow: '0 0 12px var(--primary), 0 0 24px var(--primary-glow-soft)' },
-        },
-        'pulse-pink': {
-          '0%, 100%': { boxShadow: '0 0 4px #ff2d78, 0 0 8px #ff2d78' },
-          '50%': { boxShadow: '0 0 12px #ff2d78, 0 0 24px #ff2d7844' },
+          '0%, 100%': { boxShadow: '0 0 4px var(--pulp-primary), 0 0 8px var(--pulp-primary)' },
+          '50%': { boxShadow: '0 0 12px var(--pulp-primary), 0 0 24px var(--pulp-primary-glow-soft)' },
         },
       },
     },
