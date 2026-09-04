@@ -161,46 +161,92 @@ let hudProgress (pct: int) =
 
 // ── Palette switcher ──────────────────────────────────────────────────────────
 
-/// One chip per palette, painted in that palette's own colours rather than
-/// labelled, so the row reads as a set of swatches. The active one is ringed.
+/// One empty frame per palette, marked in the corners with the colours it
+/// applies. Only the palettes you can switch to appear, so there is no active
+/// state to draw: the trigger names the one in force.
 ///
-/// The chip has to paint a palette it is not applying, so the colours come from
+/// The frame has to show a palette it is not applying, so the colours come from
 /// the palette record as inline styles rather than from the theme variables,
 /// which always describe the palette currently in force.
-let private paletteChip (palette: Pulp.Theme.Palette) (active: Pulp.Theme.Palette) =
-    let isActive = palette.Name = active.Name
-
-    let ring =
-        if isActive then
-            "border-glass-edge scale-110"
-        else
-            "border-transparent hover:border-glass-edge/60"
-
-    Html.buttonc $"relative w-6 h-6 rounded-full border-2 overflow-hidden \
-         transition-all duration-100 {ring}" [
+///
+/// The brackets sit on the corners the chassis clip-path leaves intact: it
+/// chamfers the top left and bottom right, so the top right and bottom left are
+/// the two square corners left to mark.
+///
+/// The group is named. An anonymous `group` here would also answer to the
+/// switcher's own group wrapping it, and hovering anywhere on the control would
+/// light every frame at once.
+let private paletteChip (palette: Pulp.Theme.Palette) =
+    Html.buttonc (
+        "group/chip relative block h-12 rounded-none bg-transparent \
+         border border-glass-edge/25 hover:border-glass-edge/60 transition-all duration-100 "
+        + "[clip-path:polygon(7px_0,100%_0,100%_calc(100%-7px),calc(100%-7px)_100%,0_100%,0_7px)]"
+    ) [
         Attr.title palette.Label
-        Attr.custom ("aria-label", palette.Label)
-        Attr.custom ("aria-pressed", (if isActive then "true" else "false"))
+        Attr.custom ("aria-label", $"Theme: {palette.Label}")
         onClick (fun _ -> Pulp.Theme.select palette) []
 
-        // Split disc: primary on the left, accent on the right.
-        Html.divc "absolute inset-0" [
-            Attr.style $"background: linear-gradient(90deg, {palette.Primary} 0 50%%, {palette.Accent} 50%% 100%%)"
+        // The interior is empty until the pointer arrives, then fills with the
+        // two colours meeting at a hard edge. A blend between them read as one
+        // muddy third colour and said nothing about either; two flat fields at
+        // low alpha state the pairing and leave the contrast between them intact.
+        Html.divc "absolute inset-0 opacity-0 group-hover/chip:opacity-100 transition-opacity duration-150" [
+            Attr.style
+                $"background: linear-gradient(90deg, {palette.Primary}59 0 62%%, {palette.Accent}59 62%% 100%%)"
+        ]
+
+        Html.divc "absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2" [
+            Attr.style $"border-color: {palette.Primary}b3"
+        ]
+        Html.divc "absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2" [
+            Attr.style $"border-color: {palette.Accent}b3"
         ]
     ]
 
-/// Floating palette switcher. It sits with the other page level controls for
-/// now; the nav component takes it over once there is real site chrome.
+/// The collapsed state: the word, in the same bracketed mono the alerts use, and
+/// no frame at all. It names the current palette rather than drawing it, since
+/// the set is one hover away.
+let private paletteTrigger (active: Pulp.Theme.Palette) =
+    Html.divc "font-mono text-sm uppercase tracking-[0.25em] text-white/35 \
+         group-hover:text-white/70 transition-colors duration-150 select-none cursor-default" [
+        Attr.title $"Theme: {active.Label}"
+        text $"[ {active.Label} ]"
+    ]
+
+/// Palette switcher: collapsed to the frame of the palette in force, expanding
+/// upward into the full set on hover. Each frame is empty and unpanelled, so the
+/// control reads as instrument marks on the glass rather than a widget.
+///
+/// The column and the trigger share one hover region, so the pointer can travel
+/// from one to the other without the set collapsing underneath it. `focus-within`
+/// opens the same way for the keyboard.
+///
+/// It sits with the other page level controls for now; the nav component takes
+/// it over once there is real site chrome.
 let private paletteSwitcher () =
-    Html.divc "fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] \
-         flex items-center gap-2 px-3 py-2 rounded-full \
-         border border-glass-edge bg-glass-slab shadow-v2-panel" [
-        Html.spanc "font-mono text-[10px] uppercase tracking-widest text-white/40 mr-1" [
-            text "theme"
-        ]
+    // The column takes its width from its widest child, which is the trigger
+    // label, and the frames stretch to match it. So the set is exactly as wide
+    // as the word naming the current palette, and it resizes when that word
+    // changes length.
+    Html.divc "group fixed bottom-6 left-6 z-[60] flex flex-col-reverse items-stretch gap-2 w-fit" [
         Bind.el (
             Pulp.Theme.current,
-            fun active -> Html.divc "flex items-center gap-2" [ for p in Pulp.Theme.palettes -> paletteChip p active ]
+            fun active ->
+                fragment [
+                    paletteTrigger active
+
+                    Html.divc "flex flex-col-reverse items-stretch gap-2 \
+                         opacity-0 translate-y-2 pointer-events-none \
+                         group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto \
+                         focus-within:opacity-100 focus-within:translate-y-0 focus-within:pointer-events-auto \
+                         transition-all duration-200" [
+                        // The active palette is named by the trigger, so the
+                        // column offers only the alternatives.
+                        for p in Pulp.Theme.palettes do
+                            if p.Name <> active.Name then
+                                paletteChip p
+                    ]
+                ]
         )
     ]
 
