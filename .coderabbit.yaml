@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# Only path_instructions are configured here. `profile` is pinned to the value
+# reviews already run under, so adding this file does not change review
+# behaviour; everything else stays on CodeRabbit defaults.
+language: en-US
+reviews:
+  profile: chill
+  path_instructions:
+    - path: "src/App/**/*.fs"
+      instructions: |
+        This F# is compiled to JavaScript by Fable, and the Tailwind utility
+        class strings in it are compiled to CSS by Tailwind v4. Source text is
+        two codegen layers away from what ships. Verify any claim about the
+        generated JavaScript or CSS against the build output, `src/App/**/*.fs.js`
+        and `public/tailwind.css`, before reporting it.
+
+        Two specific patterns are correct and must not be flagged:
+
+        - F# interpolated strings are `PrintfFormat`, so a literal percent is
+          written `%%`. `$"width: {pct}%%"` compiles to `` `width: ${pct}%` ``.
+          A single `%` does not survive compilation. Doubling it is required,
+          not a typo, and does not render as a literal `%%`.
+        - Tailwind normalizes math inside `calc()` in arbitrary values.
+          `calc(100%-9px)` emits `calc(100% - 9px)`, already carrying the
+          whitespace the CSS spec requires around the binary operator. Writing
+          `calc(100%_-_9px)` emits the same declaration, differing only in
+          the escaped class selector, so suggesting it is a no-op.
