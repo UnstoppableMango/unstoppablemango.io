@@ -39,7 +39,7 @@ Pulp names the tone and the brand instead, neither of which changes when the vis
 
 Roughly half a day.
 
-1. Move the `:root` block out of `src/app.css` into a themes file, with each palette a class scoped variable block (`.theme-slate`, `.theme-teal`, and so on).
+1. Move the `:root` block out of `src/app.css` into a themes file, with each palette a class scoped variable block (`.pulp-theme-slate`, `.pulp-theme-ink`, and so on).
 2. Complete the colour families, so every one has the `dim` and `bright` steps the pairings turned out to need.
 3. Name the remaining literals in `V2.fs`: the `bg-black/*` hover fills, the `#ffffff2e` inset highlights, and the arbitrary glow values.
 
