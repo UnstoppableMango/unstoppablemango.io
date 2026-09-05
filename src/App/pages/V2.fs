@@ -26,7 +26,7 @@ let private angularButton (tone: string) (marker: string) (label: string) =
     // read as printf format specifiers inside an interpolated string.
     let chassis =
         "group relative rounded-none pl-7 pr-6 py-2.5 \
-         font-mono font-light uppercase text-[11px] tracking-[0.28em] \
+         font-mono font-light uppercase text-[0.6875rem] tracking-[0.28em] \
          [clip-path:polygon(9px_0,100%_0,100%_calc(100%-9px),calc(100%-9px)_100%,0_100%,0_9px)] \
          transition-all duration-100 "
 
@@ -39,14 +39,14 @@ let private angularButton (tone: string) (marker: string) (label: string) =
 /// Primary CTA — filled and lit, the one action the page wants you to take.
 let cyberButton (label: string) =
     angularButton
-        "text-white bg-primary-dim/70 border border-primary-bright \
+        "text-fg bg-primary-dim/70 border border-primary-bright \
          shadow-[0_0_20px_var(--pulp-primary-glow),inset_0_1px_0_var(--pulp-glass-rim)] \
          drop-shadow-[0_0_10px_var(--pulp-primary-glow)] \
          hover:bg-glass-press hover:border-primary-lift \
          hover:shadow-[0_0_32px_var(--pulp-primary-bright-glow),inset_0_1px_0_var(--pulp-glass-rim-bright)] \
          active:bg-glass-press-deep"
-        "bg-lit shadow-[0_0_12px_var(--pulp-primary-lift),0_0_24px_var(--pulp-primary-bright)] \
-         group-hover:shadow-[0_0_18px_var(--pulp-lit),0_0_36px_var(--pulp-primary-bright)]"
+        "bg-lit shadow-[0_0_12px_var(--pulp-primary-lift-glow),0_0_24px_var(--pulp-primary-bright-glow)] \
+         group-hover:shadow-[0_0_18px_var(--pulp-lit-glow),0_0_36px_var(--pulp-primary-bright-glow)]"
         label
 
 /// Ghost / outline variant — same chassis, unfilled until you reach for it.
@@ -57,7 +57,7 @@ let cyberButtonGhost (label: string) =
          hover:shadow-[0_0_18px_var(--pulp-primary-glow)] \
          active:bg-glass-press-deep"
         "bg-primary-bright/70 group-hover:bg-lit \
-         group-hover:shadow-[0_0_14px_var(--pulp-primary-lift)]"
+         group-hover:shadow-[0_0_14px_var(--pulp-primary-lift-glow)]"
         label
 
 /// Destructive variant — the danger colour rather than the primary, otherwise
@@ -69,7 +69,7 @@ let cyberButtonDanger (label: string) =
          hover:shadow-[0_0_20px_var(--pulp-danger-glow)] \
          active:bg-glass-press-deep"
         "bg-danger-bright/80 group-hover:bg-lit \
-         group-hover:shadow-[0_0_14px_var(--pulp-danger-bright)]"
+         group-hover:shadow-[0_0_14px_var(--pulp-danger-glow)]"
         label
 
 /// Monospaced heading with neon glow.
@@ -81,7 +81,7 @@ let cyberHeading (level: int) (label: string) =
         | 3 -> "text-xl"
         | _ -> "text-base"
 
-    Html.divc $"font-mono font-normal uppercase tracking-widest text-white {sizeClass} \
+    Html.divc $"font-mono font-normal uppercase tracking-widest text-fg {sizeClass} \
           drop-shadow-[0_0_5px_var(--pulp-primary-glow)] animate-hud-appear" [
         Html.spanc "text-accent" [
             text "// "
@@ -92,10 +92,10 @@ let cyberHeading (level: int) (label: string) =
 /// Status badge — mimics ammo / health counter readouts.
 let hudBadge (label: string) (value: string) =
     Html.divc "flex flex-col items-center gap-0.5" [
-        Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [
+        Html.spanc "font-mono text-xs text-fg-faint uppercase tracking-widest" [
             text label
         ]
-        Html.spanc "font-mono text-2xl font-normal text-white tabular-nums leading-none" [
+        Html.spanc "font-mono text-2xl font-normal text-fg tabular-nums leading-none" [
             text value
         ]
     ]
@@ -106,9 +106,9 @@ let neonDivider () =
 
 /// Input field: recessed fill, thin primary border on focus.
 let cyberInput (placeholder: string) =
-    Html.inputc "w-full rounded-lg bg-glass-well border border-glass-edge text-white font-mono text-sm px-3 py-2 \
+    Html.inputc "w-full rounded-lg bg-glass-well border border-glass-edge text-fg font-mono text-sm px-3 py-2 \
          shadow-v2-inset \
-         placeholder-white/25 \
+         placeholder-fg-ghost \
          focus:outline-none focus:border-primary focus:shadow-[inset_0_0_4px_var(--pulp-primary-glow-soft)] \
          transition-all duration-150" [
         Attr.placeholder placeholder
@@ -125,9 +125,13 @@ let cyberInput (placeholder: string) =
 ///
 /// The end padding subtracts the letter-spacing `tracking-wider` adds after the
 /// final character, which would otherwise push the label left of centre.
+///
+/// Both corrections are written in rem rather than px, so the `readable`
+/// intensity's larger type carries them along instead of leaving the label
+/// riding high in a taller chip.
 let cyberTag (label: string) =
     Html.spanc "inline-flex items-center leading-none rounded-full \
-         pl-2 pt-[4px] pb-[2px] [padding-inline-end:calc(0.5rem_-_0.05em)] \
+         pl-2 pt-[0.25rem] pb-[0.125rem] [padding-inline-end:calc(0.5rem_-_0.05em)] \
          border border-accent/50 bg-glass-well \
          text-accent-bright font-mono text-xs uppercase tracking-wider" [
         text label
@@ -146,7 +150,7 @@ let hudAlert (kind: string) (msg: string) =
         Html.spanc "font-mono text-xs font-normal uppercase tracking-widest mt-0.5 shrink-0" [
             text $"[{kind}]"
         ]
-        Html.spanc "font-mono text-xs text-white/80" [
+        Html.spanc "font-mono text-xs text-fg-muted" [
             text msg
         ]
     ]
@@ -154,12 +158,46 @@ let hudAlert (kind: string) (msg: string) =
 /// Thin neon progress bar.
 let hudProgress (pct: int) =
     Html.divc "w-full h-1.5 rounded-full bg-glass-track relative overflow-hidden" [
-        Html.divc "h-full rounded-full bg-accent shadow-[0_0_4px_var(--pulp-accent)]" [
+        Html.divc "h-full rounded-full bg-accent shadow-[0_0_4px_var(--pulp-accent-glow)]" [
             Attr.style $"width: {pct}%%"
         ]
     ]
 
-// ── Palette switcher ──────────────────────────────────────────────────────────
+// ── Theme switchers ───────────────────────────────────────────────────────────
+
+/// The shell both axes share: a trigger naming the value in force, and a column
+/// of alternatives that opens upward on hover or focus.
+///
+/// The trigger is a button rather than a div, so the keyboard has somewhere to
+/// land. The set opens on focus, which means clicking the trigger opens it too
+/// and no click handler is needed here.
+///
+/// The trigger and the column sit in one hover region, so the pointer can travel
+/// from one to the other without the set collapsing underneath it.
+/// `group-focus-within` opens the same way for the keyboard, so focusing the
+/// trigger reveals the set before the tab order reaches it.
+///
+/// The column takes its width from its widest child, so it is exactly as wide as
+/// the longest word in the axis and resizes when that word changes.
+let private axisSwitcher (title: string) (label: string) alternatives =
+    Html.divc "group flex flex-col-reverse items-stretch gap-2 w-fit" [
+        Html.buttonc "font-mono text-sm uppercase tracking-[0.25em] text-fg-faint \
+             group-hover:text-fg-muted focus-visible:text-fg-muted transition-colors duration-150 \
+             select-none bg-transparent border-none p-0 text-left" [
+            Attr.custom ("type", "button")
+            Attr.custom ("aria-haspopup", "true")
+            Attr.title title
+            text $"[ {label} ]"
+        ]
+
+        Html.divc
+            "flex flex-col-reverse items-stretch gap-2 \
+             opacity-0 translate-y-2 pointer-events-none \
+             group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto \
+             group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto \
+             transition-all duration-200"
+            alternatives
+    ]
 
 /// One empty frame per palette, marked in the corners with the colours it
 /// applies. Only the palettes you can switch to appear, so there is no active
@@ -177,82 +215,72 @@ let hudProgress (pct: int) =
 /// switcher's own group wrapping it, and hovering anywhere on the control would
 /// light every frame at once.
 let private paletteChip (palette: Pulp.Theme.Palette) =
-    Html.buttonc (
-        "group/chip relative block h-12 rounded-none bg-transparent \
+    Html.buttonc
+        ("group/chip relative block h-12 rounded-none bg-transparent \
          border border-glass-edge/25 hover:border-glass-edge/60 transition-all duration-100 "
-        + "[clip-path:polygon(7px_0,100%_0,100%_calc(100%-7px),calc(100%-7px)_100%,0_100%,0_7px)]"
-    ) [
-        Attr.title palette.Label
-        Attr.custom ("aria-label", $"Theme: {palette.Label}")
-        onClick (fun _ -> Pulp.Theme.select palette) []
+         + "[clip-path:polygon(7px_0,100%_0,100%_calc(100%-7px),calc(100%-7px)_100%,0_100%,0_7px)]")
+        [
+            Attr.title palette.Label
+            Attr.custom ("aria-label", $"Theme: {palette.Label}")
+            onClick (fun _ -> Pulp.Theme.selectPalette palette) []
 
-        // The interior is empty until the pointer arrives, then fills with the
-        // two colours meeting at a hard edge. A blend between them read as one
-        // muddy third colour and said nothing about either; two flat fields at
-        // low alpha state the pairing and leave the contrast between them intact.
-        Html.divc "absolute inset-0 opacity-0 group-hover/chip:opacity-100 transition-opacity duration-150" [
-            Attr.style
-                $"background: linear-gradient(90deg, {palette.Primary}59 0 62%%, {palette.Accent}59 62%% 100%%)"
+            // The interior is empty until the pointer arrives, then fills with the
+            // two colours meeting at a hard edge. A blend between them read as one
+            // muddy third colour and said nothing about either; two flat fields at
+            // low alpha state the pairing and leave the contrast between them intact.
+            Html.divc "absolute inset-0 opacity-0 group-hover/chip:opacity-100 transition-opacity duration-150" [
+                Attr.style
+                    $"background: linear-gradient(90deg, {palette.Primary}59 0 62%%, {palette.Accent}59 62%% 100%%)"
+            ]
+
+            Html.divc "absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2" [
+                Attr.style $"border-color: {palette.Primary}b3"
+            ]
+            Html.divc "absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2" [
+                Attr.style $"border-color: {palette.Accent}b3"
+            ]
         ]
 
-        Html.divc "absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2" [
-            Attr.style $"border-color: {palette.Primary}b3"
-        ]
-        Html.divc "absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2" [
-            Attr.style $"border-color: {palette.Accent}b3"
-        ]
-    ]
-
-/// The collapsed state: the word, in the same bracketed mono the alerts use, and
-/// no frame at all. It names the current palette rather than drawing it, since
-/// the set is one hover away.
-let private paletteTrigger (active: Pulp.Theme.Palette) =
-    // A button rather than a div, so the keyboard has somewhere to land. The set
-    // opens on focus, which means clicking the trigger opens it too and no click
-    // handler is needed.
-    Html.buttonc "font-mono text-sm uppercase tracking-[0.25em] text-white/35 \
-         group-hover:text-white/70 focus-visible:text-white/70 transition-colors duration-150 \
+/// An intensity has no colour to draw, so its alternatives are the bracketed
+/// words the trigger uses, one step quieter until you reach for them. The title
+/// carries what the stop does, which the label alone cannot say.
+let private intensityOption (intensity: Pulp.Theme.Intensity) =
+    Html.buttonc "font-mono text-sm uppercase tracking-[0.25em] text-fg-ghost \
+         hover:text-fg-muted focus-visible:text-fg-muted transition-colors duration-150 \
          select-none bg-transparent border-none p-0 text-left" [
         Attr.custom ("type", "button")
-        Attr.custom ("aria-haspopup", "true")
-        Attr.title $"Theme: {active.Label}"
-        text $"[ {active.Label} ]"
+        Attr.title intensity.Description
+        Attr.custom ("aria-label", $"Intensity: {intensity.Label}")
+        onClick (fun _ -> Pulp.Theme.selectIntensity intensity) []
+        text $"[ {intensity.Label} ]"
     ]
 
-/// Palette switcher: collapsed to the frame of the palette in force, expanding
-/// upward into the full set on hover. Each frame is empty and unpanelled, so the
-/// control reads as instrument marks on the glass rather than a widget.
+/// The two switchers, side by side: intensity on the left, palette on the right,
+/// both collapsed to the word naming what is in force. Each column offers only
+/// the alternatives, since the trigger already names the current one, which is
+/// why neither needs an active state to draw.
 ///
-/// The column and the trigger share one hover region, so the pointer can travel
-/// from one to the other without the set collapsing underneath it.
-/// `group-focus-within` opens the same way for the keyboard, so focusing the
-/// trigger reveals the set before the tab order reaches it.
-///
-/// It sits with the other page level controls for now; the nav component takes
-/// it over once there is real site chrome.
-let private paletteSwitcher () =
-    // The column takes its width from its widest child, which is the trigger
-    // label, and the frames stretch to match it. So the set is exactly as wide
-    // as the word naming the current palette, and it resizes when that word
-    // changes length.
-    Html.divc "group fixed bottom-6 left-6 z-[60] flex flex-col-reverse items-stretch gap-2 w-fit" [
+/// They sit with the other page level controls for now; the nav component takes
+/// them over once there is real site chrome.
+let private themeControls () =
+    Html.divc "fixed bottom-6 left-6 z-[60] flex items-end gap-6" [
         Bind.el (
-            Pulp.Theme.current,
+            Pulp.Theme.currentIntensity,
             fun active ->
-                fragment [
-                    paletteTrigger active
+                axisSwitcher $"Intensity: {active.Description}" active.Label [
+                    for i in Pulp.Theme.intensities do
+                        if i.Name <> active.Name then
+                            intensityOption i
+                ]
+        )
 
-                    Html.divc "flex flex-col-reverse items-stretch gap-2 \
-                         opacity-0 translate-y-2 pointer-events-none \
-                         group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto \
-                         group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto \
-                         transition-all duration-200" [
-                        // The active palette is named by the trigger, so the
-                        // column offers only the alternatives.
-                        for p in Pulp.Theme.palettes do
-                            if p.Name <> active.Name then
-                                paletteChip p
-                    ]
+        Bind.el (
+            Pulp.Theme.currentPalette,
+            fun active ->
+                axisSwitcher $"Theme: {active.Label}" active.Label [
+                    for p in Pulp.Theme.palettes do
+                        if p.Name <> active.Name then
+                            paletteChip p
                 ]
         )
     ]
@@ -270,16 +298,20 @@ let private section (title: string) children =
 
 let private glitchTitle () =
     Html.divc "relative inline-block select-none" [
-        Html.spanc "font-mono font-light uppercase text-5xl text-white tracking-[0.2em] \
-             drop-shadow-[0_0_12px_var(--pulp-primary)] animate-flicker block" [
+        Html.spanc "font-mono font-light uppercase text-5xl text-fg tracking-[0.2em] \
+             drop-shadow-[0_0_12px_var(--pulp-primary-glow)] animate-flicker block" [
             text "V2 THEME"
         ]
-        Html.spanc "absolute inset-0 font-mono font-light uppercase text-5xl text-primary \
+        // The two offset duplicates are the glitch itself. Marked `pulp-decor`
+        // because a stopped glitch leaves them as static ghosts of the title
+        // rather than as anything anyone meant to read, so the quieter
+        // intensities take them out.
+        Html.spanc "pulp-decor absolute inset-0 font-mono font-light uppercase text-5xl text-primary \
              tracking-[0.2em] opacity-70 animate-glitch block pointer-events-none" [
             Attr.style "clip-path: inset(15% 0 75% 0)"
             text "V2 THEME"
         ]
-        Html.spanc "absolute inset-0 font-mono font-light uppercase text-5xl text-accent \
+        Html.spanc "pulp-decor absolute inset-0 font-mono font-light uppercase text-5xl text-accent \
              tracking-[0.2em] opacity-40 animate-glitch-clip block pointer-events-none" [
             Attr.style "clip-path: inset(65% 0 10% 0); transform: translate(3px)"
             text "V2 THEME"
@@ -309,14 +341,16 @@ let private animBox (animClass: string) =
 /// Type preview — for animations that move letter-spacing, clip-path or opacity,
 /// which a bare box barely registers.
 let private animType (animClass: string) =
-    Html.spanc $"anim-target font-mono font-light uppercase text-xl tracking-[0.2em] text-white \
-         drop-shadow-[0_0_6px_var(--pulp-primary)] {animClass}" [
+    Html.spanc $"anim-target font-mono font-light uppercase text-xl tracking-[0.2em] text-fg \
+         drop-shadow-[0_0_6px_var(--pulp-primary-glow)] {animClass}" [
         text "V2"
     ]
 
 /// Sweep preview — the scan line, scoped to the tile instead of the viewport.
 let private animSweep (animClass: string) =
-    Html.divc $"anim-target absolute left-0 right-0 h-0.5 bg-primary shadow-[0_0_6px_var(--pulp-primary)] {animClass}" []
+    Html.divc
+        $"anim-target absolute left-0 right-0 h-0.5 bg-primary shadow-[0_0_6px_var(--pulp-primary-glow)] {animClass}"
+        []
 
 let private animTile (name: string) (animClass: string) (loops: bool) preview =
     hudFrame "group cursor-pointer select-none p-3 flex flex-col items-center gap-2 \
@@ -325,10 +359,10 @@ let private animTile (name: string) (animClass: string) (loops: bool) preview =
         Html.divc "relative w-full h-14 flex items-center justify-center overflow-hidden" [
             preview
         ]
-        Html.spanc "font-mono text-xs text-white/40 uppercase tracking-widest" [
+        Html.spanc "font-mono text-xs text-fg-faint uppercase tracking-widest" [
             text name
         ]
-        Html.spanc "font-mono text-[10px] uppercase tracking-widest text-white/0 \
+        Html.spanc "font-mono text-[0.625rem] uppercase tracking-widest text-transparent \
              group-hover:text-primary transition-colors" [
             text (if loops then "replay // loops" else "replay // once")
         ]
@@ -341,7 +375,7 @@ let view () =
     // animate-power-on leaves a transform and filter on its element, which would
     // turn that element into the containing block for `fixed` children and drag
     // the backdrop along with the scroll.
-    Html.divc "relative min-h-screen text-white font-mono overflow-y-auto" [
+    Html.divc "relative min-h-screen text-fg font-mono overflow-y-auto" [
         // Backdrop: the blurred photo, pinned to the viewport so it holds still
         // while the HUD scrolls over it.
         Html.divc "pointer-events-none fixed inset-0 z-0 overflow-hidden" [
@@ -360,7 +394,7 @@ let view () =
                 text "EXIT PREVIEW"
             ]
 
-        paletteSwitcher ()
+        themeControls ()
 
         // Content column: a darker translucent slab running the full height of
         // the page, with the backdrop left visible in the margins either side.
@@ -399,7 +433,7 @@ let view () =
                 cyberHeading 1 "ALPHA SECTOR"
                 cyberHeading 2 "BRAVO SECTOR"
                 cyberHeading 3 "CHARLIE SECTOR"
-                Html.pc "text-sm text-white/60 font-mono leading-relaxed" [
+                Html.pc "text-sm text-fg-dim font-mono leading-relaxed" [
                     text "Auxiliary data stream active. Signal integrity nominal. Monitoring frequency 2.4 GHz."
                 ]
             ]
@@ -434,28 +468,28 @@ let view () =
                         ]
                         Html.divc "flex flex-col gap-2" [
                             Html.divc "flex justify-between" [
-                                Html.spanc "text-white/40 text-xs" [
+                                Html.spanc "text-fg-faint text-xs" [
                                     text "HEALTH"
                                 ]
-                                Html.spanc "text-white text-xs" [
+                                Html.spanc "text-fg text-xs" [
                                     text "87%"
                                 ]
                             ]
                             hudProgress 87
                             Html.divc "flex justify-between mt-1" [
-                                Html.spanc "text-white/40 text-xs" [
+                                Html.spanc "text-fg-faint text-xs" [
                                     text "ARMOR"
                                 ]
-                                Html.spanc "text-white text-xs" [
+                                Html.spanc "text-fg text-xs" [
                                     text "52%"
                                 ]
                             ]
                             hudProgress 52
                             Html.divc "flex justify-between mt-1" [
-                                Html.spanc "text-white/40 text-xs" [
+                                Html.spanc "text-fg-faint text-xs" [
                                     text "SIGNAL"
                                 ]
-                                Html.spanc "text-white text-xs" [
+                                Html.spanc "text-fg text-xs" [
                                     text "100%"
                                 ]
                             ]
@@ -501,7 +535,7 @@ let view () =
 
             // ── Footer ────────────────────────────────────────────────────────
             neonDivider ()
-            Html.divc "flex justify-between items-center py-2 text-xs text-white/20 font-mono" [
+            Html.divc "flex justify-between items-center py-2 text-xs text-fg-ghost font-mono" [
                 text "// V2 THEME PREVIEW"
                 text "UNSTOPPABLEMANGO.IO"
                 text "EOF //"
