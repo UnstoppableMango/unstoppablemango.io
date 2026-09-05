@@ -1,7 +1,12 @@
-@import "tailwindcss";
+/* Tailwind scans the compiled Fable output rather than the F# sources, so a
+   class only reaches the stylesheet once it has survived compilation. That
+   output is gitignored, and automatic detection skips gitignored files, so
+   detection is turned off with `source(none)` and the output registered by
+   hand. An explicit `@source` glob is exempt from the gitignore rules.
+
+   Both imports precede the `@source` at-rule, which is where CSS requires an
+   `@import` to sit. */
+@import "tailwindcss" source(none);
 @import "./pulp/theme.css";
 
-/* Tailwind v4 does not pick up tailwind.config.ts on its own, and the compiled
-   .fs.js sources it scans are gitignored (so auto content detection skips them).
-   Both are handled by loading the legacy config explicitly. */
-@config "../tailwind.config.ts";
+@source "./App/**/*.fs.js";

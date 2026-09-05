@@ -69,6 +69,15 @@ To check: `dotnet fable src/App` then read `src/App/**/*.fs.js`, or `npm run tai
 
 UI is built with **Sutil** (reactive Elmish-style for browser, no React). Styling is **Tailwind v4** utility classes inline on `Html.*c` helpers (the `c` suffix takes a class string).
 
+### Styling: Pulp (`src/pulp/`)
+
+Pulp is the design system behind the v2 site. There is no `tailwind.config.ts`; the theme lives in CSS.
+
+- **`src/app.css`** — the entry point. `@import "tailwindcss" source(none)` then `@source "./App/**/*.fs.js"`. Automatic content detection is off on purpose: it respects `.gitignore`, which excludes the compiled `.fs.js` files Tailwind has to scan, and it otherwise generates utilities out of prose in Markdown files. An explicit `@source` glob is exempt from the gitignore filter. A new source directory outside `src/App` needs the glob widened or it produces no CSS.
+- **`src/pulp/palettes.css`** — one class-scoped block per palette (`.pulp-theme-slate` and friends), plus a shared block deriving the glows with `color-mix`. Slate also sits on `:root` as the default. Adding a palette means editing both the block and the derived selector list; a derived value declared only on `:root` freezes against the default and inherits that way into every other palette.
+- **`src/pulp/surfaces.css`** — everything palette independent: status colours, and the `glass` material family where white tints lift a surface and black tints cut it in.
+- **`src/pulp/tokens.css`** — maps the `--pulp-*` variables onto Tailwind tokens. These blocks must be `@theme inline`: a plain `@theme` emits the token on `:root`, where it resolves once against the default palette and inherits frozen, which silently breaks palette switching. `h-screen`, `min-h-screen` and `bg-v2-glass` have no v4 theme namespace and are written as `@utility` rules.
+
 ### Infrastructure (`infra/`)
 
 Pulumi TypeScript stack. Deploys:
