@@ -2,8 +2,11 @@
    class only reaches the stylesheet once it has survived compilation. That
    output is gitignored, and automatic detection skips gitignored files, so
    detection is turned off with `source(none)` and the output registered by
-   hand. An explicit `@source` glob is exempt from the gitignore rules. */
-@import "tailwindcss" source(none);
-@source "./App/**/*.fs.js";
+   hand. An explicit `@source` glob is exempt from the gitignore rules.
 
+   Both imports precede the `@source` at-rule, which is where CSS requires an
+   `@import` to sit. */
+@import "tailwindcss" source(none);
 @import "./pulp/theme.css";
+
+@source "./App/**/*.fs.js";
