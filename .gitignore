@@ -498,3 +498,6 @@ tailwind.css
 # process that dies on a signal drops a few hundred megabytes here.
 core
 core.*
+
+# Agent worktrees, created and removed by the harness.
+.claude/worktrees/

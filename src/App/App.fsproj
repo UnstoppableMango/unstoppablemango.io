@@ -4,6 +4,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Pulp/Theme.fs" />
     <Compile Include="Navigable.fs" />
     <Compile Include="Components.fs" />
     <Compile Include="pages/Home.fs" />
