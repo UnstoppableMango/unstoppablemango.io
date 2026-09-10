@@ -1,0 +1,39 @@
+/* Pulp surfaces: everything that means the same thing in every palette.
+ *
+ * Status colours are fixed on purpose. Danger has to read as danger whether the
+ * interface around it is slate or rust.
+ *
+ * The glass family is a material language rather than a set of colours. White
+ * tints lift a surface off the backdrop; black tints cut it in. A panel is
+ * raised, an input is recessed, and a button crosses from one to the other as
+ * you press it.
+ */
+
+:root {
+  --pulp-danger: #ff2b1a;
+  --pulp-danger-dim: #d61c0e;
+  --pulp-danger-bright: #ff6b5c;
+  --pulp-danger-glow: color-mix(in oklab, var(--pulp-danger) 80%, transparent);
+
+  --pulp-warn: #ffc61a;
+  --pulp-ok: #2bff8c;
+
+  /* Raised. */
+  --pulp-glass-fill: #ffffff21; /* panels, alerts */
+  --pulp-glass-track: #ffffff26; /* progress rail */
+  --pulp-glass-edge: #ffffff4d; /* borders */
+  --pulp-glass-rim: #ffffff2e; /* inset top light, at rest */
+  --pulp-glass-rim-bright: #ffffff4d; /* the same rim, lit */
+
+  /* Recessed. */
+  --pulp-glass-well: #00000026; /* inputs, tags */
+  --pulp-glass-press: #0000001a; /* hover, pressed one step in */
+  --pulp-glass-press-deep: #00000040; /* active, pressed two steps in */
+  --pulp-glass-slab: #00000099; /* the page level scrim */
+
+  /* Thrown onto the backdrop rather than sitting on a surface. */
+  --pulp-glass-cast: #050810b3;
+
+  /* Not a material: the light itself, at the hot core of a lit element. */
+  --pulp-lit: #ffffff;
+}

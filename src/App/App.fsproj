@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Pulp/Theme.fs" />
+    <Compile Include="Navigable.fs" />
+    <Compile Include="Components.fs" />
+    <Compile Include="pages/Home.fs" />
+    <Compile Include="pages/v1/Home.fs" />
+    <Compile Include="pages/v1/Wishlist.fs" />
+    <Compile Include="pages/v1/Artists.fs" />
+    <Compile Include="pages/v1/Music.fs" />
+    <Compile Include="pages/v1/Cannes.fs" />
+    <Compile Include="pages/V2.fs" />
+    <Compile Include="App.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Sutil" Version="2.0.16" />
+  </ItemGroup>
+</Project>

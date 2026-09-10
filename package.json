@@ -1,0 +1,35 @@
+{
+  "scripts": {
+    "postinstall": "dotnet tool restore",
+    "start": "dotnet fable watch src/App --run webpack serve",
+    "start:all": "conc -k -n \"fable,tailwind,dev\" \"npm:start\" \"npm:tailwind:watch\" \"npm:dev\"",
+    "dev": "wrangler dev",
+    "build": "dotnet fable src/App --run npm run pack",
+    "pretest": "dotnet fable test/App.Tests -o dist/tests",
+    "test": "mocha dist/tests",
+    "clean:dist": "rm -r dist",
+    "clean:fable": "dotnet fable clean --yes",
+    "clean:dotnet": "dotnet clean src/App",
+    "clean:tailwind": "rm public/tailwind.css",
+    "clean": "npm run clean:fable && npm run clean:dotnet && npm run clean:tailwind && npm run clean:dist",
+    "lint": "eslint .",
+    "pack": "npm run tailwind:prod && webpack --mode production",
+    "tailwind:watch": "tailwindcss -i src/app.css -o public/tailwind.css --watch",
+    "tailwind:prod": "cross-env NODE_ENV=production tailwindcss -i src/app.css -o public/tailwind.css --minify"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "@tailwindcss/cli": "^4.1.17",
+    "concurrently": "^10.0.0",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.0.0",
+    "mocha": "^12.0.0",
+    "tailwindcss": "^4.1.17",
+    "typescript": "^6.0.0",
+    "typescript-eslint": "^8.48.1",
+    "webpack": "^5.103.0",
+    "webpack-cli": "^7.0.0",
+    "webpack-dev-server": "^6.0.0",
+    "wrangler": "^4.53.0"
+  }
+}

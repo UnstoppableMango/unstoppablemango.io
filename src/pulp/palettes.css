@@ -1,0 +1,111 @@
+/* Pulp palettes.
+ *
+ * A palette is the interface colour and the colour that marks it. Everything
+ * else in the system is palette invariant and lives in surfaces.css.
+ *
+ * Slate is the default, declared on :root so an unclassed page renders. The
+ * others apply by class on the root element, which is what the theme switcher
+ * sets.
+ *
+ * Adding a palette means TWO edits: its own block, and the selector list on the
+ * derived block at the bottom. The derived values have to be declared on the
+ * same element that carries the palette class. A custom property resolves on
+ * the element that declares it, so a glow declared only on :root would freeze
+ * against slate's primary and inherit that way into every other palette.
+ */
+
+:root,
+.pulp-theme-slate {
+  --pulp-primary: #7d8a99;
+  --pulp-primary-dim: #5e6a77;
+  --pulp-primary-bright: #a3aebb;
+  --pulp-primary-lift: #c8d0da;
+
+  --pulp-accent: #c4553f;
+  --pulp-accent-dim: #96402f;
+  --pulp-accent-bright: #dd7359;
+}
+
+/* Ink is the darkest and most saturated primary in the set, marked in brass. */
+.pulp-theme-ink {
+  --pulp-primary: #4a5a8c;
+  --pulp-primary-dim: #37446b;
+  --pulp-primary-bright: #6f81b5;
+  --pulp-primary-lift: #9aa8d4;
+
+  --pulp-accent: #c9a227;
+  --pulp-accent-dim: #9c7c1c;
+  --pulp-accent-bright: #e0bc4f;
+}
+
+.pulp-theme-olive {
+  --pulp-primary: #7a8b5a;
+  --pulp-primary-dim: #5c6a42;
+  --pulp-primary-bright: #9cae78;
+  --pulp-primary-lift: #c0cf9e;
+
+  --pulp-accent: #d9a441;
+  --pulp-accent-dim: #a87c2c;
+  --pulp-accent-bright: #ebbc68;
+}
+
+/* Rust runs the other three in reverse: a warm interface marked in cool. */
+.pulp-theme-rust {
+  --pulp-primary: #b4644a;
+  --pulp-primary-dim: #8c4a34;
+  --pulp-primary-bright: #d08768;
+  --pulp-primary-lift: #e5b09a;
+
+  --pulp-accent: #8fb4d0;
+  --pulp-accent-dim: #6b8ba6;
+  --pulp-accent-bright: #b3d0e4;
+}
+
+/* School colours. The base pair in each is the published brand value; the dim,
+ * bright and lift steps are built around it so the ramps behave like the others.
+ *
+ * University of Northern Iowa: purple and old gold.
+ */
+.pulp-theme-uni {
+  --pulp-primary: #4b116f;
+  --pulp-primary-dim: #360b50;
+  --pulp-primary-bright: #7a3ba6;
+  --pulp-primary-lift: #b18fd0;
+
+  --pulp-accent: #ffcc00;
+  --pulp-accent-dim: #cc9f00;
+  --pulp-accent-bright: #ffdd55;
+}
+
+/* University of Wisconsin-Platteville: blue for education, orange for
+ * engineering.
+ */
+.pulp-theme-uwp {
+  --pulp-primary: #1a64b7;
+  --pulp-primary-dim: #12498a;
+  --pulp-primary-bright: #4a8ad4;
+  --pulp-primary-lift: #8fb8e8;
+
+  --pulp-accent: #f58113;
+  --pulp-accent-dim: #c1620a;
+  --pulp-accent-bright: #ff9f47;
+}
+
+/* The glows are the palette colours at reduced alpha, nothing more. Mixing with
+ * `transparent` interpolates in premultiplied alpha, so the result is the source
+ * colour with its alpha scaled and no shift in hue.
+ *
+ * Do not apply a Tailwind opacity modifier to a glow token. That nests a second
+ * color-mix and multiplies the two alphas, which is rarely what the caller means.
+ */
+:root,
+.pulp-theme-slate,
+.pulp-theme-ink,
+.pulp-theme-olive,
+.pulp-theme-rust,
+.pulp-theme-uni,
+.pulp-theme-uwp {
+  --pulp-primary-glow: color-mix(in oklab, var(--pulp-primary) 50%, transparent);
+  --pulp-primary-glow-soft: color-mix(in oklab, var(--pulp-primary) 27%, transparent);
+  --pulp-primary-bright-glow: color-mix(in oklab, var(--pulp-primary-bright) 80%, transparent);
+}
