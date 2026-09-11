@@ -18,6 +18,16 @@
   --color-accent-dim: var(--pulp-accent-dim);
   --color-accent-bright: var(--pulp-accent-bright);
 
+  /* Type. The `readable` intensity raises the bottom of this ramp, so a label
+   * written as `text-fg-faint` reads at a contrast floor there and stays quiet
+   * everywhere else.
+   */
+  --color-fg: var(--pulp-fg);
+  --color-fg-muted: var(--pulp-fg-muted);
+  --color-fg-dim: var(--pulp-fg-dim);
+  --color-fg-faint: var(--pulp-fg-faint);
+  --color-fg-ghost: var(--pulp-fg-ghost);
+
   /* Status. Defined in surfaces.css, the same in every palette. */
   --color-danger: var(--pulp-danger);
   --color-danger-dim: var(--pulp-danger-dim);

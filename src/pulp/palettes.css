@@ -108,4 +108,6 @@
   --pulp-primary-glow: color-mix(in oklab, var(--pulp-primary) 50%, transparent);
   --pulp-primary-glow-soft: color-mix(in oklab, var(--pulp-primary) 27%, transparent);
   --pulp-primary-bright-glow: color-mix(in oklab, var(--pulp-primary-bright) 80%, transparent);
+  --pulp-primary-lift-glow: color-mix(in oklab, var(--pulp-primary-lift) 80%, transparent);
+  --pulp-accent-glow: color-mix(in oklab, var(--pulp-accent) 80%, transparent);
 }
