@@ -4,8 +4,13 @@
  * surfaces say how the material behaves and what status means, the same way in
  * every palette. Both resolve to `--pulp-*` variables that tokens.css maps onto
  * Tailwind colour tokens.
+ *
+ * Intensity is a third axis, over the top of both: how loud the result is. It
+ * imports last because it overrides what the two below it declare, and the
+ * classes involved are all the same specificity on the same element.
  */
 
 @import "./palettes.css";
 @import "./surfaces.css";
+@import "./intensity.css";
 @import "./tokens.css";

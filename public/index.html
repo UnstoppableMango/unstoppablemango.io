@@ -6,15 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="favicon.ico" />
   <script>
-    // Applies the stored palette before anything renders. The bundle sets the
-    // same class later, but it loads too late to prevent a flash of the default
-    // theme. The key and the prefix are duplicated from src/App/Pulp/Theme.fs
-    // because this has to run without it.
+    // Applies the stored palette and intensity before anything renders. The
+    // bundle sets the same classes later, but it loads too late to prevent a
+    // flash of the default theme. The keys and the prefixes are duplicated from
+    // src/App/Pulp/Theme.fs because this has to run without it, and so is the
+    // rule that a stored choice outranks the system preference.
     try {
+      var root = document.documentElement;
+
       var p = localStorage.getItem('pulp-theme');
-      if (p && /^[a-z]+$/.test(p)) document.documentElement.classList.add('pulp-theme-' + p);
+      if (p && /^[a-z]+$/.test(p)) root.classList.add('pulp-theme-' + p);
+
+      var i = localStorage.getItem('pulp-intensity');
+      if (!i || !/^[a-z]+$/.test(i)) {
+        i = window.matchMedia('(prefers-contrast: more)').matches
+          || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'readable'
+          : 'hud';
+      }
+      root.classList.add('pulp-intensity-' + i);
     } catch (e) {
-      // Site data blocked. The default palette on :root still renders.
+      // Site data blocked. The default palette on :root still renders, and hud
+      // is the baseline the rest of the system already describes.
     }
   </script>
 </head>
