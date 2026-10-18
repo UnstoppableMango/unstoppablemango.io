@@ -3,6 +3,12 @@
  * Status colours are fixed on purpose. Danger has to read as danger whether the
  * interface around it is slate or rust.
  *
+ * The foreground ramp is type, and only type. Five steps from the full white of
+ * a heading down to a label that is barely there. Naming them is what lets the
+ * `readable` intensity raise a contrast floor: the bottom of the ramp moves and
+ * every label written against it moves with it, which no amount of
+ * `text-white/40` spelled inline could do.
+ *
  * The glass family is a material language rather than a set of colours. White
  * tints lift a surface off the backdrop; black tints cut it in. A panel is
  * raised, an input is recessed, and a button crosses from one to the other as
@@ -10,6 +16,12 @@
  */
 
 :root {
+  --pulp-fg: #ffffff; /* headings, values, anything read first */
+  --pulp-fg-muted: #ffffffcc; /* body copy */
+  --pulp-fg-dim: #ffffff99; /* secondary copy */
+  --pulp-fg-faint: #ffffff66; /* labels beside the value they name */
+  --pulp-fg-ghost: #ffffff40; /* placeholders, footer marks */
+
   --pulp-danger: #ff2b1a;
   --pulp-danger-dim: #d61c0e;
   --pulp-danger-bright: #ff6b5c;
@@ -36,4 +48,5 @@
 
   /* Not a material: the light itself, at the hot core of a lit element. */
   --pulp-lit: #ffffff;
+  --pulp-lit-glow: #ffffffcc;
 }

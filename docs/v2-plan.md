@@ -48,15 +48,14 @@ Drop the unused config colours (`byzantium`, `thistle`, `cool-gray`, `cyber-pink
 
 ## Phase 2: theme switching
 
-Roughly a day.
-Depends on phase 1.
+Done.
 
-1. Swap palettes by setting a class on the root element, with a Sutil store holding the choice and `localStorage` persisting it.
-2. Add the intensity axis on the same mechanism.
-3. Honour `prefers-reduced-motion` and `prefers-contrast` as the initial intensity, so the default is right before anyone touches the switcher.
-4. Build the switcher UI.
+Both axes are a class on the root element, a Sutil store, and a `localStorage` key, with a script in `public/index.html` applying them before the bundle loads.
+`prefers-contrast: more` and `prefers-reduced-motion: reduce` both start a visitor at `readable`, and a stored choice outranks either.
+`src/pulp/intensity.css` is where a stop says what it means; `hud` has no block there, since it is the baseline the rest of the system already describes.
 
-The switcher needs somewhere to live in the site chrome, which pulls the nav component forward out of phase 3.
+The two switchers sit together at the bottom left of the showcase, each collapsed to the word naming what is in force.
+They need somewhere to live in the site chrome, which pulls the nav component forward out of phase 3.
 
 ## Phase 3: component library
 
