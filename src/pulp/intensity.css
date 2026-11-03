@@ -1,0 +1,118 @@
+/* Pulp intensity: how loud the interface is.
+ *
+ * The second axis, on the same mechanism as the palette: a class on the root
+ * element, `.pulp-intensity-hud` and friends. Three stops.
+ *
+ *   hud       the full instrument panel, and what an unclassed page renders
+ *   clean     no glitch, minimal glow, solid surfaces
+ *   readable  clean plus contrast floors, larger type, and motion off
+ *
+ * `hud` has no block here on purpose. It is the baseline the rest of the system
+ * already describes, so the stop is a class the switcher can name rather than a
+ * set of overrides.
+ *
+ * This file loads after palettes.css and surfaces.css. An intensity class and a
+ * palette class carry the same specificity and sit on the same element, so
+ * source order is the whole reason the overrides below land.
+ *
+ * Everything here is unlayered, while Tailwind's utilities sit in a cascade
+ * layer. Unlayered rules win outright, which is what lets the motion rules stop
+ * an `animate-*` utility without an `!important` or a specificity race.
+ */
+
+/* `readable` is `clean` plus floors, so the two share one block rather than
+ * `readable` restating it.
+ */
+.pulp-intensity-clean,
+.pulp-intensity-readable {
+  /* The light goes out. Every decorative shadow in the system reads a `*-glow`
+   * variable, so this turns off the glow without a component knowing.
+   */
+  --pulp-primary-glow: transparent;
+  --pulp-primary-glow-soft: transparent;
+  --pulp-primary-bright-glow: transparent;
+  --pulp-primary-lift-glow: transparent;
+  --pulp-accent-glow: transparent;
+  --pulp-danger-glow: transparent;
+  --pulp-lit-glow: transparent;
+
+  /* Solid surfaces. The same roles the glass family names, opaque: a panel
+   * covers the photo instead of tinting it. Only the page margins are left
+   * showing the backdrop.
+   */
+  --pulp-glass-fill: #171d26;
+  --pulp-glass-track: #232b36;
+  --pulp-glass-edge: #3a4653;
+  --pulp-glass-rim: #ffffff1a;
+  --pulp-glass-rim-bright: #ffffff26;
+  --pulp-glass-well: #0e131a;
+  --pulp-glass-slab: #10151c;
+
+  /* Pressed states have to be opaque too. `hover:bg-glass-press` replaces a
+   * button's fill outright, so a translucent value would open a hole in it.
+   */
+  --pulp-glass-press: #0b0f14;
+  --pulp-glass-press-deep: #05080b;
+
+  --pulp-glass-cast: #050810cc;
+}
+
+/* The looping decorative animations. The entrances (`power-on`, `hud-appear`,
+ * `slide-down`) play once on mount and are not what a quieter interface is
+ * asking to lose, so `clean` keeps them; `readable` stops everything below.
+ */
+.pulp-intensity-clean :is(.animate-glitch, .animate-glitch-clip, .animate-flicker, .animate-scan-line, .animate-pulse-primary),
+.pulp-intensity-readable :is(.animate-glitch, .animate-glitch-clip, .animate-flicker, .animate-scan-line, .animate-pulse-primary) {
+  animation: none;
+}
+
+/* Decoration that only makes sense in motion: the offset duplicate layers of
+ * the glitch title, which are ghosts rather than text once the animation stops.
+ */
+.pulp-intensity-clean .pulp-decor,
+.pulp-intensity-readable .pulp-decor {
+  display: none;
+}
+
+.pulp-intensity-readable {
+  /* Contrast floors. The bottom of the ramp comes up to where the quiet steps
+   * are still quiet but no longer hard to read, and a border reads as a border.
+   */
+  --pulp-fg-dim: #ffffffd9;
+  --pulp-fg-faint: #ffffffbf;
+  --pulp-fg-ghost: #ffffff8c;
+  --pulp-glass-edge: #6b7885;
+
+  /* Larger type, in one declaration. Tailwind's sizes are rem, and this class
+   * is on the root element, so every one of them scales.
+   */
+  font-size: 112.5%;
+}
+
+/* Motion off. Transitions are shortened rather than removed, so anything
+ * listening for a transition still hears it end.
+ */
+.pulp-intensity-readable *,
+.pulp-intensity-readable *::before,
+.pulp-intensity-readable *::after {
+  animation: none;
+  transition-duration: 1ms;
+}
+
+/* A floor under the axis. Choosing `hud` picks a look; it is not a decision to
+ * override an operating system accessibility setting, so the loops stop at
+ * every stop when the visitor has asked for less motion.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .animate-glitch,
+  .animate-glitch-clip,
+  .animate-flicker,
+  .animate-scan-line,
+  .animate-pulse-primary {
+    animation: none;
+  }
+
+  .pulp-decor {
+    display: none;
+  }
+}
